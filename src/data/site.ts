@@ -10,7 +10,7 @@ export const siteConfig = {
     "A village of rice terraces, river mist, and generations of stories — KabKraBue, told through its people, nature, and culture.",
   shortDescriptionThai:
     "หมู่บ้านแห่งท้องนา สายหมอกริมน้ำ และเรื่องราวของผู้คนหลายชั่วอายุคน",
-  url: "https://Santipap250.github.io/KabKraBue",
+  url: "https://kab-kra-bue.vercel.app",
   github: "https://github.com/Santipap250/KabKraBue",
   locale: "th-TH",
   themeColor: "#3F5A3D",
