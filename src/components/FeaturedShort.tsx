@@ -28,11 +28,11 @@ export function FeaturedShort() {
               id="featured-short-heading"
               className="heading-display text-4xl text-rice sm:text-5xl lg:text-6xl"
             >
-              KabKraBue in motion
+              The Village Diaries
             </h2>
 
             <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">
-              ภาพเคลื่อนไหวหมู่บ้านกาบกระบือ
+              บันทึกเรื่องราวผ่านเลนส์ที่หมู่กาบกระบือ
             </p>
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
