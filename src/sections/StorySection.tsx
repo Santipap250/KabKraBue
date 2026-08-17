@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
@@ -104,15 +104,7 @@ function StoryMedia({
   );
 }
 
-function StoryBody({
-  id,
-  body,
-  isNature,
-}: {
-  id: string;
-  body: string;
-  isNature: boolean;
-}) {
+function StoryBody({ id, body }: { id: string; body: string }) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = body.split("\n\n");
   const isLong = body.length > COLLAPSE_THRESHOLD;
@@ -130,10 +122,7 @@ function StoryBody({
             ? { duration: 0 }
             : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
         }
-        className={cn(
-          "story-body relative overflow-hidden",
-          isNature && "story-body-nature"
-        )}
+        className="story-body relative overflow-hidden"
       >
         {paragraphs.map((paragraph, index) => (
           <p key={`${id}-${index}`}>{paragraph}</p>
@@ -193,10 +182,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
   return (
     <section
       id={data.id}
-      className={cn(
-        "relative overflow-hidden border-t border-border",
-        isNature && "nature-section"
-      )}
+      className="relative overflow-hidden border-t border-border"
     >
       <div
         className={cn(
@@ -209,7 +195,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
             className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden"
             aria-hidden="true"
           >
-            <span className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
+            <span className="absolute right-6 -mt-8 select-none font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
               04
             </span>
           </div>
@@ -246,7 +232,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />
             )}
 
-            <StoryBody id={data.id} body={data.body} isNature={isNature} />
+            <StoryBody id={data.id} body={data.body} />
           </motion.div>
 
           <motion.div
