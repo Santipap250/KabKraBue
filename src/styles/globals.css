@@ -144,3 +144,31 @@ textarea:focus-visible,
   left: 1rem;
   top: 1rem;
 }
+
+/* Expandable story copy */
+.story-paragraph-hidden {
+  display: none;
+}
+
+.story-readmore {
+  border: 0;
+  border-bottom: 1px solid rgb(31 35 31 / 0.22);
+  padding: 0 0 0.35rem;
+  background: transparent;
+  color: theme("colors.paddy.DEFAULT");
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.story-readmore:hover {
+  color: theme("colors.clay");
+  border-bottom-color: theme("colors.clay");
+}
+
+.story-readmore:focus-visible {
+  outline: 2px solid theme("colors.paddy.DEFAULT");
+  outline-offset: 5px;
+}
