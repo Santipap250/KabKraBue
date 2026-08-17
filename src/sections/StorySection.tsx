@@ -2,12 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ChevronDown } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { cn } from "@/lib/cn";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+// Collapsed height (px) before "อ่านเพิ่มเติม" is needed — tuned to the
+// .story-body type scale in globals.css, roughly the intro line plus
+// the first paragraph on mobile.
+const COLLAPSED_HEIGHT = 210;
+// Below this character count the text already fits within
+// COLLAPSED_HEIGHT, so no toggle is rendered at all.
+const COLLAPSE_THRESHOLD = 260;
 
 interface StorySectionProps {
   data: StorySectionData;
@@ -50,6 +59,50 @@ function StoryMedia({ data }: { data: StorySectionData }) {
   );
 }
 
+function StoryBody({ id, body }: { id: string; body: string }) {
+  const [expanded, setExpanded] = useState(false);
+  const paragraphs = body.split("\n\n");
+  const isLong = body.length > COLLAPSE_THRESHOLD;
+
+  return (
+    <div className="mt-7 max-w-xl">
+      <motion.div
+        id={`${id}-story-body`}
+        initial={false}
+        animate={{ height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        className="story-body relative overflow-hidden"
+      >
+        {paragraphs.map((paragraph, index) => (
+          <p key={`${id}-${index}`}>{paragraph}</p>
+        ))}
+        {isLong && !expanded && (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent"
+          />
+        )}
+      </motion.div>
+
+      {isLong && (
+        <button
+          type="button"
+          onClick={() => setExpanded((value) => !value)}
+          aria-expanded={expanded}
+          aria-controls={`${id}-story-body`}
+          className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.15em] text-paddy transition-colors hover:text-clay"
+        >
+          {expanded ? "ย่อเรื่องราว" : "อ่านเพิ่มเติม"}
+          <ChevronDown
+            className={cn("h-3.5 w-3.5 transition-transform duration-300", expanded && "rotate-180")}
+            strokeWidth={1.5}
+          />
+        </button>
+      )}
+    </div>
+  );
+}
+
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   return (
     <section id={data.id} className="border-t border-border">
@@ -79,11 +132,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               {data.titleThai}
             </p>
 
-            <div className="story-body mt-7 max-w-xl">
-              {data.body.split("\n\n").map((paragraph, index) => (
-                <p key={`${data.id}-${index}`}>{paragraph}</p>
-              ))}
-            </div>
+            <StoryBody id={data.id} body={data.body} />
           </motion.div>
 
           <motion.div
