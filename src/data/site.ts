@@ -20,7 +20,7 @@ export const siteConfig = {
     address: "[TODO: ใส่ที่อยู่หมู่บ้าน KabKraBue]",
   },
   social: {
-    facebook: "[TODO: ลิงก์ Facebook]",
+    facebook: "https://www.facebook.com/santipab.songkarak",
     instagram: "[TODO: ลิงก์ Instagram]",
     youtube: "[TODO: ลิงก์ YouTube]",
     line: "[TODO: ลิงก์ Line Official Account]",
