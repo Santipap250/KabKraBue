@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown, Images } from "lucide-react";
 import { siteConfig } from "@/data/site";
+import { TerraceDivider } from "@/components/TerraceDivider";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const videoSrc = `${basePath}/videos/village-hero.webm`;
@@ -45,22 +46,27 @@ export function Hero() {
       </div>
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="eyebrow text-mist"
+        <motion.div
+          initial={{ opacity: 0, scaleX: 0.4 }}
+          animate={{ opacity: 1, scaleX: 1 }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="w-24 origin-left"
         >
-          {siteConfig.nameThai} · Rice fields &amp; river mist
-        </motion.p>
+          <TerraceDivider tone="rice" className="opacity-80" />
+        </motion.div>
 
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="heading-display mt-4 max-w-3xl text-6xl text-rice sm:text-7xl lg:text-8xl"
+          transition={{ duration: 0.9, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+          className="heading-display -mt-2 max-w-3xl text-rice"
         >
-          {siteConfig.tagline}
+          <span className="block text-3xl font-normal text-rice/80 sm:text-4xl lg:text-5xl">
+            Discover
+          </span>
+          <span className="block bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl text-transparent sm:text-7xl lg:text-8xl">
+            {siteConfig.name}
+          </span>
         </motion.h1>
 
         <motion.p
@@ -78,18 +84,29 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.55 }}
           className="mt-9 flex flex-wrap items-center gap-4"
         >
-          <a
+          <motion.a
             href="#village"
-            className="inline-flex items-center gap-2 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink transition-colors hover:bg-gold hover:border-gold"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="group inline-flex items-center gap-2.5 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink shadow-lg shadow-ink/20 transition-colors hover:border-gold hover:bg-gold"
           >
             Enter the village
-          </a>
-          <a
+            <ArrowRight
+              className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"
+              strokeWidth={1.75}
+            />
+          </motion.a>
+          <motion.a
             href="#gallery"
-            className="inline-flex items-center gap-2 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice transition-colors hover:border-rice"
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
+            className="group inline-flex items-center gap-2.5 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice backdrop-blur-sm transition-colors hover:border-rice hover:bg-rice/10"
           >
+            <Images className="h-3.5 w-3.5" strokeWidth={1.75} />
             View gallery
-          </a>
+          </motion.a>
         </motion.div>
       </div>
 
