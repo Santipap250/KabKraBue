@@ -1,12 +1,14 @@
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
+import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { hasContent } from "@/lib/content";
 
 const socialLinks = [
   { key: "facebook", label: "Facebook", href: siteConfig.social.facebook, Icon: Facebook },
   { key: "instagram", label: "Instagram", href: siteConfig.social.instagram, Icon: Instagram },
   { key: "youtube", label: "YouTube", href: siteConfig.social.youtube, Icon: Youtube },
+  { key: "tiktok", label: "TikTok", href: siteConfig.social.tiktok, Icon: TikTokIcon },
   { key: "line", label: "Line", href: siteConfig.social.line, Icon: MessageCircle },
 ].filter((link) => hasContent(link.href));
 
