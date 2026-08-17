@@ -1,11 +1,22 @@
 import { ArrowUpRight, Play, Youtube } from "lucide-react";
 
-const SHORT_ID = "3R3wIqhAzdQ";
-const SHORT_PAGE_URL =
-  "https://youtube.com/shorts/3R3wIqhAzdQ?si=yZLZLzwHvMCvUsso";
+const SHORTS = [
+  {
+    id: "3R3wIqhAzdQ",
+    pageUrl:
+      "https://youtube.com/shorts/3R3wIqhAzdQ?si=yZLZLzwHvMCvUsso",
+    title: "KabKraBue — Featured Short",
+    label: "YouTube Short 01",
+  },
+  {
+    id: "auayNR7ydYM",
+    pageUrl: "https://m.youtube.com/shorts/auayNR7ydYM",
+    title: "KabKraBue — Featured Short 02",
+    label: "YouTube Short 02",
+  },
+];
+
 const SHORT_CHANNEL_URL = "https://m.youtube.com/@obixconfig/shorts";
-const SHORT_EMBED_URL =
-  `https://www.youtube-nocookie.com/embed/${SHORT_ID}?rel=0&modestbranding=1&playsinline=1&autoplay=0`;
 
 export function FeaturedShort() {
   return (
@@ -20,7 +31,7 @@ export function FeaturedShort() {
       </div>
 
       <div className="container-content relative py-16 sm:py-20 lg:py-24">
-        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
+        <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
           <div className="max-w-2xl">
             <div className="mb-5 h-px w-14 bg-gold/70" aria-hidden="true" />
 
@@ -37,12 +48,12 @@ export function FeaturedShort() {
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
               ชมบรรยากาศของหมู่บ้านกาบกระบือผ่านวิดีโอสั้น
-              แล้วค่อยออกไปค้นพบภาพ เรื่องราว และวิถีชีวิตอีกมากมายภายในเว็บไซต์
+              แล้วเลื่อนชมบันทึกเรื่องราวจากอีกช่วงเวลาหนึ่งไปเรื่อย ๆ
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
-                href={SHORT_PAGE_URL}
+                href={SHORTS[0].pageUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 bg-rice px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold"
@@ -70,37 +81,65 @@ export function FeaturedShort() {
             </div>
           </div>
 
-          <div className="flex justify-center lg:justify-end">
-            <div className="w-full max-w-[290px] sm:max-w-[310px]">
-              <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
-                <div className="overflow-hidden rounded-[1.3rem] bg-black">
-                  <div className="relative aspect-[9/16] w-full">
-                    <iframe
-                      src={SHORT_EMBED_URL}
-                      title="KabKraBue — Featured YouTube Short"
-                      loading="lazy"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                      allowFullScreen
-                      referrerPolicy="strict-origin-when-cross-origin"
-                      className="absolute inset-0 h-full w-full"
-                    />
-                  </div>
-                </div>
-              </div>
+          <div className="min-w-0">
+            <div
+              className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-6"
+              aria-label="Featured YouTube Shorts"
+            >
+              {SHORTS.map((short) => {
+                const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1&autoplay=0`;
 
-              <div className="mt-3 flex items-center justify-between px-1">
-                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/30">
-                  YouTube Short
-                </span>
-                <a
-                  href={SHORT_PAGE_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/75 transition-colors hover:text-gold"
-                >
-                  Open →
-                </a>
-              </div>
+                return (
+                  <article
+                    key={short.id}
+                    className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]"
+                  >
+                    <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
+                      <div className="overflow-hidden rounded-[1.3rem] bg-black">
+                        <div className="relative aspect-[9/16] w-full">
+                          <iframe
+                            src={embedUrl}
+                            title={short.title}
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                            referrerPolicy="strict-origin-when-cross-origin"
+                            className="absolute inset-0 h-full w-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-between px-1">
+                      <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/30">
+                        {short.label}
+                      </span>
+
+                      <a
+                        href={short.pageUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/75 transition-colors hover:text-gold"
+                      >
+                        Open →
+                      </a>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+
+            <div className="mt-2 flex items-center justify-between gap-4 px-1">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/25">
+                Swipe to explore
+              </span>
+
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/45"
+                aria-hidden="true"
+              >
+                01 / 02
+              </span>
             </div>
           </div>
         </div>
