@@ -1,88 +1,60 @@
-// Photo gallery data. To add a new photo: drop the file into
-// /public/images/gallery/ and add one entry below. Nothing else needs
-// to change — the ImageGallery component reads entirely from this file.
+// Photo gallery data. Add more photos by placing the optimized file in
+// /public/images/gallery/ and adding one entry below.
 
 export interface GalleryImage {
   id: string;
-  src: string; // path relative to /public
+  src: string;
   alt: string;
   caption?: string;
   category: "landscape" | "people" | "culture" | "nature" | "village";
-  width: number; // intrinsic width, for aspect-ratio-correct placeholders
+  width: number;
   height: number;
 }
 
 export const galleryImages: GalleryImage[] = [
   {
     id: "gallery-01",
-    src: "/images/gallery/gallery-01.jpg",
-    alt: "Rice terraces at sunrise near KabKraBue",
-    caption: "[TODO: คำบรรยายภาพ]",
+    src: "/images/gallery/gallery-01.webp",
+    alt: "Aerial view of KabKraBue village and surrounding rice fields",
+    caption: "มุมมองทางอากาศของหมู่บ้านกาบกระบือและผืนนา",
     category: "landscape",
-    width: 1600,
-    height: 1067,
+    width: 864,
+    height: 1536,
   },
   {
     id: "gallery-02",
-    src: "/images/gallery/gallery-02.jpg",
-    alt: "Village elder walking along a paddy path",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "people",
-    width: 1200,
-    height: 1500,
+    src: "/images/gallery/gallery-02.webp",
+    alt: "Village water tower surrounded by fields",
+    caption: "หอถังน้ำท่ามกลางผืนนาและแสงยามเย็น",
+    category: "village",
+    width: 864,
+    height: 1536,
   },
   {
     id: "gallery-03",
-    src: "/images/gallery/gallery-03.jpg",
-    alt: "Traditional wooden house in KabKraBue",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "village",
-    width: 1600,
-    height: 1067,
+    src: "/images/gallery/gallery-03.webp",
+    alt: "Calm water reflecting the evening sky and green shoreline",
+    caption: "ผืนน้ำเงียบสงบในบรรยากาศยามเย็น",
+    category: "nature",
+    width: 864,
+    height: 1536,
   },
   {
     id: "gallery-04",
-    src: "/images/gallery/gallery-04.jpg",
-    alt: "River mist over the fields at dawn",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "nature",
-    width: 1600,
-    height: 2000,
+    src: "/images/gallery/gallery-04.webp",
+    alt: "Patchwork rice fields and village paths seen from above",
+    caption: "ผืนแปลงนาที่เรียงตัวเป็นลวดลายธรรมชาติ",
+    category: "landscape",
+    width: 864,
+    height: 1536,
   },
   {
     id: "gallery-05",
-    src: "/images/gallery/gallery-05.jpg",
-    alt: "Local festival procession",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "culture",
-    width: 1600,
-    height: 1067,
-  },
-  {
-    id: "gallery-06",
-    src: "/images/gallery/gallery-06.jpg",
-    alt: "Children playing near the water buffalo",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "people",
-    width: 1200,
-    height: 1500,
-  },
-  {
-    id: "gallery-07",
-    src: "/images/gallery/gallery-07.jpg",
-    alt: "Sunset silhouette over the rice fields",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "landscape",
-    width: 1600,
-    height: 900,
-  },
-  {
-    id: "gallery-08",
-    src: "/images/gallery/gallery-08.jpg",
-    alt: "Weaving craft detail",
-    caption: "[TODO: คำบรรยายภาพ]",
-    category: "culture",
-    width: 1200,
-    height: 1500,
+    src: "/images/gallery/gallery-05.webp",
+    alt: "Wide aerial view of the village, roads, and agricultural fields",
+    caption: "ภาพมุมสูงที่เห็นทั้งบ้านเรือน ถนน และพื้นที่เกษตร",
+    category: "village",
+    width: 864,
+    height: 1536,
   },
 ];
