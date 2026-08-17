@@ -1,16 +1,18 @@
-// Storytelling content for the homepage sections. Replace every [TODO]
-// placeholder with the village's real history, quotes, and details —
-// nothing here is invented fact, it is structure waiting for content.
+// Storytelling content for the homepage sections.
+// Replace [TODO] placeholders with the village's verified history,
+// quotes, and details. Narrative language can remain poetic without
+// inventing factual claims.
 
 export interface StorySection {
   id: string;
-  index: string; // e.g. "01"
+  index: string;
   eyebrow: string;
   title: string;
   titleThai: string;
   body: string;
   imageAlt: string;
-  imageId: string; // maps to /public/images/<imageId>
+  imageId: string;
+  videoId?: string;
 }
 
 export const storySections: StorySection[] = [
@@ -19,10 +21,12 @@ export const storySections: StorySection[] = [
     index: "01",
     eyebrow: "The Village",
     title: "Where the rice fields begin",
-    titleThai: "จุดเริ่มต้นของท้องทุ่งนา",
-    body: "[TODO: ใส่คำอธิบายภาพรวมของหมู่บ้าน KabKraBue — ที่ตั้ง ภูมิประเทศ และความรู้สึกแรกเมื่อมาเยือน]",
-    imageAlt: "Panoramic view of KabKraBue village and surrounding rice fields",
+    titleThai: "ตรงที่ผืนดินค่อย ๆ เล่าเรื่องของบ้าน",
+    body:
+      "บางสถานที่เราเดินทางไปเพื่อถ่ายภาพ แต่บางสถานที่เราอยากหยุดอยู่ตรงนั้นนานพอที่จะได้ยินเสียงของความทรงจำ — กาบกระบือคือภาพของถนนสายหนึ่งที่พาเราผ่านผืนนา บ้านเรือน และแสงที่เปลี่ยนไปตามเวลา\n\nจากมุมสูง ผืนท้องนาดูเหมือนแผนที่ที่วาดด้วยสีของฤดูกาล ส่วนจากพื้นดิน ทุกระยะทางกลับเต็มไปด้วยรายละเอียดเล็ก ๆ ที่มีความหมาย ทั้งทางที่ผู้คนคุ้นเคย ผืนน้ำที่สะท้อนท้องฟ้า และพื้นที่ที่วันหนึ่งอาจกลายเป็นเรื่องเล่าของคนรุ่นต่อไป\n\nเว็บไซต์นี้จึงไม่ได้ชวนให้เพียง “มองเห็น” กาบกระบือ แต่ชวนให้ค่อย ๆ ทำความรู้จักบ้านหลังนี้ผ่านภาพ เสียง เรื่องราว และสายตาของผู้คนที่ผูกพันกับผืนดินแห่งนี้",
+    imageAlt: "ภาพมุมสูงของท้องนาและหมู่บ้านกาบกระบือ",
     imageId: "village-hero.jpg",
+    videoId: "village-opening.mp4",
   },
   {
     id: "story",
@@ -39,7 +43,7 @@ export const storySections: StorySection[] = [
     index: "03",
     eyebrow: "People",
     title: "Faces of KabKraBue",
-    titleThai: "ผู้คนแห่งกับกระบือ",
+    titleThai: "ผู้คนแห่งกาบกระบือ",
     body: "[TODO: ใส่เรื่องราวเกี่ยวกับผู้คนในหมู่บ้าน อาชีพ วิถีชีวิต และความสัมพันธ์ในชุมชน]",
     imageAlt: "Portrait of a KabKraBue villager",
     imageId: "people-01.jpg",
@@ -69,7 +73,7 @@ export const storySections: StorySection[] = [
     index: "06",
     eyebrow: "Lifestyle",
     title: "A day in KabKraBue",
-    titleThai: "หนึ่งวันในกับกระบือ",
+    titleThai: "หนึ่งวันในกาบกระบือ",
     body: "[TODO: ใส่คำอธิบายวิถีชีวิตประจำวัน อาหาร งานฝีมือ และกิจวัตรของชาวบ้าน]",
     imageAlt: "Daily life scene in KabKraBue village",
     imageId: "lifestyle-01.jpg",
