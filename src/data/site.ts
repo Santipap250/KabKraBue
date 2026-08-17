@@ -5,11 +5,11 @@ export const siteConfig = {
   name: "KabKraBue",
   nameThai: "กาบกระบือ",
   tagline: "Discover KabKraBue",
-  taglineThai: "หมู่บ้านที่มีเรื่องราวของตัวเอง",
+  taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
   shortDescription:
     "A village of rice terraces, river mist, and generations of stories — KabKraBue, told through its people, nature, and culture.",
   shortDescriptionThai:
-    "หมู่บ้านแห่งท้องนา เสียงบอกเล่าภาษาส่วย และเรื่องราวของผู้คนหลายชั่วอายุคน",
+    "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
   url: "https://kab-kra-bue.vercel.app",
   github: "https://github.com/Santipap250/KabKraBue",
   locale: "th-TH",
