@@ -1,3 +1,5 @@
+<!-- Trigger Vercel deployment after latest media update -->
+
 # KabKraBue — Village Website
 
 A premium, cinematic, mobile-first showcase website for the village of
