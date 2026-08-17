@@ -1,7 +1,7 @@
 # KabKraBue — Village Website
 
 A premium, cinematic, mobile-first showcase website for the village of
-**KabKraBue** (หมู่บ้านกาบกระบือ) — built with Next.js, TypeScript, and Tailwind CSS.
+**KabKraBue** (กับกระบือ) — built with Next.js, TypeScript, and Tailwind CSS.
 
 Live target: `https://Santipap250.github.io/KabKraBue`
 
