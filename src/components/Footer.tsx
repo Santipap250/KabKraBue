@@ -1,13 +1,18 @@
 import { Facebook, Instagram, Youtube, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
+import { hasContent } from "@/lib/content";
 
 const socialLinks = [
   { key: "facebook", label: "Facebook", href: siteConfig.social.facebook, Icon: Facebook },
   { key: "instagram", label: "Instagram", href: siteConfig.social.instagram, Icon: Instagram },
   { key: "youtube", label: "YouTube", href: siteConfig.social.youtube, Icon: Youtube },
   { key: "line", label: "Line", href: siteConfig.social.line, Icon: MessageCircle },
-];
+].filter((link) => hasContent(link.href));
+
+const contactLines = [siteConfig.contact.address, siteConfig.contact.phone, siteConfig.contact.email].filter(
+  hasContent
+);
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -42,25 +47,29 @@ export function Footer() {
 
           <div>
             <h3 className="eyebrow text-mist/70">Visit</h3>
-            <ul className="mt-4 space-y-2 text-sm text-rice/70">
-              <li>{siteConfig.contact.address}</li>
-              <li>{siteConfig.contact.phone}</li>
-              <li>{siteConfig.contact.email}</li>
-            </ul>
-            <div className="mt-5 flex gap-3">
-              {socialLinks.map(({ key, label, href, Icon }) => (
-                <a
-                  key={key}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="flex h-10 w-10 items-center justify-center border border-rice/20 transition-colors hover:border-rice/60"
-                >
-                  <Icon className="h-4 w-4" strokeWidth={1.5} />
-                </a>
-              ))}
-            </div>
+            {contactLines.length > 0 && (
+              <ul className="mt-4 space-y-2 text-sm text-rice/70">
+                {contactLines.map((line) => (
+                  <li key={line}>{line}</li>
+                ))}
+              </ul>
+            )}
+            {socialLinks.length > 0 && (
+              <div className="mt-5 flex gap-3">
+                {socialLinks.map(({ key, label, href, Icon }) => (
+                  <a
+                    key={key}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                    className="flex h-10 w-10 items-center justify-center border border-rice/20 transition-colors hover:border-rice/60"
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={1.5} />
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

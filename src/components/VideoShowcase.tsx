@@ -6,6 +6,7 @@ import { Play, X } from "lucide-react";
 import { videos, type VillageVideo } from "@/data/videos";
 import { MediaFrame } from "@/components/MediaFrame";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import { hasContent } from "@/lib/content";
 
 function embedSrc(video: VillageVideo): string {
   if (video.provider === "youtube") {
@@ -18,13 +19,16 @@ function embedSrc(video: VillageVideo): string {
 }
 
 export function VideoShowcase() {
+  const playableVideos = videos.filter((video) => hasContent(video.source));
   const [active, setActive] = useState<VillageVideo | null>(null);
   useLockBodyScroll(active !== null);
+
+  if (playableVideos.length === 0) return null;
 
   return (
     <div>
       <div className="grid gap-6 sm:grid-cols-2">
-        {videos.map((video) => (
+        {playableVideos.map((video) => (
           <button
             key={video.id}
             type="button"
