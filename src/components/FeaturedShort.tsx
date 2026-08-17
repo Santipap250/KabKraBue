@@ -32,7 +32,7 @@ export function FeaturedShort() {
             </h2>
 
             <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">
-              กาบกระบือผ่านภาพเคลื่อนไหว
+              ภาพเคลื่อนไหวหมู่บ้านกาบกระบือ
             </p>
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
