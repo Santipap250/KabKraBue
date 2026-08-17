@@ -2,20 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { cn } from "@/lib/cn";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
-// Collapsed height (px) before "อ่านเพิ่มเติม" is needed — tuned to the
-// .story-body type scale in globals.css, roughly the intro line plus
-// the first paragraph on mobile.
 const COLLAPSED_HEIGHT = 210;
-// Below this character count the text already fits within
-// COLLAPSED_HEIGHT, so no toggle is rendered at all.
 const COLLAPSE_THRESHOLD = 260;
 
 interface StorySectionProps {
@@ -23,7 +17,7 @@ interface StorySectionProps {
   reverse?: boolean;
 }
 
-function StoryMedia({ data }: { data: StorySectionData }) {
+function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: boolean }) {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
 
@@ -38,11 +32,22 @@ function StoryMedia({ data }: { data: StorySectionData }) {
   const showVideo = Boolean(data.videoId) && !reduceMotion && !videoFailed;
 
   if (!showVideo) {
-    return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />;
+    return (
+      <div className={cn("overflow-hidden", isNature ? "aspect-[4/5] rounded-[2rem]" : "")}> 
+        <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />
+      </div>
+    );
   }
 
   return (
-    <div className="relative aspect-[4/5] overflow-hidden bg-mist">
+    <div
+      className={cn(
+        "relative overflow-hidden bg-mist",
+        isNature
+          ? "aspect-[9/16] rounded-[2rem] shadow-2xl shadow-ink/15 ring-1 ring-ink/10 sm:aspect-[4/5]"
+          : "aspect-[4/5]"
+      )}
+    >
       <video
         className="h-full w-full object-cover"
         autoPlay
@@ -55,11 +60,35 @@ function StoryMedia({ data }: { data: StorySectionData }) {
       >
         <source src={`${basePath}/videos/${data.videoId}`} type="video/mp4" />
       </video>
+
+      {isNature && (
+        <>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10" />
+          <div className="absolute left-5 top-5 rounded-full border border-rice/35 bg-ink/20 px-3 py-1.5 backdrop-blur-md">
+            <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-rice/90">
+              KabKraBue / Nature
+            </span>
+          </div>
+          <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/60">
+                A moving landscape
+              </p>
+              <p className="mt-1 font-body text-sm text-rice/90">
+                ท้องฟ้า ผืนนา และจังหวะของฤดูกาล
+              </p>
+            </div>
+            <span className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md" aria-hidden="true">
+              <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 }
 
-function StoryBody({ id, body }: { id: string; body: string }) {
+function StoryBody({ id, body, isNature }: { id: string; body: string; isNature: boolean }) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = body.split("\n\n");
   const isLong = body.length > COLLAPSE_THRESHOLD;
@@ -71,7 +100,10 @@ function StoryBody({ id, body }: { id: string; body: string }) {
         initial={false}
         animate={{ height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-        className="story-body relative overflow-hidden"
+        className={cn(
+          "story-body relative overflow-hidden",
+          isNature && "story-body-nature"
+        )}
       >
         {paragraphs.map((paragraph, index) => (
           <p key={`${id}-${index}`}>{paragraph}</p>
@@ -79,7 +111,10 @@ function StoryBody({ id, body }: { id: string; body: string }) {
         {isLong && !expanded && (
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent"
+            className={cn(
+              "pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t to-transparent",
+              isNature ? "from-rice" : "from-rice"
+            )}
           />
         )}
       </motion.div>
@@ -104,13 +139,24 @@ function StoryBody({ id, body }: { id: string; body: string }) {
 }
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
+  const isNature = data.id === "nature";
+
   return (
-    <section id={data.id} className="border-t border-border">
-      <div className="container-content py-20 sm:py-28">
+    <section id={data.id} className={cn("relative overflow-hidden border-t border-border", isNature && "nature-section")}> 
+      <div className={cn("container-content py-20 sm:py-28", isNature && "py-24 sm:py-32")}> 
+        {isNature && (
+          <div className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden" aria-hidden="true">
+            <span className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
+              04
+            </span>
+          </div>
+        )}
+
         <div
           className={cn(
-            "grid items-center gap-12 lg:grid-cols-2 lg:gap-20",
-            reverse && "lg:[&>*:first-child]:order-2"
+            "relative grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16",
+            reverse && "lg:[&>*:first-child]:order-2",
+            isNature && "lg:items-stretch"
           )}
         >
           <motion.div
@@ -118,13 +164,14 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className={cn(isNature && "flex flex-col justify-center")}
           >
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-clay">{data.index}</span>
               <span className="eyebrow">{data.eyebrow}</span>
             </div>
 
-            <h2 className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">
+            <h2 className={cn("heading-display mt-3 max-w-2xl text-4xl sm:text-5xl", isNature ? "text-ink" : "text-ink")}> 
               {data.title}
             </h2>
 
@@ -132,17 +179,21 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               {data.titleThai}
             </p>
 
-            <StoryBody id={data.id} body={data.body} />
+            {isNature && (
+              <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />
+            )}
+
+            <StoryBody id={data.id} body={data.body} isNature={isNature} />
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 0.97, y: 20 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="group"
+            className={cn("group", isNature && "lg:translate-y-2")}
           >
-            <StoryMedia data={data} />
+            <StoryMedia data={data} isNature={isNature} />
           </motion.div>
         </div>
       </div>
