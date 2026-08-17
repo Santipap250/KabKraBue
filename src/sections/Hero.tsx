@@ -69,7 +69,7 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mt-6 max-w-xl text-lg leading-relaxed text-rice/85"
         >
-          {siteConfig.shortDescriptionThai}
+          {siteConfig.heroSubtitleThai}
         </motion.p>
 
         <motion.div
