@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -160,39 +160,27 @@ function StoryBody({ id, body }: { id: string; body: string }) {
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   const isNature = data.id === "nature";
   const reduceMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
 
-  // Scroll-linked parallax: scrollYProgress runs 0 → 1 as this section
-  // travels through the viewport (from "just entering the bottom" to
-  // "just leaving the top"), so the text and media layers keep drifting
-  // continuously with the scroll instead of only animating in once.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
+  const revealInitial = reduceMotion
+    ? { opacity: 1 }
+    : { opacity: 0, y: 22 };
 
-  const textY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [56, -56]);
-  const textOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.22, 0.82, 1],
-    reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0.55]
-  );
+  const revealAnimate = { opacity: 1, y: 0 };
+  const revealTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.65, ease: [0.16, 1, 0.3, 1] };
 
-  const mediaY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [80, -80]);
-  const mediaOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.85, 1],
-    reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0.6]
-  );
-  const mediaScale = useTransform(
-    scrollYProgress,
-    [0, 0.25, 1],
-    reduceMotion ? [1, 1, 1] : [0.96, 1, 1.03]
-  );
+  const mediaInitial = reduceMotion
+    ? { opacity: 1 }
+    : { opacity: 0, y: 18, scale: isNature ? 0.985 : 0.99 };
+
+  const mediaAnimate = { opacity: 1, y: 0, scale: 1 };
+  const mediaTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] };
 
   return (
     <section
-      ref={sectionRef}
       id={data.id}
       className="relative overflow-hidden border-t border-border"
     >
@@ -221,7 +209,10 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
           )}
         >
           <motion.div
-            style={{ y: textY, opacity: textOpacity }}
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.18, margin: "-8% 0px" }}
+            transition={revealTransition}
             className={cn(isNature && "flex flex-col justify-center")}
           >
             <div className="flex items-baseline gap-3">
@@ -245,7 +236,10 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
           </motion.div>
 
           <motion.div
-            style={{ y: mediaY, opacity: mediaOpacity, scale: mediaScale }}
+            initial={mediaInitial}
+            whileInView={mediaAnimate}
+            viewport={{ once: true, amount: 0.16, margin: "-8% 0px" }}
+            transition={mediaTransition}
             className={cn("group", isNature && "lg:translate-y-2")}
           >
             <StoryMedia
