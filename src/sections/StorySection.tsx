@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 import { motion } from "framer-motion";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -14,10 +12,6 @@ interface StorySectionProps {
 }
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
-  const paragraphs = data.body.split("\n\n").filter(Boolean);
-  const [expanded, setExpanded] = useState(false);
-  const hasMore = paragraphs.length > 1;
-
   return (
     <section id={data.id} className="border-t border-border">
       <div className="container-content py-20 sm:py-28">
@@ -46,37 +40,11 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               {data.titleThai}
             </p>
 
-            <div id={`${data.id}-story-body`} className={cn("story-body mt-7 max-w-xl", expanded && "is-expanded")}>
-              {paragraphs.map((paragraph, index) => {
-                const hidden = !expanded && index > 0;
-                return (
-                  <p
-                    key={`${data.id}-${index}`}
-                    className={cn(hidden && "story-paragraph-hidden")}
-                    aria-hidden={hidden ? true : undefined}
-                  >
-                    {paragraph}
-                  </p>
-                );
-              })}
+            <div className="story-body mt-7 max-w-xl">
+              {data.body.split("\n\n").map((paragraph, index) => (
+                <p key={`${data.id}-${index}`}>{paragraph}</p>
+              ))}
             </div>
-
-            {hasMore && (
-              <button
-                type="button"
-                className="story-readmore mt-6 inline-flex items-center gap-2"
-                onClick={() => setExpanded((value) => !value)}
-                aria-expanded={expanded}
-                aria-controls={`${data.id}-story-body`}
-              >
-                <span>{expanded ? "ย่อเรื่องราว" : "อ่านเรื่องราวต่อ"}</span>
-                <ChevronDown
-                  className={cn("h-4 w-4 transition-transform duration-300", expanded && "rotate-180")}
-                  strokeWidth={1.5}
-                  aria-hidden="true"
-                />
-              </button>
-            )}
           </motion.div>
 
           <motion.div
