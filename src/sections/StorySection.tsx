@@ -1,14 +1,53 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { cn } from "@/lib/cn";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 interface StorySectionProps {
   data: StorySectionData;
   reverse?: boolean;
+}
+
+function StoryMedia({ data }: { data: StorySectionData }) {
+  const [reduceMotion, setReduceMotion] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  const showVideo = Boolean(data.videoId) && !reduceMotion && !videoFailed;
+
+  if (!showVideo) {
+    return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />;
+  }
+
+  return (
+    <div className="relative aspect-[4/5] overflow-hidden bg-mist">
+      <video
+        className="h-full w-full object-cover"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-label={data.imageAlt}
+        onError={() => setVideoFailed(true)}
+      >
+        <source src={`${basePath}/videos/${data.videoId}`} type="video/mp4" />
+      </video>
+    </div>
+  );
 }
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
@@ -54,11 +93,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="group"
           >
-            <MediaFrame
-              src={`/images/${data.imageId}`}
-              alt={data.imageAlt}
-              aspect="aspect-[4/5]"
-            />
+            <StoryMedia data={data} />
           </motion.div>
         </div>
       </div>
