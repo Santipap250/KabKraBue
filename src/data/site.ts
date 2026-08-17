@@ -6,6 +6,9 @@ export const siteConfig = {
   nameThai: "กาบกระบือ",
   tagline: "Discover KabKraBue",
   taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
+  // Shown only in the Hero section, under the headline — written to read
+  // as one flowing, inviting line rather than a list of nouns.
+  heroSubtitleThai: "หมู่บ้านริมทุ่งข้าว ที่ยังมีเรื่องราวให้ค้นพบในทุกย่างก้าว",
   shortDescription:
     "A village of rice terraces, river mist, and generations of stories — KabKraBue, told through its people, nature, and culture.",
   shortDescriptionThai:
