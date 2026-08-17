@@ -1,0 +1,16 @@
+{
+  "name": "KabKraBue",
+  "short_name": "KabKraBue",
+  "description": "Discover KabKraBue — a village of rice terraces, river mist, and generations of stories.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F5F1E2",
+  "theme_color": "#3F5A3D",
+  "icons": [
+    {
+      "src": "/favicon/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
