@@ -11,7 +11,11 @@ import { Hero } from "@/sections/Hero";
 import { FeaturedShort } from "@/components/FeaturedShort";
 import { StorySection } from "@/sections/StorySection";
 import { storySections } from "@/data/village";
+import { videos } from "@/data/videos";
 import { siteConfig } from "@/data/site";
+import { hasContent } from "@/lib/content";
+
+const hasPlayableVideos = videos.some((video) => hasContent(video.source));
 
 export default function HomePage() {
   return (
@@ -35,16 +39,20 @@ export default function HomePage() {
           </div>
         </section>
 
-        <TerraceDivider className="opacity-70" />
+        {hasPlayableVideos && (
+          <>
+            <TerraceDivider className="opacity-70" />
 
-        <section id="video" className="border-t border-border bg-mist/40">
-          <div className="container-content py-20 sm:py-28">
-            <SectionHeading index="08" eyebrow="Video" title="See it in motion" titleThai="ภาพเคลื่อนไหวของหมู่บ้าน" />
-            <div className="mt-12">
-              <VideoShowcase />
-            </div>
-          </div>
-        </section>
+            <section id="video" className="border-t border-border bg-mist/40">
+              <div className="container-content py-20 sm:py-28">
+                <SectionHeading index="08" eyebrow="Video" title="See it in motion" titleThai="ภาพเคลื่อนไหวของหมู่บ้าน" />
+                <div className="mt-12">
+                  <VideoShowcase />
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         <TerraceDivider className="opacity-70" />
 
@@ -63,9 +71,11 @@ export default function HomePage() {
             <div className="mt-12">
               <MapSection />
             </div>
-            <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/60">
-              {siteConfig.contact.address}
-            </p>
+            {hasContent(siteConfig.contact.address) && (
+              <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/60">
+                {siteConfig.contact.address}
+              </p>
+            )}
           </div>
         </section>
       </main>
