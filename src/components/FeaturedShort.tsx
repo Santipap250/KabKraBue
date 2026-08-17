@@ -14,6 +14,12 @@ const SHORTS = [
     title: "KabKraBue — Featured Short 02",
     label: "YouTube Short 02",
   },
+  {
+    id: "rTvHhPfmsf8",
+    pageUrl: "https://m.youtube.com/shorts/rTvHhPfmsf8",
+    title: "KabKraBue — Featured Short 03",
+    label: "YouTube Short 03",
+  },
 ];
 
 const SHORT_CHANNEL_URL = "https://m.youtube.com/@obixconfig/shorts";
@@ -138,7 +144,7 @@ export function FeaturedShort() {
                 className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/45"
                 aria-hidden="true"
               >
-                01 / 02
+                01 / {String(SHORTS.length).padStart(2, "0")}
               </span>
             </div>
           </div>
