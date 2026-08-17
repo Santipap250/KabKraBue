@@ -1,5 +1,4 @@
 import { ArrowUpRight, Play, Youtube } from "lucide-react";
-import { SectionHeading } from "@/components/SectionHeading";
 
 const SHORT_ID = "3R3wIqhAzdQ";
 const SHORT_PAGE_URL =
@@ -13,7 +12,7 @@ export function FeaturedShort() {
     <section
       id="short"
       className="relative overflow-hidden border-t border-border bg-ink text-rice"
-      aria-labelledby="short-heading"
+      aria-labelledby="featured-short-heading"
     >
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-paddy/20 blur-3xl" />
@@ -21,30 +20,22 @@ export function FeaturedShort() {
       </div>
 
       <div className="container-content relative py-16 sm:py-20 lg:py-24">
-        <div className="mb-10 flex items-end justify-between gap-6 sm:mb-12">
-          <SectionHeading
-            index="06"
-            eyebrow="Featured Short"
-            title="KabKraBue in motion"
-            titleThai="กาบกระบือผ่านภาพเคลื่อนไหว"
-          />
-
-          <a
-            href={SHORT_CHANNEL_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden items-center gap-2 border border-rice/15 px-4 py-2.5 font-mono text-[10px] uppercase tracking-[0.18em] text-rice/70 transition-colors hover:border-gold/60 hover:text-gold sm:inline-flex"
-            aria-label="ดู Shorts ทั้งหมดของช่อง Obixconfig"
-          >
-            <Youtube className="h-4 w-4" strokeWidth={1.5} />
-            More Shorts
-            <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
-          </a>
-        </div>
-
         <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-16">
           <div className="max-w-2xl">
-            <p className="text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
+            <div className="mb-5 h-px w-14 bg-gold/70" aria-hidden="true" />
+
+            <h2
+              id="featured-short-heading"
+              className="heading-display text-4xl text-rice sm:text-5xl lg:text-6xl"
+            >
+              KabKraBue in motion
+            </h2>
+
+            <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">
+              กาบกระบือผ่านภาพเคลื่อนไหว
+            </p>
+
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
               ชมบรรยากาศของหมู่บ้านกาบกระบือผ่านวิดีโอสั้น
               แล้วค่อยออกไปค้นพบภาพ เรื่องราว และวิถีชีวิตอีกมากมายภายในเว็บไซต์
             </p>
@@ -64,10 +55,11 @@ export function FeaturedShort() {
                 href={SHORT_CHANNEL_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 border border-rice/20 px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-rice/80 transition-colors hover:border-rice/45 hover:text-rice sm:hidden"
+                className="inline-flex items-center gap-2 border border-rice/20 px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-rice/80 transition-colors hover:border-rice/45 hover:text-rice"
               >
                 <Youtube className="h-4 w-4" strokeWidth={1.5} />
                 More Shorts
+                <ArrowUpRight className="h-3.5 w-3.5" strokeWidth={1.5} />
               </a>
             </div>
 
