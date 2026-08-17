@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   name: "KabKraBue",
-  nameThai: "กาบกระบือ",
+  nameThai: "หมู่บ้านกาบกระบือ",
   tagline: "Discover KabKraBue",
   taglineThai: "หมู่บ้านที่มีเรื่องราวของตัวเอง",
   shortDescription:
