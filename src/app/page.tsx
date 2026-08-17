@@ -32,7 +32,7 @@ export default function HomePage() {
 
         <section id="gallery" className="border-t border-border bg-rice">
           <div className="container-content py-20 sm:py-28">
-            <SectionHeading index="07" eyebrow="Gallery" title="Every corner of KabKraBue" titleThai="ทุกมุมของกับกระบือ" />
+            <SectionHeading index="07" eyebrow="Gallery" title="Every corner of KabKraBue" titleThai="ทุกมุมของหมู่บ้านกาบกระบือ" />
             <div className="mt-12">
               <ImageGallery />
             </div>
