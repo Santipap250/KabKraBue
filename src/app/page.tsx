@@ -8,6 +8,7 @@ import { VideoShowcase } from "@/components/VideoShowcase";
 import { PlaceGrid } from "@/components/PlaceGrid";
 import { MapSection } from "@/components/MapSection";
 import { Hero } from "@/sections/Hero";
+import { FeaturedShort } from "@/components/FeaturedShort";
 import { StorySection } from "@/sections/StorySection";
 import { storySections } from "@/data/village";
 import { siteConfig } from "@/data/site";
@@ -18,6 +19,8 @@ export default function HomePage() {
       <Header />
       <main id="main">
         <Hero />
+
+        <FeaturedShort />
 
         {storySections.map((section, i) => (
           <StorySection key={section.id} data={section} reverse={i % 2 === 1} />
