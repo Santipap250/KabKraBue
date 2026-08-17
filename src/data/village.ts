@@ -57,6 +57,7 @@ export const storySections: StorySection[] = [
 เสียงหัวเราะระหว่างเก็บเกี่ยว การแบ่งปันอาหารในงานบุญ หรือแค่การนั่งพูดคุยกันหน้าบ้านยามเย็น คือสิ่งเล็ก ๆ ที่ประกอบกันเป็นตัวตนของกาบกระบือ และเป็นสิ่งที่ภาพถ่ายเพียงภาพเดียวไม่มีวันเล่าได้หมด`,
     imageAlt: "Portrait of a KabKraBue villager",
     imageId: "people-01.jpg",
+    videoId: "people-section.mp4",
   },
   {
     id: "nature",
