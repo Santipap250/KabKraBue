@@ -1,7 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { ChevronDown, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -17,24 +22,26 @@ interface StorySectionProps {
   reverse?: boolean;
 }
 
-function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: boolean }) {
-  const [reduceMotion, setReduceMotion] = useState(false);
+function StoryMedia({
+  data,
+  isNature,
+  reduceMotion,
+}: {
+  data: StorySectionData;
+  isNature: boolean;
+  reduceMotion: boolean;
+}) {
   const [videoFailed, setVideoFailed] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setReduceMotion(mediaQuery.matches);
-    update();
-    mediaQuery.addEventListener("change", update);
-    return () => mediaQuery.removeEventListener("change", update);
-  }, []);
-
   const showVideo = Boolean(data.videoId) && !reduceMotion && !videoFailed;
 
   if (!showVideo) {
     return (
-      <div className={cn("overflow-hidden", isNature ? "aspect-[4/5] rounded-[2rem]" : "")}> 
-        <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />
+      <div className={cn("overflow-hidden", isNature ? "aspect-[4/5] rounded-[2rem]" : "")}>
+        <MediaFrame
+          src={`/images/${data.imageId}`}
+          alt={data.imageAlt}
+          aspect="aspect-[4/5]"
+        />
       </div>
     );
   }
@@ -78,7 +85,10 @@ function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: bool
                 ท้องฟ้า ผืนนา และจังหวะของฤดูกาล
               </p>
             </div>
-            <span className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md" aria-hidden="true">
+            <span
+              className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md"
+              aria-hidden="true"
+            >
               <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
             </span>
           </div>
@@ -88,7 +98,15 @@ function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: bool
   );
 }
 
-function StoryBody({ id, body, isNature }: { id: string; body: string; isNature: boolean }) {
+function StoryBody({
+  id,
+  body,
+  isNature,
+}: {
+  id: string;
+  body: string;
+  isNature: boolean;
+}) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = body.split("\n\n");
   const isLong = body.length > COLLAPSE_THRESHOLD;
@@ -111,10 +129,7 @@ function StoryBody({ id, body, isNature }: { id: string; body: string; isNature:
         {isLong && !expanded && (
           <div
             aria-hidden="true"
-            className={cn(
-              "pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t to-transparent",
-              isNature ? "from-rice" : "from-rice"
-            )}
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent"
           />
         )}
       </motion.div>
@@ -129,7 +144,10 @@ function StoryBody({ id, body, isNature }: { id: string; body: string; isNature:
         >
           {expanded ? "ย่อเรื่องราว" : "อ่านเพิ่มเติม"}
           <ChevronDown
-            className={cn("h-3.5 w-3.5 transition-transform duration-300", expanded && "rotate-180")}
+            className={cn(
+              "h-3.5 w-3.5 transition-transform duration-300",
+              expanded && "rotate-180"
+            )}
             strokeWidth={1.5}
           />
         </button>
@@ -140,15 +158,54 @@ function StoryBody({ id, body, isNature }: { id: string; body: string; isNature:
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   const isNature = data.id === "nature";
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const prefersReducedMotion = useReducedMotion();
+  const [browserReducedMotion, setBrowserReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setBrowserReducedMotion(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  const reduceMotion = Boolean(prefersReducedMotion || browserReducedMotion);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [28, 0, -28]);
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.16, 0.82, 1], [0.55, 1, 1, 0.55]);
+  const mediaY = useTransform(scrollYProgress, [0, 0.5, 1], [42, 0, -42]);
+  const mediaScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.965, 1, 0.985]);
+  const natureScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1.02]);
+  const watermarkY = useTransform(scrollYProgress, [0, 1], [80, -80]);
 
   return (
-    <section id={data.id} className={cn("relative overflow-hidden border-t border-border", isNature && "nature-section")}> 
-      <div className={cn("container-content py-20 sm:py-28", isNature && "py-24 sm:py-32")}> 
+    <section
+      ref={sectionRef}
+      id={data.id}
+      className={cn(
+        "relative overflow-hidden border-t border-border",
+        isNature && "nature-section"
+      )}
+    >
+      <div
+        className={cn(
+          "container-content py-20 sm:py-28",
+          isNature && "py-24 sm:py-32"
+        )}
+      >
         {isNature && (
           <div className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden" aria-hidden="true">
-            <span className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
+            <motion.span
+              style={{ y: reduceMotion ? 0 : watermarkY }}
+              className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]"
+            >
               04
-            </span>
+            </motion.span>
           </div>
         )}
 
@@ -164,14 +221,21 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={cn(isNature && "flex flex-col justify-center")}
+            style={{
+              y: reduceMotion ? 0 : contentY,
+              opacity: reduceMotion ? 1 : contentOpacity,
+            }}
+            className={cn(
+              isNature && "flex flex-col justify-center",
+              "will-change-transform"
+            )}
           >
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-clay">{data.index}</span>
               <span className="eyebrow">{data.eyebrow}</span>
             </div>
 
-            <h2 className={cn("heading-display mt-3 max-w-2xl text-4xl sm:text-5xl", isNature ? "text-ink" : "text-ink")}> 
+            <h2 className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">
               {data.title}
             </h2>
 
@@ -179,9 +243,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               {data.titleThai}
             </p>
 
-            {isNature && (
-              <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />
-            )}
+            {isNature && <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />}
 
             <StoryBody id={data.id} body={data.body} isNature={isNature} />
           </motion.div>
@@ -191,13 +253,30 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className={cn("group", isNature && "lg:translate-y-2")}
+            style={{
+              y: reduceMotion ? 0 : mediaY,
+              scale: reduceMotion ? 1 : isNature ? natureScale : mediaScale,
+            }}
+            className={cn("group will-change-transform", isNature && "lg:translate-y-2")}
           >
-            <StoryMedia data={data} isNature={isNature} />
+            <StoryMedia
+              data={data}
+              isNature={isNature}
+              reduceMotion={reduceMotion}
+            />
           </motion.div>
         </div>
       </div>
-      <TerraceDivider className="opacity-70" />
+
+      <motion.div
+        initial={{ opacity: 0.2, scaleX: 0.86 }}
+        whileInView={{ opacity: 0.7, scaleX: 1 }}
+        viewport={{ once: true, margin: "-20px" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="origin-center"
+      >
+        <TerraceDivider className="opacity-70" />
+      </motion.div>
     </section>
   );
 }
