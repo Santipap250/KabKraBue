@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -36,7 +31,12 @@ function StoryMedia({
 
   if (!showVideo) {
     return (
-      <div className={cn("overflow-hidden", isNature ? "aspect-[4/5] rounded-[2rem]" : "")}>
+      <div
+        className={cn(
+          "overflow-hidden",
+          isNature ? "aspect-[4/5] rounded-[2rem]" : "aspect-[4/5]"
+        )}
+      >
         <MediaFrame
           src={`/images/${data.imageId}`}
           alt={data.imageAlt}
@@ -65,12 +65,18 @@ function StoryMedia({
         aria-label={data.imageAlt}
         onError={() => setVideoFailed(true)}
       >
-        <source src={`${basePath}/videos/${data.videoId}`} type="video/mp4" />
+        <source
+          src={`${basePath}/videos/${data.videoId}`}
+          type="video/mp4"
+        />
       </video>
 
       {isNature && (
         <>
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10" />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10"
+            aria-hidden="true"
+          />
           <div className="absolute left-5 top-5 rounded-full border border-rice/35 bg-ink/20 px-3 py-1.5 backdrop-blur-md">
             <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-rice/90">
               KabKraBue / Nature
@@ -116,8 +122,14 @@ function StoryBody({
       <motion.div
         id={`${id}-story-body`}
         initial={false}
-        animate={{ height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT }}
-        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        animate={{
+          height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT,
+        }}
+        transition={
+          useReducedMotion()
+            ? { duration: 0 }
+            : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
+        }
         className={cn(
           "story-body relative overflow-hidden",
           isNature && "story-body-nature"
@@ -158,34 +170,28 @@ function StoryBody({
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   const isNature = data.id === "nature";
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const prefersReducedMotion = useReducedMotion();
-  const [browserReducedMotion, setBrowserReducedMotion] = useState(false);
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setBrowserReducedMotion(mediaQuery.matches);
-    update();
-    mediaQuery.addEventListener("change", update);
-    return () => mediaQuery.removeEventListener("change", update);
-  }, []);
+  const revealInitial = reduceMotion
+    ? { opacity: 1 }
+    : { opacity: 0, y: 22 };
 
-  const reduceMotion = Boolean(prefersReducedMotion || browserReducedMotion);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
+  const revealAnimate = { opacity: 1, y: 0 };
+  const revealTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.65, ease: [0.16, 1, 0.3, 1] };
 
-  const contentY = useTransform(scrollYProgress, [0, 0.5, 1], [28, 0, -28]);
-  const contentOpacity = useTransform(scrollYProgress, [0, 0.16, 0.82, 1], [0.55, 1, 1, 0.55]);
-  const mediaY = useTransform(scrollYProgress, [0, 0.5, 1], [42, 0, -42]);
-  const mediaScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.965, 1, 0.985]);
-  const natureScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.95, 1, 1.02]);
-  const watermarkY = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const mediaInitial = reduceMotion
+    ? { opacity: 1 }
+    : { opacity: 0, y: 18, scale: isNature ? 0.985 : 0.99 };
+
+  const mediaAnimate = { opacity: 1, y: 0, scale: 1 };
+  const mediaTransition = reduceMotion
+    ? { duration: 0 }
+    : { duration: 0.75, delay: 0.06, ease: [0.16, 1, 0.3, 1] };
 
   return (
     <section
-      ref={sectionRef}
       id={data.id}
       className={cn(
         "relative overflow-hidden border-t border-border",
@@ -199,13 +205,13 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
         )}
       >
         {isNature && (
-          <div className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden" aria-hidden="true">
-            <motion.span
-              style={{ y: reduceMotion ? 0 : watermarkY }}
-              className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]"
-            >
+          <div
+            className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden"
+            aria-hidden="true"
+          >
+            <span className="nature-watermark absolute right-6 -mt-8 font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
               04
-            </motion.span>
+            </span>
           </div>
         )}
 
@@ -217,18 +223,11 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
           )}
         >
           <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              y: reduceMotion ? 0 : contentY,
-              opacity: reduceMotion ? 1 : contentOpacity,
-            }}
-            className={cn(
-              isNature && "flex flex-col justify-center",
-              "will-change-transform"
-            )}
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.18, margin: "-8% 0px" }}
+            transition={revealTransition}
+            className={cn(isNature && "flex flex-col justify-center")}
           >
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-clay">{data.index}</span>
@@ -243,40 +242,30 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
               {data.titleThai}
             </p>
 
-            {isNature && <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />}
+            {isNature && (
+              <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />
+            )}
 
             <StoryBody id={data.id} body={data.body} isNature={isNature} />
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, scale: 0.97, y: 20 }}
-            whileInView={{ opacity: 1, scale: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            style={{
-              y: reduceMotion ? 0 : mediaY,
-              scale: reduceMotion ? 1 : isNature ? natureScale : mediaScale,
-            }}
-            className={cn("group will-change-transform", isNature && "lg:translate-y-2")}
+            initial={mediaInitial}
+            whileInView={mediaAnimate}
+            viewport={{ once: true, amount: 0.16, margin: "-8% 0px" }}
+            transition={mediaTransition}
+            className={cn("group", isNature && "lg:translate-y-2")}
           >
             <StoryMedia
               data={data}
               isNature={isNature}
-              reduceMotion={reduceMotion}
+              reduceMotion={Boolean(reduceMotion)}
             />
           </motion.div>
         </div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0.2, scaleX: 0.86 }}
-        whileInView={{ opacity: 0.7, scaleX: 1 }}
-        viewport={{ once: true, margin: "-20px" }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="origin-center"
-      >
-        <TerraceDivider className="opacity-70" />
-      </motion.div>
+      <TerraceDivider className="opacity-70" />
     </section>
   );
 }
