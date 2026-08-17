@@ -1,21 +1,45 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { siteConfig } from "@/data/site";
-import { MediaFrame } from "@/components/MediaFrame";
+
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const videoSrc = `${basePath}/videos/village-hero.webm`;
 
 export function Hero() {
+  const [reduceMotion, setReduceMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduceMotion(mediaQuery.matches);
+    update();
+    mediaQuery.addEventListener("change", update);
+    return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
   return (
     <section id="top" className="relative flex h-[100svh] min-h-[560px] w-full items-end overflow-hidden bg-ink">
       <div className="absolute inset-0">
-        <MediaFrame
-          src="/images/village-hero.jpg"
-          alt="Panoramic view of KabKraBue village at golden hour"
-          aspect="aspect-auto h-full"
-          className="h-full w-full"
-          priority
-        />
+        {reduceMotion ? (
+          <div
+            className="h-full w-full bg-[radial-gradient(circle_at_50%_25%,rgba(194,208,187,0.8),rgba(31,35,31,0.95)_70%)]"
+            aria-hidden="true"
+          />
+        ) : (
+          <video
+            className="h-full w-full object-cover object-center"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+          >
+            <source src={videoSrc} type="video/webm" />
+          </video>
+        )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" />
         <div className="grain-overlay absolute inset-0" />
       </div>
