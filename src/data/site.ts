@@ -22,7 +22,8 @@ export const siteConfig = {
   social: {
     facebook: "https://www.facebook.com/santipab.songkarak",
     instagram: "[TODO: ลิงก์ Instagram]",
-    youtube: "[TODO: ลิงก์ YouTube]",
+    youtube: "https://www.youtube.com/@obixconfig",
+    tiktok: "https://www.tiktok.com/@tuizfpv",
     line: "[TODO: ลิงก์ Line Official Account]",
   },
   nav: [
