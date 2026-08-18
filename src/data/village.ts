@@ -150,6 +150,7 @@ export const storySections: StorySection[] = [
 
 บางทีเสน่ห์ของกาบกระบือจึงไม่ได้อยู่ที่การมีอะไรให้มากที่สุด แต่อยู่ที่การมีพื้นที่ให้ผู้คนได้ใช้ชีวิตอย่างมีความหมายในแบบของตัวเอง`,
     imageAlt: "Everyday lifestyle and rural life in KabKraBue",
-    imageId: "lifestyle-01.jpg",
-  },
+  imageId: "lifestyle-01.jpg",
+  videoId: "lifestyle-section.mp4",
+},
 ];
