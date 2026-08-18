@@ -15,8 +15,8 @@ const SHORTS = [
     label: "YouTube Short 02",
   },
   {
-    id: "rTvHhPfmsf8",
-    pageUrl: "https://m.youtube.com/shorts/rTvHhPfmsf8",
+    id: "3Q0pny5LyVU",
+    pageUrl: "https://m.youtube.com/shorts/3Q0pny5LyVU",
     title: "KabKraBue — Featured Short 03",
     label: "YouTube Short 03",
   },
