@@ -112,7 +112,9 @@ export const storySections: StorySection[] = [
     {
       imageId: "culture-03.webp",
       imageAlt: "ภาพมุมสูงของแหล่งน้ำและพื้นที่รอบชุมชนกาบกระบือ",
-  },
+    },
+  ],
+},
   {
     id: "lifestyle",
     index: "06",
