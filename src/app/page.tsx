@@ -5,8 +5,8 @@ import { TerraceDivider } from "@/components/TerraceDivider";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ImageGallery } from "@/components/ImageGallery";
 import { VideoShowcase } from "@/components/VideoShowcase";
-import { PlaceGrid } from "@/components/PlaceGrid";
 import { MapSection } from "@/components/MapSection";
+import { ExploreShowcase } from "@/components/ExploreShowcase";
 import { Hero } from "@/sections/Hero";
 import { FeaturedShort } from "@/components/FeaturedShort";
 import { StorySection } from "@/sections/StorySection";
@@ -56,11 +56,18 @@ export default function HomePage() {
 
         <TerraceDivider className="opacity-70" />
 
-        <section id="explore" className="border-t border-border">
+        <section id="explore" className="border-t border-border bg-rice">
           <div className="container-content py-20 sm:py-28">
-            <SectionHeading index="09" eyebrow="Explore" title="Places worth wandering to" titleThai="สถานที่ที่ควรค่าแก่การไปเยือน" />
+            <div className="max-w-3xl">
+              <SectionHeading
+                index="09"
+                eyebrow="Explore KabKraBue"
+                title="Scenes from a living village"
+                titleThai="ภาพ บรรยากาศ และช่วงเวลาจากกาบกระบือ"
+              />
+            </div>
             <div className="mt-12">
-              <PlaceGrid />
+              <ExploreShowcase />
             </div>
           </div>
         </section>
