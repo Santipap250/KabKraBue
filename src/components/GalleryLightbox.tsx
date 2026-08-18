@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { GalleryImage } from "@/data/gallery";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -17,10 +17,11 @@ interface GalleryLightboxProps {
 export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: GalleryLightboxProps) {
   const open = activeIndex !== null;
   const touchStartX = useRef<number | null>(null);
+  const reduceMotion = useReducedMotion();
   useLockBodyScroll(open);
 
   const goTo = (delta: number) => {
-    if (activeIndex === null) return;
+    if (activeIndex === null || images.length === 0) return;
     const next = (activeIndex + delta + images.length) % images.length;
     onNavigate(next);
   };
@@ -35,9 +36,9 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, activeIndex]);
+  }, [open, activeIndex, images.length]);
 
-  if (activeIndex === null) return null;
+  if (activeIndex === null || !images[activeIndex]) return null;
   const image = images[activeIndex];
 
   return (
@@ -47,11 +48,14 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
           role="dialog"
           aria-modal="true"
           aria-label={image.alt}
-          initial={{ opacity: 0 }}
+          initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-[60] flex flex-col bg-ink/97 backdrop-blur"
+          exit={reduceMotion ? undefined : { opacity: 0 }}
+          transition={{ duration: reduceMotion ? 0 : 0.22 }}
+          className="fixed inset-0 z-[60] flex flex-col bg-ink/97 backdrop-blur-xl"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) onClose();
+          }}
           onTouchStart={(e) => (touchStartX.current = e.touches[0].clientX)}
           onTouchEnd={(e) => {
             if (touchStartX.current === null) return;
@@ -61,75 +65,77 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
           }}
         >
           <div className="flex items-center justify-between px-5 py-4 sm:px-8">
-            <span className="font-mono text-xs uppercase tracking-[0.2em] text-rice/60">
-              {activeIndex + 1} / {images.length}
-            </span>
+            <div>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-rice/45">KabKraBue Gallery</span>
+              <span className="ml-3 font-mono text-xs uppercase tracking-[0.2em] text-rice/75">
+                {String(activeIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
+              </span>
+            </div>
             <button
               type="button"
               onClick={onClose}
               aria-label="Close gallery"
-              className="flex h-11 w-11 items-center justify-center text-rice"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/15 text-rice transition-colors hover:border-rice/40 hover:bg-rice/10"
             >
-              <X strokeWidth={1.5} />
+              <X strokeWidth={1.35} />
             </button>
           </div>
 
-          <div className="relative flex flex-1 items-center justify-center px-4 pb-6 sm:px-16">
+          <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-5 sm:px-16">
             <button
               type="button"
               onClick={() => goTo(-1)}
               aria-label="Previous image"
-              className="absolute left-2 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-rice/70 transition-colors hover:text-rice sm:flex"
+              className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-rice/10 bg-ink/15 text-rice/70 backdrop-blur-sm transition hover:border-rice/30 hover:text-rice sm:flex"
             >
-              <ChevronLeft className="h-8 w-8" strokeWidth={1.25} />
+              <ChevronLeft className="h-6 w-6" strokeWidth={1.2} />
             </button>
 
             <motion.figure
               key={image.id}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-              className="max-h-full max-w-3xl"
+              initial={reduceMotion ? false : { opacity: 0, scale: 0.985, y: 8 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              className="flex max-h-full max-w-5xl flex-col items-center"
             >
               <MediaFrame
                 src={image.src}
                 alt={image.alt}
                 aspect="aspect-auto"
-                className="max-h-[70vh] w-full"
+                className="max-h-[74vh] w-auto max-w-[92vw] sm:max-h-[78vh] sm:max-w-[82vw]"
+                sizes="90vw"
               />
-              {image.caption && (
-                <figcaption className="mt-4 text-center font-body text-sm text-rice/70">
-                  {image.caption}
-                </figcaption>
-              )}
+              <figcaption className="mt-4 max-w-2xl text-center font-body text-sm leading-relaxed text-rice/65 sm:text-base">
+                {image.caption ?? image.alt}
+              </figcaption>
             </motion.figure>
 
             <button
               type="button"
               onClick={() => goTo(1)}
               aria-label="Next image"
-              className="absolute right-2 top-1/2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-rice/70 transition-colors hover:text-rice sm:flex"
+              className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-rice/10 bg-ink/15 text-rice/70 backdrop-blur-sm transition hover:border-rice/30 hover:text-rice sm:flex"
             >
-              <ChevronRight className="h-8 w-8" strokeWidth={1.25} />
+              <ChevronRight className="h-6 w-6" strokeWidth={1.2} />
             </button>
           </div>
 
-          <div className="flex justify-center gap-4 pb-6 sm:hidden">
+          <div className="flex items-center justify-center gap-4 pb-5 sm:hidden">
             <button
               type="button"
               onClick={() => goTo(-1)}
               aria-label="Previous image"
-              className="flex h-11 w-11 items-center justify-center text-rice/80"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/10 text-rice/80"
             >
-              <ChevronLeft strokeWidth={1.5} />
+              <ChevronLeft strokeWidth={1.4} />
             </button>
             <button
               type="button"
               onClick={() => goTo(1)}
               aria-label="Next image"
-              className="flex h-11 w-11 items-center justify-center text-rice/80"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/10 text-rice/80"
             >
-              <ChevronRight strokeWidth={1.5} />
+              <ChevronRight strokeWidth={1.4} />
             </button>
           </div>
         </motion.div>
