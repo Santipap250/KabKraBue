@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/data/site";
 import "@/styles/globals.css";
+import { PwaBootstrap } from "@/components/PwaBootstrap";
 
 // Fonts are loaded via standard <link> tags (see below) rather than
 // next/font/google, so the site builds identically whether or not the
@@ -78,6 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <PwaBootstrap />
         {children}
       </body>
     </html>
