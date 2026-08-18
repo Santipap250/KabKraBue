@@ -1,4 +1,9 @@
 // Storytelling content for the homepage sections.
+export interface StoryGalleryImage {
+  imageId: string;
+  imageAlt: string;
+}
+
 export interface StorySection {
   id: string;
   index: string;
@@ -9,6 +14,9 @@ export interface StorySection {
   imageAlt: string;
   imageId: string;
   videoId?: string;
+  // Optional supporting photos shown alongside the main image as a
+  // small collage. Only a few sections need this — most stay single-image.
+  gallery?: StoryGalleryImage[];
 }
 
 export const storySections: StorySection[] = [
@@ -42,6 +50,16 @@ export const storySections: StorySection[] = [
 แม้รายละเอียดบางอย่างของอดีตจะเลือนไปตามกาลเวลา แต่สิ่งหนึ่งที่ยังคงเดิมคือความรู้สึกของการเป็น “บ้าน” ความผูกพันต่อผืนดิน ผู้คน และสถานที่ที่คุ้นเคย ทำให้คนรุ่นแล้วรุ่นเล่าเลือกที่จะกลับมา และเลือกที่จะส่งต่อเรื่องราวของบ้านหลังนี้ต่อไป`,
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนนา",
     imageId: "village-story-01.jpg",
+    gallery: [
+      {
+        imageId: "village-story-02.jpg",
+        imageAlt: "ภาพมุมสูงท้องนากาบกระบือยามเย็น เมฆลอยต่ำเหนือแหล่งน้ำ",
+      },
+      {
+        imageId: "village-story-03.webp",
+        imageAlt: "ภาพมุมสูงลวดลายแปลงนาและบ้านเรือนในหมู่บ้านกาบกระบือ",
+      },
+    ],
   },
   {
     id: "people",
@@ -49,7 +67,7 @@ export const storySections: StorySection[] = [
     eyebrow: "People",
     title: "Faces of KabKraBue",
     titleThai: "ผู้คนแห่งกาบกระบือ",
-    body: `ถ้าจะเล่าถึงหมู่บ้านกาบกระบือโดยไม่พูดถึงผู้คนที่นี่เลย คงเป็นเรื่องที่เล่าไม่ครบ เพราะบ้านหลังนี้ไม่ได้สวยเพราะทิวทัศน์เพียงอย่างเดียว แต่สวยเพราะรอยยิ้มของคนที่ทักทายกันทุกเช้าหน้าบ้าน
+    body: `ถ้าจะเล่าถึงกาบกระบือโดยไม่พูดถึงผู้คนที่นี่เลย คงเป็นเรื่องที่เล่าไม่ครบ เพราะบ้านหลังนี้ไม่ได้สวยเพราะทิวทัศน์เพียงอย่างเดียว แต่สวยเพราะรอยยิ้มของคนที่ทักทายกันทุกเช้าหน้าบ้าน
 
 ที่นี่มีทั้งคนที่ตื่นตั้งแต่ไก่โห่ไปออกนา คนที่สืบทอดฝีมืองานหัตถกรรมจากรุ่นสู่รุ่น และคนรุ่นใหม่ที่แม้จะออกไปเรียนหรือทำงานนอกหมู่บ้าน ก็ยังกลับมาเยี่ยมบ้านทุกครั้งที่มีโอกาส ทุกคนมีเรื่องราวของตัวเอง แต่สิ่งหนึ่งที่เชื่อมทุกคนไว้ด้วยกันคือผืนดินผืนเดียวกันที่ทุกคนเรียกว่าบ้าน
 
