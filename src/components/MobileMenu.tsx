@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
+import { InstallAppButton } from "./InstallAppButton";
 import { siteConfig } from "@/data/site";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 
@@ -61,8 +62,11 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             </ul>
           </nav>
 
-          <div className="container-content mb-10 font-mono text-xs uppercase tracking-[0.2em] text-rice/50">
-            {siteConfig.nameThai} — {siteConfig.taglineThai}
+          <div className="container-content space-y-5 mb-10">
+            <InstallAppButton className="w-full justify-center border-rice/20 bg-rice/5" />
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-rice/50">
+              {siteConfig.nameThai} — {siteConfig.taglineThai}
+            </p>
           </div>
         </motion.div>
       )}
