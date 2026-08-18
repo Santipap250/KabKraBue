@@ -91,7 +91,7 @@ export const storySections: StorySection[] = [
 มันเคยเป็นส่วนหนึ่งของชีวิตเรา
 
 และสำหรับใครบางคน กาบกระบืออาจเป็นสถานที่แบบนั้นเสมอ`,
-    imageAlt: "Portrait of a KabKraBue villager",
+    imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนท้องนา",
     imageId: "people-01.jpg",
     videoId: "people-section.mp4",
   },
