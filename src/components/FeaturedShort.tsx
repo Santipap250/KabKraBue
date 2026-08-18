@@ -1,4 +1,7 @@
+"use client";
+
 import { ArrowUpRight, Play, Youtube } from "lucide-react";
+import { useState } from "react";
 
 const SHORTS = [
   {
@@ -23,6 +26,80 @@ const SHORTS = [
 ];
 
 const SHORT_CHANNEL_URL = "https://m.youtube.com/@obixconfig/shorts";
+
+function LazyShortCard({
+  short,
+}: {
+  short: (typeof SHORTS)[number];
+}) {
+  const [loaded, setLoaded] = useState(false);
+
+  const thumbnailUrl = `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`;
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`;
+
+  return (
+    <article className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]">
+      <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
+        <div className="overflow-hidden rounded-[1.3rem] bg-black">
+          <div className="relative aspect-[9/16] w-full">
+            {loaded ? (
+              <iframe
+                src={embedUrl}
+                title={short.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+                className="absolute inset-0 h-full w-full"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setLoaded(true);
+                }}
+                className="group/short relative block h-full w-full overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset"
+                aria-label={`เล่น ${short.title}`}
+              >
+                <img
+                  src={thumbnailUrl}
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover/short:scale-[1.025]"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20" />
+                <span
+                  aria-hidden="true"
+                  className="absolute left-1/2 top-1/2 flex h-16 w-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-rice/35 bg-ink/55 text-rice shadow-2xl backdrop-blur-md transition-transform duration-300 group-hover/short:scale-105"
+                >
+                  <Play className="ml-0.5 h-6 w-6 fill-current" strokeWidth={1.4} />
+                </span>
+                <span className="absolute bottom-4 left-4 right-4 font-mono text-[9px] uppercase tracking-[0.18em] text-rice/70">
+                  Tap to watch
+                </span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-3 flex items-center justify-between px-1">
+        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/30">
+          {short.label}
+        </span>
+
+        <a
+          href={short.pageUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/75 transition-colors hover:text-gold"
+        >
+          Open →
+        </a>
+      </div>
+    </article>
+  );
+}
 
 export function FeaturedShort() {
   return (
@@ -92,52 +169,14 @@ export function FeaturedShort() {
               className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-6"
               aria-label="Featured YouTube Shorts"
             >
-              {SHORTS.map((short) => {
-                const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1&autoplay=0`;
-
-                return (
-                  <article
-                    key={short.id}
-                    className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]"
-                  >
-                    <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
-                      <div className="overflow-hidden rounded-[1.3rem] bg-black">
-                        <div className="relative aspect-[9/16] w-full">
-                          <iframe
-                            src={embedUrl}
-                            title={short.title}
-                            loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowFullScreen
-                            referrerPolicy="strict-origin-when-cross-origin"
-                            className="absolute inset-0 h-full w-full"
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between px-1">
-                      <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/30">
-                        {short.label}
-                      </span>
-
-                      <a
-                        href={short.pageUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/75 transition-colors hover:text-gold"
-                      >
-                        Open →
-                      </a>
-                    </div>
-                  </article>
-                );
-              })}
+              {SHORTS.map((short) => (
+                <LazyShortCard key={short.id} short={short} />
+              ))}
             </div>
 
             <div className="mt-2 flex items-center justify-between gap-4 px-1">
               <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/25">
-                Swipe to explore
+                Swipe to explore · Tap to play
               </span>
 
               <span
