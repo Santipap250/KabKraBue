@@ -52,7 +52,7 @@ export const storySections: StorySection[] = [
     imageId: "village-story-01.jpg",
     gallery: [
       {
-        imageId: "village-story-02.jpg",
+        imageId: "village-story-02.webp",
         imageAlt: "ภาพมุมสูงท้องนากาบกระบือยามเย็น เมฆลอยต่ำเหนือแหล่งน้ำ",
       },
       {
