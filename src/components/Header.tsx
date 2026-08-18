@@ -3,9 +3,14 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { siteConfig } from "@/data/site";
+import { videos } from "@/data/videos";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { cn } from "@/lib/cn";
+import { hasContent } from "@/lib/content";
 import { MobileMenu } from "./MobileMenu";
+
+const hasPlayableVideos = videos.some((video) => hasContent(video.source));
+const navItems = siteConfig.nav.filter((item) => item.href !== "#video" || hasPlayableVideos);
 
 export function Header() {
   const { scrolled } = useScrollProgress(60);
@@ -13,25 +18,18 @@ export function Header() {
 
   return (
     <>
-      <a href="#main" className="skip-link">
-        Skip to content
-      </a>
-      <header
-        className={cn(
-          "fixed inset-x-0 top-0 z-40 transition-all duration-500",
-          scrolled
-            ? "bg-rice/95 shadow-[0_1px_0_0_rgba(28,27,23,0.08)] backdrop-blur-sm"
-            : "bg-gradient-to-b from-ink/50 to-transparent"
-        )}
-      >
+      <a href="#main" className="skip-link">Skip to content</a>
+      <header className={cn(
+        "fixed inset-x-0 top-0 z-40 transition-all duration-500",
+        scrolled
+          ? "bg-rice/95 shadow-[0_1px_0_0_rgba(28,27,23,0.08)] backdrop-blur-sm"
+          : "bg-gradient-to-b from-ink/50 to-transparent"
+      )}>
         <div className="container-content flex h-20 items-center justify-between">
-          <a
-            href="#top"
-            className={cn(
-              "font-display text-xl font-semibold tracking-tight transition-colors",
-              scrolled ? "text-ink" : "text-rice"
-            )}
-          >
+          <a href="#top" className={cn(
+            "font-display text-xl font-semibold tracking-tight transition-colors",
+            scrolled ? "text-ink" : "text-rice"
+          )}>
             {siteConfig.name}
             <span className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-60">
               {siteConfig.nameThai}
@@ -40,17 +38,12 @@ export function Header() {
 
           <nav aria-label="Primary" className="hidden lg:block">
             <ul className="flex items-center gap-8">
-              {siteConfig.nav.map((item) => (
+              {navItems.map((item) => (
                 <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className={cn(
-                      "font-mono text-xs uppercase tracking-[0.15em] transition-colors hover:text-clay",
-                      scrolled ? "text-ink/70" : "text-rice/85"
-                    )}
-                  >
-                    {item.label}
-                  </a>
+                  <a href={item.href} className={cn(
+                    "font-mono text-xs uppercase tracking-[0.15em] transition-colors hover:text-clay",
+                    scrolled ? "text-ink/70" : "text-rice/85"
+                  )}>{item.label}</a>
                 </li>
               ))}
             </ul>
