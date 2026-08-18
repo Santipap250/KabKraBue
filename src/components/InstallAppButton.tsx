@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Download, ExternalLink, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { PWA_INSTALL_AVAILABLE_EVENT } from "./PwaBootstrap";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -27,30 +28,25 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
   useEffect(() => {
     setInstalled(isStandalone());
 
-    const onBeforeInstallPrompt = (event: Event) => {
-      event.preventDefault();
-      const installEvent = event as BeforeInstallPromptEvent;
-      window.__kabInstallPrompt = installEvent;
-      setPromptEvent(installEvent);
-    };
-
     const onInstalled = () => {
       setInstalled(true);
       setPromptEvent(null);
       setShowHelp(false);
     };
 
-    window.addEventListener("beforeinstallprompt", onBeforeInstallPrompt);
     window.addEventListener("appinstalled", onInstalled);
 
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-    if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register(`${basePath}/sw.js`, { scope: `${basePath || ""}/` }).catch(() => undefined);
-    }
+    const syncPrompt = () => {
+      setPromptEvent(window.__kabInstallPrompt ?? null);
+      setInstalled(isStandalone());
+    };
+
+    window.addEventListener(PWA_INSTALL_AVAILABLE_EVENT, syncPrompt);
+    syncPrompt();
 
     return () => {
-      window.removeEventListener("beforeinstallprompt", onBeforeInstallPrompt);
       window.removeEventListener("appinstalled", onInstalled);
+      window.removeEventListener(PWA_INSTALL_AVAILABLE_EVENT, syncPrompt);
     };
   }, []);
 
