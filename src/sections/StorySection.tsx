@@ -1,8 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, Play } from "lucide-react";
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
+import { ChevronDown, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
 import { TerraceDivider } from "@/components/TerraceDivider";
@@ -15,6 +21,101 @@ const COLLAPSE_THRESHOLD = 260;
 interface StorySectionProps {
   data: StorySectionData;
   reverse?: boolean;
+}
+
+function StoryCarousel({ data }: { data: StorySectionData }) {
+  const slides = [
+    { imageId: data.imageId, imageAlt: data.imageAlt },
+    ...(data.gallery ?? []),
+  ];
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+
+  const goTo = (target: number) => {
+    const next = (target + slides.length) % slides.length;
+    setDirection(next > index || (index === slides.length - 1 && next === 0) ? 1 : -1);
+    setIndex(next);
+  };
+
+  return (
+    <div
+      className="group/carousel relative overflow-hidden bg-mist aspect-[4/5]"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label={`${data.eyebrow} — ${slides.length} ภาพ`}
+      onTouchStart={(e) => {
+        touchStartX.current = e.touches[0].clientX;
+      }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const delta = e.changedTouches[0].clientX - touchStartX.current;
+        if (Math.abs(delta) > 40) goTo(index + (delta > 0 ? -1 : 1));
+        touchStartX.current = null;
+      }}
+    >
+      <AnimatePresence initial={false} custom={direction} mode="popLayout">
+        <motion.div
+          key={index}
+          custom={direction}
+          initial={{ opacity: 0, x: direction >= 0 ? 48 : -48 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: direction >= 0 ? -48 : 48 }}
+          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          className="absolute inset-0"
+        >
+          <MediaFrame
+            src={`/images/${slides[index].imageId}`}
+            alt={slides[index].imageAlt}
+            aspect="aspect-auto"
+            className="h-full"
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {slides.length > 1 && (
+        <>
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent"
+            aria-hidden="true"
+          />
+
+          <button
+            type="button"
+            onClick={() => goTo(index - 1)}
+            aria-label="ภาพก่อนหน้า"
+            className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
+          >
+            <ChevronLeft className="h-4 w-4" strokeWidth={1.75} />
+          </button>
+          <button
+            type="button"
+            onClick={() => goTo(index + 1)}
+            aria-label="ภาพถัดไป"
+            className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
+          >
+            <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
+          </button>
+
+          <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
+            {slides.map((slide, i) => (
+              <button
+                key={slide.imageId}
+                type="button"
+                onClick={() => goTo(i)}
+                aria-label={`ไปที่ภาพที่ ${i + 1} จาก ${slides.length}`}
+                aria-current={i === index}
+                className={cn(
+                  "h-1.5 rounded-full transition-all duration-300",
+                  i === index ? "w-6 bg-rice" : "w-1.5 bg-rice/45 hover:bg-rice/75"
+                )}
+              />
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 function StoryMedia({
@@ -30,21 +131,7 @@ function StoryMedia({
   const showVideo = Boolean(data.videoId) && !reduceMotion && !videoFailed;
 
   if (!showVideo && data.gallery && data.gallery.length > 0) {
-    return (
-      <div className="space-y-3 sm:space-y-4">
-        <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />
-        <div className="grid grid-cols-2 gap-3 sm:gap-4">
-          {data.gallery.map((img) => (
-            <MediaFrame
-              key={img.imageId}
-              src={`/images/${img.imageId}`}
-              alt={img.imageAlt}
-              aspect="aspect-[4/3]"
-            />
-          ))}
-        </div>
-      </div>
-    );
+    return <StoryCarousel data={data} />;
   }
 
   if (!showVideo) {
