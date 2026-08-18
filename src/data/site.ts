@@ -6,8 +6,6 @@ export const siteConfig = {
   nameThai: "หมู่บ้านกาบกระบือ",
   tagline: "Discover KabKraBue",
   taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
-  // Shown only in the Hero section, under the headline — written to read
-  // as one flowing, inviting line rather than a list of nouns.
   heroSubtitleThai: "หมู่บ้านริมทุ่งข้าว ที่ยังมีเรื่องราวให้ค้นพบในทุกย่างก้าว",
   shortDescription:
     "A village of rice terraces, river mist, and generations of stories — KabKraBue, told through its people, nature, and culture.",
@@ -20,7 +18,7 @@ export const siteConfig = {
   contact: {
     email: "[TODO: ใส่อีเมลติดต่อ]",
     phone: "[TODO: ใส่เบอร์โทรติดต่อ]",
-    address: "[TODO: ใส่ที่อยู่หมู่บ้าน KabKraBue]",
+    address: "หมู่บ้านกาบกระบือ ตำบลโคกสะอาด อำเภอปราสาท จังหวัดสุรินทร์ 32140 ประเทศไทย",
   },
   social: {
     facebook: "https://www.facebook.com/santipab.songkarak",
