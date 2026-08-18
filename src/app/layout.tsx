@@ -35,9 +35,14 @@ export const metadata: Metadata = {
     icon: "/favicon/favicon.svg",
     apple: "/favicon/apple-touch-icon.png",
   },
-  manifest: "/favicon/site.webmanifest",
+  manifest: "/manifest.webmanifest",
   alternates: {
     canonical: siteConfig.url,
+  },
+  appleWebApp: {
+    capable: true,
+    title: "KabKraBue",
+    statusBarStyle: "black-translucent",
   },
 };
 
