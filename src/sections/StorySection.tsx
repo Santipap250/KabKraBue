@@ -22,11 +22,13 @@ function LazyStoryVideo({
   alt,
   className,
   isNature,
+  isVillage,
 }: {
   src: string;
   alt: string;
   className?: string;
   isNature: boolean;
+  isVillage: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
@@ -68,43 +70,89 @@ function LazyStoryVideo({
         "relative overflow-hidden bg-mist",
         isNature
           ? "aspect-[9/16] rounded-[2rem] shadow-2xl shadow-ink/15 ring-1 ring-ink/10 sm:aspect-[4/5]"
-          : "aspect-[4/5]",
+          : isVillage
+            ? "aspect-[4/5] rounded-[1.5rem] border border-ink/10 bg-[#efe8d8] p-[7px] shadow-[0_22px_60px_rgba(31,35,31,0.16)] ring-1 ring-ink/5 sm:rounded-[1.75rem] sm:p-[9px]"
+            : "aspect-[4/5]",
         className
       )}
     >
-      <video
-        ref={videoRef}
-        className="h-full w-full object-cover"
-        muted
-        loop
-        playsInline
-        preload="none"
-        poster={`${basePath}/images/og-cover.jpg`}
-        aria-label={alt}
-        onError={() => setFailed(true)}
+      <div
+        className={cn(
+          "relative h-full w-full overflow-hidden bg-ink",
+          isVillage ? "rounded-[1.1rem] ring-1 ring-rice/20 sm:rounded-[1.3rem]" : ""
+        )}
       >
-        <source src={src} type="video/mp4" />
-      </video>
+        <video
+          ref={videoRef}
+          className={cn(
+            "h-full w-full object-cover",
+            isVillage && "scale-[1.01]"
+          )}
+          muted
+          loop
+          playsInline
+          preload="none"
+          poster={`${basePath}/images/og-cover.jpg`}
+          aria-label={alt}
+          onError={() => setFailed(true)}
+        >
+          <source src={src} type="video/mp4" />
+        </video>
 
-      {isNature && (
-        <>
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10" aria-hidden="true" />
-          <div className="absolute left-5 top-5 rounded-full border border-rice/35 bg-ink/20 px-3 py-1.5 backdrop-blur-md">
-            <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-rice/90">
-              KabKraBue / Nature
-            </span>
-          </div>
-          <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
-            <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/60">A moving landscape</p>
-              <p className="mt-1 font-body text-sm text-rice/90">ท้องฟ้า ผืนนา และจังหวะของฤดูกาล</p>
+        {isVillage && (
+          <>
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/10"
+              aria-hidden="true"
+            />
+            <div
+              className="pointer-events-none absolute inset-[6px] rounded-[1rem] border border-rice/20 sm:inset-[8px] sm:rounded-[1.15rem]"
+              aria-hidden="true"
+            />
+            <div className="absolute left-4 top-4 rounded-full border border-rice/30 bg-ink/25 px-3 py-1.5 backdrop-blur-md sm:left-5 sm:top-5">
+              <span className="font-mono text-[9px] uppercase tracking-[0.24em] text-rice/90">
+                01 / The Village
+              </span>
             </div>
-            <span className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md" aria-hidden="true">
-              <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
-            </span>
-          </div>
-        </>
-      )}
+            <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between gap-4 sm:bottom-5 sm:left-5 sm:right-5">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/55">
+                  KabKraBue · Village opening
+                </p>
+                <p className="mt-1 font-body text-sm text-rice/90">
+                  ถนน ผืนนา และบ้านที่ค่อย ๆ เปิดเรื่องราว
+                </p>
+              </div>
+              <span
+                className="rounded-full border border-rice/25 bg-ink/25 p-2.5 text-rice/80 backdrop-blur-md"
+                aria-hidden="true"
+              >
+                <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
+              </span>
+            </div>
+          </>
+        )}
+
+        {isNature && (
+          <>
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10" aria-hidden="true" />
+            <div className="absolute left-5 top-5 rounded-full border border-rice/35 bg-ink/20 px-3 py-1.5 backdrop-blur-md">
+              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-rice/90">
+                KabKraBue / Nature
+              </span>
+            </div>
+            <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
+              <div>
+                <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/60">A moving landscape</p>
+                <p className="mt-1 font-body text-sm text-rice/90">ท้องฟ้า ผืนนา และจังหวะของฤดูกาล</p>
+              </div>
+              <span className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md" aria-hidden="true">
+                <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
+              </span>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
@@ -128,9 +176,7 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
       role="region"
       aria-roledescription="carousel"
       aria-label={`${data.eyebrow} — ${slides.length} ภาพ`}
-      onTouchStart={(e) => {
-        touchStartX.current = e.touches[0].clientX;
-      }}
+      onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
         const delta = e.changedTouches[0].clientX - touchStartX.current;
@@ -174,8 +220,9 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
 
 function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: boolean }) {
   const reduceMotion = useReducedMotion();
+  const isVillage = data.id === "village";
   if (data.videoId && !reduceMotion) {
-    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} isNature={isNature} />;
+    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} isNature={isNature} isVillage={isVillage} />;
   }
   if (data.gallery?.length) return <StoryCarousel data={data} />;
   return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />;
