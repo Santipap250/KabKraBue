@@ -16,11 +16,13 @@ export interface MapCoordinates {
   zoom?: number;
 }
 
-// [TODO: ใส่พิกัดจริงของหมู่บ้าน KabKraBue]
+// Verified village location: Ban Kab Krabue, Khok Sa-at Subdistrict,
+// Prasat District, Surin 32140, Thailand.
+// Public place listing coordinates: 14.52646, 103.36005.
 export const villageCoordinates: MapCoordinates = {
-  lat: 13.7563,
-  lng: 100.5018,
-  zoom: 13,
+  lat: 14.52646,
+  lng: 103.36005,
+  zoom: 15,
 };
 
 /**
@@ -38,10 +40,6 @@ export function getEmbedUrl(coords: MapCoordinates = villageCoordinates): string
     case "osm":
     default:
       return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
-    // case "google":
-    //   return `https://www.google.com/maps/embed/v1/place?key=API_KEY&q=${lat},${lng}`;
-    // case "mapbox":
-    //   return `https://api.mapbox.com/styles/v1/.../embed?access_token=API_KEY`;
   }
 }
 
