@@ -49,6 +49,25 @@ export function Hero() {
       </div>
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
+        <div className="mb-7 flex justify-center lg:justify-start">
+          <button
+            type="button"
+            onClick={() => setTextHidden((value) => !value)}
+            aria-pressed={textHidden}
+            aria-label={textHidden ? "แสดงข้อความ" : "ซ่อนข้อความเพื่อดูวิดีโอเต็มจอ"}
+            className="group inline-flex items-center gap-2 rounded-full border border-rice/15 bg-ink/10 px-4 py-2 text-rice/40 backdrop-blur-sm transition-all duration-300 hover:border-rice/40 hover:bg-ink/20 hover:text-rice/85"
+          >
+            {textHidden ? (
+              <Eye className="h-3.5 w-3.5" strokeWidth={1.5} />
+            ) : (
+              <EyeOff className="h-3.5 w-3.5" strokeWidth={1.5} />
+            )}
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em]">
+              {textHidden ? "แสดงข้อความ" : "ซ่อนข้อความ"}
+            </span>
+          </button>
+        </div>
+
         <motion.div
           animate={{ x: textHidden ? "-130%" : "0%", opacity: textHidden ? 0 : 1 }}
           transition={slideTransition}
@@ -77,25 +96,6 @@ export function Hero() {
           </motion.h1>
         </motion.div>
 
-        <div className="mt-5 flex justify-start">
-          <button
-            type="button"
-            onClick={() => setTextHidden((value) => !value)}
-            aria-pressed={textHidden}
-            aria-label={textHidden ? "แสดงข้อความ" : "ซ่อนข้อความเพื่อดูวิดีโอเต็มจอ"}
-            className="group inline-flex items-center gap-2 rounded-full border border-rice/15 bg-ink/10 px-4 py-2 text-rice/40 backdrop-blur-sm transition-all duration-300 hover:border-rice/40 hover:bg-ink/20 hover:text-rice/85"
-          >
-            {textHidden ? (
-              <Eye className="h-3.5 w-3.5" strokeWidth={1.5} />
-            ) : (
-              <EyeOff className="h-3.5 w-3.5" strokeWidth={1.5} />
-            )}
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em]">
-              {textHidden ? "แสดงข้อความ" : "ซ่อนข้อความ"}
-            </span>
-          </button>
-        </div>
-
         <motion.div
           animate={{ x: textHidden ? "130%" : "0%", opacity: textHidden ? 0 : 1 }}
           transition={slideTransition}
@@ -104,7 +104,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-5 max-w-xl text-lg leading-relaxed text-rice/85"
+            className="mt-6 max-w-xl text-lg leading-relaxed text-rice/85"
           >
             {siteConfig.heroSubtitleThai}
           </motion.p>
