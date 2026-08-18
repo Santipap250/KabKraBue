@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowUpRight, Play, Youtube } from "lucide-react";
 import { useState } from "react";
 
@@ -54,18 +55,18 @@ function LazyShortCard({
             ) : (
               <button
                 type="button"
-                onClick={() => {
-                  setLoaded(true);
-                }}
+                onClick={() => setLoaded(true)}
                 className="group/short relative block h-full w-full overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset"
                 aria-label={`เล่น ${short.title}`}
               >
-                <img
+                <Image
                   src={thumbnailUrl}
                   alt=""
+                  fill
+                  unoptimized
                   loading="lazy"
-                  decoding="async"
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover/short:scale-[1.025]"
+                  sizes="(min-width: 1024px) 310px, (min-width: 640px) 300px, 82vw"
+                  className="object-cover transition-transform duration-500 group-hover/short:scale-[1.025]"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-black/20" />
                 <span
@@ -118,16 +119,11 @@ export function FeaturedShort() {
           <div className="max-w-2xl">
             <div className="mb-5 h-px w-14 bg-gold/70" aria-hidden="true" />
 
-            <h2
-              id="featured-short-heading"
-              className="heading-display text-4xl text-rice sm:text-5xl lg:text-6xl"
-            >
+            <h2 id="featured-short-heading" className="heading-display text-4xl text-rice sm:text-5xl lg:text-6xl">
               The Village Diaries
             </h2>
 
-            <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">
-              บันทึกเรื่องราวผ่านเลนส์
-            </p>
+            <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">บันทึกเรื่องราวผ่านเลนส์</p>
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
               ชมบรรยากาศของหมู่บ้านกาบกระบือผ่านวิดีโอสั้น
@@ -179,10 +175,7 @@ export function FeaturedShort() {
                 Swipe to explore · Tap to play
               </span>
 
-              <span
-                className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/45"
-                aria-hidden="true"
-              >
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/45" aria-hidden="true">
                 01 / {String(SHORTS.length).padStart(2, "0")}
               </span>
             </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/cn";
@@ -7,18 +8,12 @@ import { cn } from "@/lib/cn";
 interface MediaFrameProps {
   src: string;
   alt: string;
-  aspect?: string; // Tailwind aspect-ratio class, e.g. "aspect-[4/5]"
+  aspect?: string;
   className?: string;
   priority?: boolean;
   sizes?: string;
 }
 
-/**
- * Renders a photo from /public. Until real photography is added, the
- * file will 404 and this component falls back to a deliberate,
- * on-brand placeholder (gradient + filename) instead of a broken-image
- * icon — see data files for where each filename is expected to live.
- */
 export function MediaFrame({
   src,
   alt,
@@ -32,15 +27,16 @@ export function MediaFrame({
   return (
     <div className={cn("relative overflow-hidden bg-mist", aspect, className)}>
       {!failed ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <Image
           src={src}
           alt={alt}
+          fill
+          priority={priority}
           loading={priority ? "eager" : "lazy"}
-          decoding="async"
+          unoptimized
           sizes={sizes}
           onError={() => setFailed(true)}
-          className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         />
       ) : (
         <div
