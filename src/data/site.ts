@@ -2,7 +2,7 @@
 // navigation, social links, and default SEO metadata across the whole site.
 
 export const siteConfig = {
-  name: "KABKRABUE",
+  name: "KabKraBue",
   nameThai: "หมู่บ้านกาบกระบือ",
   tagline: "Discover KabKraBue",
   taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
