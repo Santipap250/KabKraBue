@@ -3,11 +3,6 @@ import { siteConfig } from "@/data/site";
 import "@/styles/globals.css";
 import { PwaBootstrap } from "@/components/PwaBootstrap";
 
-// Fonts are loaded via standard <link> tags (see below) rather than
-// next/font/google, so the site builds identically whether or not the
-// build machine has access to fonts.googleapis.com. Font family names
-// are wired directly into tailwind.config.ts.
-
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -57,8 +52,21 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "TouristDestination",
   name: siteConfig.name,
+  alternateName: siteConfig.nameThai,
   description: siteConfig.shortDescription,
   url: siteConfig.url,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "ตำบลโคกสะอาด",
+    addressRegion: "จังหวัดสุรินทร์",
+    postalCode: "32140",
+    addressCountry: "TH",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 14.52646,
+    longitude: 103.36005,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
