@@ -2,9 +2,25 @@ import Link from "next/link";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 
-export const metadata = {
-  title: "Privacy — KabKraBue",
+export const metadata: Metadata = {
+  title: "Privacy",
   description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
+  alternates: {
+    canonical: "/privacy/",
+  },
+  openGraph: {
+    type: "website",
+    url: "/privacy/",
+    siteName: siteConfig.name,
+    locale: siteConfig.locale,
+    title: "Privacy — KabKraBue",
+    description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
+  },
+  twitter: {
+    card: "summary",
+    title: "Privacy — KabKraBue",
+    description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
+  },
 };
 
 export default function PrivacyPage() {
