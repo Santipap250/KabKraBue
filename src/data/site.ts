@@ -2,8 +2,8 @@
 // navigation, social links, and default SEO metadata across the whole site.
 
 export const siteConfig = {
-  name: "KabKraBue",
-  nameThai: "กาบกระบือ",
+  name: "KABKRABUE",
+  nameThai: "หมู่บ้านกาบกระบือ",
   tagline: "Discover KabKraBue",
   taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
   // Shown only in the Hero section, under the headline — written to read
