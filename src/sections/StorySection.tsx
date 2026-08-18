@@ -99,11 +99,13 @@ function VideoFrameShell({
 function LazyStoryVideo({
   src,
   alt,
-  className,
+  fallbackSrc,
   variant = "default",
+  className,
 }: {
   src: string;
   alt: string;
+  fallbackSrc: string;
   className?: string;
   variant?: VideoVariant;
 }) {
@@ -134,7 +136,7 @@ function LazyStoryVideo({
   if (failed || reduceMotion) {
     return (
       <MediaFrame
-        src="/images/og-cover.jpg"
+        src={fallbackSrc}
         alt={alt}
         aspect="aspect-[4/5]"
       />
@@ -151,7 +153,7 @@ function LazyStoryVideo({
       loop
       playsInline
       preload="none"
-      poster={`${basePath}/images/og-cover.jpg`}
+      poster={`${basePath}${fallbackSrc}`}
       aria-label={alt}
       onError={() => setFailed(true)}
     >
@@ -247,14 +249,29 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
   );
 }
 
+const VIDEO_FALLBACKS: Record<string, string> = {
+  village: "/images/village-story-01.jpg",
+  people: "/images/village-story-03.webp",
+  nature: "/images/village-story-02.webp",
+};
+
 function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: boolean }) {
   const reduceMotion = useReducedMotion();
+  const fallbackSrc = VIDEO_FALLBACKS[data.id] ?? "/images/og-cover.jpg";
+
   if (data.videoId && !reduceMotion) {
     const variant: VideoVariant =
       data.id === "village" ? "village" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
-    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} variant={variant} />;
+    return (
+      <LazyStoryVideo
+        src={`${basePath}/videos/${data.videoId}`}
+        alt={data.imageAlt}
+        fallbackSrc={fallbackSrc}
+        variant={variant}
+      />
+    );
   }
   if (data.gallery?.length) return <StoryCarousel data={data} />;
   return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />;
