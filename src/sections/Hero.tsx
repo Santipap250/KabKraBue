@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { ArrowRight, ChevronDown, Eye, EyeOff, Images } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
+import { InstallAppButton } from "@/components/InstallAppButton";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const videoSrc = `${basePath}/videos/village-hero.webm`;
@@ -62,6 +63,9 @@ export function Hero() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.55 }} className="mt-9 flex flex-wrap items-center gap-4">
             <motion.a href="#village" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }} className="group inline-flex items-center gap-2.5 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink shadow-lg shadow-ink/20 transition-colors hover:border-gold hover:bg-gold">Enter the village<ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.75} /></motion.a>
             <motion.a href="#gallery" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} transition={{ duration: 0.2 }} className="group inline-flex items-center gap-2.5 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice backdrop-blur-sm transition-colors hover:border-rice hover:bg-rice/10"><Images className="h-3.5 w-3.5" strokeWidth={1.75} />View gallery</motion.a>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.68 }} className="mt-4">
+            <InstallAppButton />
           </motion.div>
         </motion.div>
       </div>
