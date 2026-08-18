@@ -1,13 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
@@ -31,16 +25,19 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const touchStartX = useRef<number | null>(null);
+  const reduceMotion = useReducedMotion();
 
   const goTo = (target: number) => {
     const next = (target + slides.length) % slides.length;
-    setDirection(next > index || (index === slides.length - 1 && next === 0) ? 1 : -1);
+    setDirection(
+      next > index || (index === slides.length - 1 && next === 0) ? 1 : -1
+    );
     setIndex(next);
   };
 
   return (
     <div
-      className="group/carousel relative overflow-hidden bg-mist aspect-[4/5]"
+      className="group/carousel relative aspect-[4/5] overflow-hidden bg-mist"
       role="region"
       aria-roledescription="carousel"
       aria-label={`${data.eyebrow} — ${slides.length} ภาพ`}
@@ -58,10 +55,10 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
         <motion.div
           key={index}
           custom={direction}
-          initial={{ opacity: 0, x: direction >= 0 ? 48 : -48 }}
+          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: direction >= 0 ? 24 : -24 }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: direction >= 0 ? -48 : 48 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+          exit={reduceMotion ? { opacity: 1 } : { opacity: 0, x: direction >= 0 ? -24 : 24 }}
+          transition={{ duration: reduceMotion ? 0 : 0.28, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
           <MediaFrame
@@ -79,12 +76,11 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
             className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent"
             aria-hidden="true"
           />
-
           <button
             type="button"
             onClick={() => goTo(index - 1)}
             aria-label="ภาพก่อนหน้า"
-            className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
+            className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
           >
             <ChevronLeft className="h-4 w-4" strokeWidth={1.75} />
           </button>
@@ -92,11 +88,10 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
             type="button"
             onClick={() => goTo(index + 1)}
             aria-label="ภาพถัดไป"
-            className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-300 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
+            className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100"
           >
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
           </button>
-
           <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
             {slides.map((slide, i) => (
               <button
@@ -106,7 +101,7 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
                 aria-label={`ไปที่ภาพที่ ${i + 1} จาก ${slides.length}`}
                 aria-current={i === index}
                 className={cn(
-                  "h-1.5 rounded-full transition-all duration-300",
+                  "h-1.5 rounded-full transition-all duration-200",
                   i === index ? "w-6 bg-rice" : "w-1.5 bg-rice/45 hover:bg-rice/75"
                 )}
               />
@@ -136,17 +131,8 @@ function StoryMedia({
 
   if (!showVideo) {
     return (
-      <div
-        className={cn(
-          "overflow-hidden",
-          isNature ? "aspect-[4/5] rounded-[2rem]" : "aspect-[4/5]"
-        )}
-      >
-        <MediaFrame
-          src={`/images/${data.imageId}`}
-          alt={data.imageAlt}
-          aspect="aspect-[4/5]"
-        />
+      <div className={cn("overflow-hidden", isNature ? "aspect-[4/5] rounded-[2rem]" : "aspect-[4/5]")}>
+        <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />
       </div>
     );
   }
@@ -170,18 +156,12 @@ function StoryMedia({
         aria-label={data.imageAlt}
         onError={() => setVideoFailed(true)}
       >
-        <source
-          src={`${basePath}/videos/${data.videoId}`}
-          type="video/mp4"
-        />
+        <source src={`${basePath}/videos/${data.videoId}`} type="video/mp4" />
       </video>
 
       {isNature && (
         <>
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10"
-            aria-hidden="true"
-          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/65 via-transparent to-ink/10" aria-hidden="true" />
           <div className="absolute left-5 top-5 rounded-full border border-rice/35 bg-ink/20 px-3 py-1.5 backdrop-blur-md">
             <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-rice/90">
               KabKraBue / Nature
@@ -189,17 +169,10 @@ function StoryMedia({
           </div>
           <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
             <div>
-              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/60">
-                A moving landscape
-              </p>
-              <p className="mt-1 font-body text-sm text-rice/90">
-                ท้องฟ้า ผืนนา และจังหวะของฤดูกาล
-              </p>
+              <p className="font-mono text-[9px] uppercase tracking-[0.2em] text-rice/60">A moving landscape</p>
+              <p className="mt-1 font-body text-sm text-rice/90">ท้องฟ้า ผืนนา และจังหวะของฤดูกาล</p>
             </div>
-            <span
-              className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md"
-              aria-hidden="true"
-            >
+            <span className="rounded-full border border-rice/25 bg-ink/20 p-2 text-rice/75 backdrop-blur-md" aria-hidden="true">
               <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
             </span>
           </div>
@@ -213,30 +186,22 @@ function StoryBody({ id, body }: { id: string; body: string }) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = body.split("\n\n");
   const isLong = body.length > COLLAPSE_THRESHOLD;
+  const reduceMotion = useReducedMotion();
 
   return (
     <div className="mt-7 max-w-xl">
       <motion.div
         id={`${id}-story-body`}
         initial={false}
-        animate={{
-          height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT,
-        }}
-        transition={
-          useReducedMotion()
-            ? { duration: 0 }
-            : { duration: 0.35, ease: [0.16, 1, 0.3, 1] }
-        }
+        animate={{ height: expanded || !isLong ? "auto" : COLLAPSED_HEIGHT }}
+        transition={reduceMotion ? { duration: 0 } : { duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         className="story-body relative overflow-hidden"
       >
         {paragraphs.map((paragraph, index) => (
           <p key={`${id}-${index}`}>{paragraph}</p>
         ))}
         {isLong && !expanded && (
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent"
-          />
+          <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent" />
         )}
       </motion.div>
 
@@ -249,13 +214,7 @@ function StoryBody({ id, body }: { id: string; body: string }) {
           className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.15em] text-paddy transition-colors hover:text-clay"
         >
           {expanded ? "ย่อเรื่องราว" : "อ่านเพิ่มเติม"}
-          <ChevronDown
-            className={cn(
-              "h-3.5 w-3.5 transition-transform duration-300",
-              expanded && "rotate-180"
-            )}
-            strokeWidth={1.5}
-          />
+          <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", expanded && "rotate-180")} strokeWidth={1.5} />
         </button>
       )}
     </div>
@@ -265,103 +224,45 @@ function StoryBody({ id, body }: { id: string; body: string }) {
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   const isNature = data.id === "nature";
   const reduceMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement>(null);
-
-  // Scroll-linked parallax: scrollYProgress runs 0 → 1 as this section
-  // travels through the viewport (from "just entering the bottom" to
-  // "just leaving the top"), so the text and media layers keep drifting
-  // continuously with the scroll instead of only animating in once.
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  const textY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [56, -56]);
-  const textOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.22, 0.82, 1],
-    reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0.55]
-  );
-
-  const mediaY = useTransform(scrollYProgress, [0, 1], reduceMotion ? [0, 0] : [80, -80]);
-  const mediaOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.2, 0.85, 1],
-    reduceMotion ? [1, 1, 1, 1] : [0, 1, 1, 0.6]
-  );
-  const mediaScale = useTransform(
-    scrollYProgress,
-    [0, 0.25, 1],
-    reduceMotion ? [1, 1, 1] : [0.96, 1, 1.03]
-  );
 
   return (
-    <section
-      ref={sectionRef}
-      id={data.id}
-      className="relative overflow-hidden border-t border-border"
-    >
-      <div
-        className={cn(
-          "container-content py-20 sm:py-28",
-          isNature && "py-24 sm:py-32"
-        )}
-      >
+    <section id={data.id} className="relative overflow-hidden border-t border-border">
+      <div className={cn("container-content py-20 sm:py-28", isNature && "py-24 sm:py-32")}>
         {isNature && (
-          <div
-            className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden"
-            aria-hidden="true"
-          >
-            <span className="absolute right-6 -mt-8 select-none font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">
-              04
-            </span>
+          <div className="pointer-events-none absolute inset-x-0 top-0 overflow-hidden" aria-hidden="true">
+            <span className="absolute right-6 -mt-8 select-none font-display text-[17rem] leading-none text-paddy/5 sm:text-[23rem]">04</span>
           </div>
         )}
 
-        <div
-          className={cn(
-            "relative grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16",
-            reverse && "lg:[&>*:first-child]:order-2",
-            isNature && "lg:items-stretch"
-          )}
-        >
+        <div className={cn("relative grid items-center gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-16", reverse && "lg:[&>*:first-child]:order-2", isNature && "lg:items-stretch")}>
           <motion.div
-            style={{ y: textY, opacity: textOpacity }}
+            initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.18, margin: "0px 0px -12% 0px" }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             className={cn(isNature && "flex flex-col justify-center")}
           >
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-clay">{data.index}</span>
               <span className="eyebrow">{data.eyebrow}</span>
             </div>
-
-            <h2 className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">
-              {data.title}
-            </h2>
-
-            <p className="story-title-thai mt-3 max-w-xl font-body">
-              {data.titleThai}
-            </p>
-
-            {isNature && (
-              <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />
-            )}
-
+            <h2 className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">{data.title}</h2>
+            <p className="story-title-thai mt-3 max-w-xl font-body">{data.titleThai}</p>
+            {isNature && <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />}
             <StoryBody id={data.id} body={data.body} />
           </motion.div>
 
           <motion.div
-            style={{ y: mediaY, opacity: mediaOpacity, scale: mediaScale }}
+            initial={reduceMotion ? false : { opacity: 0, y: 20, scale: 0.99 }}
+            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.18, margin: "0px 0px -12% 0px" }}
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.65, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
             className={cn("group", isNature && "lg:translate-y-2")}
           >
-            <StoryMedia
-              data={data}
-              isNature={isNature}
-              reduceMotion={Boolean(reduceMotion)}
-            />
+            <StoryMedia data={data} isNature={isNature} reduceMotion={Boolean(reduceMotion)} />
           </motion.div>
         </div>
       </div>
-
       <TerraceDivider className="opacity-70" />
     </section>
   );
