@@ -34,7 +34,7 @@ export const storySections: StorySection[] = [
 
 เว็บไซต์นี้จึงไม่ได้ชวนให้เพียง “มองเห็น” กาบกระบือ แต่ชวนให้คุณค่อย ๆ ทำความรู้จักบ้านหลังนี้ ผ่านภาพ เสียง เรื่องราว และสายตาของผู้คนที่ผูกพันกับผืนดินแห่งนี้มาแสนนาน`,
     imageAlt: "ภาพมุมสูงของท้องนาและหมู่บ้านกาบกระบือ",
-    imageId: "village-hero.jpg",
+    imageId: "village-story-01.jpg",
     videoId: "village-opening.mp4",
   },
   {
@@ -93,7 +93,7 @@ export const storySections: StorySection[] = [
 
 และสำหรับใครบางคน กาบกระบืออาจเป็นสถานที่แบบนั้นเสมอ`,
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนท้องนา",
-    imageId: "people-01.jpg",
+    imageId: "village-story-03.webp",
     videoId: "people-section.mp4",
   },
   {
@@ -108,7 +108,7 @@ export const storySections: StorySection[] = [
 
 และเมื่อฤดูแล้งมาเยือน ผืนดินที่เคยเขียวก็แปรเปลี่ยนไปอีกแบบ เผยให้เห็นเส้นสายของคันนาและแนวต้นไม้ริมทางที่ตัดกับท้องฟ้าใส ธรรมชาติของกาบกระบือจึงไม่เคยซ้ำเดิมในแต่ละฤดู แต่ยังคงความงามในแบบของตัวเองเสมอ`,
     imageAlt: "ภาพท้องนาและแสงธรรมชาติของกาบกระบือ",
-    imageId: "nature-01.jpg",
+    imageId: "village-story-02.webp",
     videoId: "nature-section.mp4",
   },
   {
@@ -151,7 +151,7 @@ export const storySections: StorySection[] = [
 
 บางทีเสน่ห์ของกาบกระบือจึงไม่ได้อยู่ที่การมีอะไรให้มากที่สุด แต่อยู่ที่การมีพื้นที่ให้ผู้คนได้ใช้ชีวิตอย่างมีความหมายในแบบของตัวเอง`,
     imageAlt: "Everyday lifestyle and rural life in KabKraBue",
-  imageId: "lifestyle-01.jpg",
-  videoId: "lifestyle-section.mp4",
+  imageId: "culture-01.webp",
+    videoId: "lifestyle-section.mp4",
 },
 ];
