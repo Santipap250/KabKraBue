@@ -74,8 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="th">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font -- intentional: site-wide fonts loaded once in the root layout, not per-page */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />  
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
