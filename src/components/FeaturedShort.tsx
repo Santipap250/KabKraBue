@@ -37,6 +37,7 @@ function LazyShortCard({
 
   const thumbnailUrl = `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`;
   const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1`;
+  
   return (
     <article className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]">
       <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
