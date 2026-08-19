@@ -8,7 +8,9 @@ import { TerraceDivider } from "@/components/TerraceDivider";
 import { InstallAppButton } from "@/components/InstallAppButton";
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-const videoSrc = `${basePath}/videos/village-hero.webm`;
+const videoSrc = `${basePath}/videos/village-hero.mp4`;
+const fallbackVideoSrc = `${basePath}/videos/village-hero.webm`;
+const posterSrc = `${basePath}/images/village-hero-poster.jpg`;
 
 export function Hero() {
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -37,10 +39,11 @@ export function Hero() {
             loop
             playsInline
             preload="metadata"
-            poster={`${basePath}/images/og-cover.jpg`}
+            poster={posterSrc}
             aria-hidden="true"
           >
-            <source src={videoSrc} type="video/webm" />
+            <source src={videoSrc} type="video/mp4" />
+            <source src={fallbackVideoSrc} type="video/webm" />
           </video>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" />
