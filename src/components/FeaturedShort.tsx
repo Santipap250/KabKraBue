@@ -36,8 +36,7 @@ function LazyShortCard({
   const [loaded, setLoaded] = useState(false);
 
   const thumbnailUrl = `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`;
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`;
-
+  const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1`;
   return (
     <article className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]">
       <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
@@ -76,7 +75,7 @@ function LazyShortCard({
                   <Play className="ml-0.5 h-6 w-6 fill-current" strokeWidth={1.4} />
                 </span>
                 <span className="absolute bottom-4 left-4 right-4 font-mono text-[9px] uppercase tracking-[0.18em] text-rice/70">
-                  Tap to watch
+                  Tap to watch with sound
                 </span>
               </button>
             )}
