@@ -33,7 +33,6 @@ export const siteConfig = {
     { label: "People & Culture", href: "#culture" },
     { label: "Nature", href: "#nature" },
     { label: "Gallery", href: "#gallery" },
-    { label: "Video", href: "#video" },
     { label: "Explore", href: "#explore" },
     { label: "Visit", href: "#visit" },
   ],
