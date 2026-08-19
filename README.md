@@ -1,9 +1,32 @@
-# KabKraBue — Safe Content Update
+# KabKraBue
 
-Two source files only:
-- `src/data/site.ts`
-- `src/data/village.ts`
+เว็บไซต์เล่าเรื่องหมู่บ้านกาบกระบือ ตำบลโคกสะอาด อำเภอปราสาท จังหวัดสุรินทร์
+ผ่านภาพถ่าย วิดีโอ เรื่องราว และบรรยากาศของชุมชน
 
-Validated with the installed TypeScript compiler's transpiler: both files parse successfully.
+## Current release
 
-This update intentionally avoids asserting unverified claims about ethnicity, migration history, language status, or specific local institutions.
+- Next.js App Router + static export
+- Mobile-first presentation
+- PWA install support
+- Lazy-loaded video playback
+- Editorial Explore showcase
+- Culture / Village Temple gallery with 12 optimized WebP images
+- Privacy, robots.txt, and sitemap.xml
+
+## Development
+
+```bash
+npm install
+npm run lint
+npm run build
+```
+
+## Content
+
+Content lives under `src/data/` and real media assets live under `public/images/` and
+`public/videos/`. Placeholder records remain intentionally hidden until real source
+material is available.
+
+## Repository
+
+https://github.com/Santipap250/KabKraBue
