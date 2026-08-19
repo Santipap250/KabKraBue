@@ -16,13 +16,13 @@ export const siteConfig = {
   locale: "th-TH",
   themeColor: "#3F5A3D",
   contact: {
-    email: "[TODO: ใส่อีเมลติดต่อ]",
+    email: "santipap350z@gmail.com",
     phone: "[TODO: ใส่เบอร์โทรติดต่อ]",
     address: "หมู่บ้านกาบกระบือ ตำบลโคกสะอาด อำเภอปราสาท จังหวัดสุรินทร์ 32140 ประเทศไทย",
   },
   social: {
     facebook: "https://www.facebook.com/santipab.songkarak",
-    instagram: "[TODO: ลิงก์ Instagram]",
+    instagram: "https://www.instagram.com/tuizsky",
     youtube: "https://www.youtube.com/@obixconfig",
     tiktok: "https://www.tiktok.com/@tuizfpv",
     line: "[TODO: ลิงก์ Line Official Account]",
