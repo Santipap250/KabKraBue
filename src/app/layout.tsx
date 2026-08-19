@@ -81,9 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
-        <script
-          type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
+        <script          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <PwaBootstrap />
