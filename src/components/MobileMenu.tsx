@@ -4,12 +4,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { InstallAppButton } from "./InstallAppButton";
 import { siteConfig } from "@/data/site";
-import { videos } from "@/data/videos";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
-import { hasContent } from "@/lib/content";
 
-const hasPlayableVideos = videos.some((video) => hasContent(video.source));
-const navItems = siteConfig.nav.filter((item) => item.href !== "#video" || hasPlayableVideos);
+const navItems = siteConfig.nav;
 
 interface MobileMenuProps {
   open: boolean;

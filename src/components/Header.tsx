@@ -3,14 +3,11 @@
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { siteConfig } from "@/data/site";
-import { videos } from "@/data/videos";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { cn } from "@/lib/cn";
-import { hasContent } from "@/lib/content";
 import { MobileMenu } from "./MobileMenu";
 
-const hasPlayableVideos = videos.some((video) => hasContent(video.source));
-const navItems = siteConfig.nav.filter((item) => item.href !== "#video" || hasPlayableVideos);
+const navItems = siteConfig.nav;
 
 export function Header() {
   const { scrolled } = useScrollProgress(60);
