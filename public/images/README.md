@@ -1,22 +1,19 @@
 # /public/images
 
-Drop real photography here using the filenames already referenced in
-`src/data/`. Until a file exists, the site shows an on-brand placeholder
-instead of a broken image — nothing will look broken while photos are
-missing.
+ภาพจริงของ KabKraBue ใช้ไฟล์ที่ถูกอ้างอิงจาก `src/data/`
 
-| File | Used by | Suggested size |
-|---|---|---|
-| `village-hero.jpg` | Hero section background | ≥ 2400×1600, landscape |
-| `village-story-01.jpg` | "Our Story" section | 1600×2000 |
-| `people-01.jpg` | "People" section | 1600×2000 |
-| `nature-01.jpg` | "Nature" section | 1600×2000 |
-| `culture-01.jpg` | "Culture" section | 1600×2000 |
-| `lifestyle-01.jpg` | "Lifestyle" section | 1600×2000 |
-| `og-cover.jpg` | Open Graph / social sharing preview | exactly 1200×630 |
-| `gallery/*.jpg` | Photo Gallery — see `src/data/gallery.ts` | any, 4:5 or 16:9 |
-| `places/*.jpg` | Explore Places — see `src/data/places.ts` | 4:3 |
-| `video-thumb-*.jpg` | Video Showcase thumbnails | 16:9 |
+## Current media
 
-To add a new gallery photo: put the file in `gallery/` and add one entry
-to `src/data/gallery.ts`. No component needs to change.
+| File / folder | Used by |
+|---|---|
+| `og-cover.jpg` | Open Graph / social sharing preview |
+| `culture-01.webp` … `culture-12.webp` | Culture — Village Temple |
+| `gallery/*` | Photo Gallery — see `src/data/gallery.ts` |
+| `places/*` | Retained image assets for existing visual content |
+| `*.webp`, `*.jpg` | Story / Explore imagery as referenced by `src/data/` |
+
+To add a gallery photo, put the optimized asset in `public/images/gallery/` and add
+the corresponding entry to `src/data/gallery.ts`.
+
+For large photos used on mobile, prefer optimized WebP/JPEG assets rather than
+uploading original camera files.
