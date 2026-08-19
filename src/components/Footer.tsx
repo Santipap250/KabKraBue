@@ -22,7 +22,7 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer id="visit" className="bg-ink text-rice">
+    <footer className="bg-ink text-rice">
       <TerraceDivider tone="rice" className="opacity-30" />
       <div className="container-content py-16 sm:py-20">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
