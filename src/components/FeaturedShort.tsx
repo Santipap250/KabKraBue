@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { ArrowUpRight, Play, Youtube } from "lucide-react";
+import { ArrowUpRight, Play, Youtube, Music2 } from "lucide-react";
 import { useState } from "react";
 
 const SHORTS = [
@@ -27,6 +27,7 @@ const SHORTS = [
 ];
 
 const SHORT_CHANNEL_URL = "https://m.youtube.com/@obixconfig/shorts";
+const TIKTOK_PROFILE_URL = "https://www.tiktok.com/@tuizfpv";
 
 function LazyShortCard({
   short,
@@ -37,7 +38,7 @@ function LazyShortCard({
 
   const thumbnailUrl = `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`;
   const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1`;
-  
+
   return (
     <article className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]">
       <div className="rounded-[1.8rem] border border-rice/15 bg-rice/[0.035] p-2 shadow-2xl shadow-black/30 backdrop-blur-sm">
@@ -132,13 +133,14 @@ export function FeaturedShort() {
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
-                href={SHORTS[0].pageUrl}
+                href={TIKTOK_PROFILE_URL}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                aria-label="เปิดโปรไฟล์ TikTok ของ TuizFPV"
                 className="inline-flex items-center gap-2 bg-rice px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold"
               >
-                <Play className="h-4 w-4 fill-current" strokeWidth={1.5} />
-                Watch Short
+                <Music2 className="h-4 w-4" strokeWidth={1.6} />
+                TikTok
               </a>
 
               <a
