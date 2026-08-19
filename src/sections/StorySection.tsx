@@ -17,7 +17,7 @@ interface StorySectionProps {
   reverse?: boolean;
 }
 
-type VideoVariant = "village" | "people" | "nature" | "default";
+type VideoVariant = "village" | "story" | "people" | "nature" | "default";
 
 function VideoFrameShell({
   variant,
@@ -50,6 +50,29 @@ function VideoFrameShell({
             <span className="flex h-9 w-9 items-center justify-center rounded-full border border-rice/35 bg-ink/20 text-rice/90 backdrop-blur-md sm:h-10 sm:w-10" aria-hidden="true">
               <Play className="h-4 w-4 fill-current" strokeWidth={1.2} />
             </span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "story") {
+    return (
+      <div
+        className="relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-rice/80 p-3 shadow-[0_30px_80px_-35px_rgba(31,33,27,0.45)] sm:p-4"
+        aria-label={`${alt} — cinematic frame`}
+      >
+        <div className="pointer-events-none absolute inset-2 rounded-[1.8rem] border border-gold/30 sm:inset-3" aria-hidden="true" />
+        <div className="relative overflow-hidden rounded-[1.65rem] bg-ink shadow-[0_20px_45px_-25px_rgba(31,33,27,0.55)] sm:rounded-[1.8rem]">
+          {children}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-rice/10 via-transparent to-ink/30" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-x-5 top-5 flex items-center justify-between text-rice/85 sm:inset-x-6 sm:top-6">
+            <span className="font-mono text-[9px] uppercase tracking-[0.24em]">02 / Our Story</span>
+            <span className="h-px w-10 bg-rice/45 sm:w-14" aria-hidden="true" />
+          </div>
+          <div className="pointer-events-none absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
+            <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-rice/55">A moving memory of home</p>
+            <p className="mt-1 font-body text-sm text-rice/95">เรื่องราวที่เดินทางต่อไปพร้อมกับเวลา</p>
           </div>
         </div>
       </div>
@@ -144,6 +167,7 @@ function LazyStoryVideo({
   }
 
   const isNature = variant === "nature";
+  const isStory = variant === "story";
 
   const video = (
     <video
@@ -161,12 +185,13 @@ function LazyStoryVideo({
     </video>
   );
 
-  if (variant === "village" || variant === "people" || variant === "nature") {
+  if (variant === "village" || variant === "story" || variant === "people" || variant === "nature") {
     return (
       <VideoFrameShell variant={variant} alt={alt}>
         <div className={cn(
           "relative aspect-[4/5] overflow-hidden",
-          isNature && "aspect-[9/16] sm:aspect-[4/5]"
+          isNature && "aspect-[9/16] sm:aspect-[4/5]",
+          isStory && "aspect-[9/16] sm:aspect-[4/5]"
         )}>
           {video}
         </div>
@@ -251,6 +276,7 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
 
 const VIDEO_FALLBACKS: Record<string, string> = {
   village: "/images/village-story-01.jpg",
+  story: "/images/story-02-poster.jpg",
   people: "/images/village-story-03.webp",
   nature: "/images/village-story-02.webp",
 };
@@ -258,6 +284,22 @@ const VIDEO_FALLBACKS: Record<string, string> = {
 function StoryMedia({ data, isNature }: { data: StorySectionData; isNature: boolean }) {
   const reduceMotion = useReducedMotion();
   const fallbackSrc = VIDEO_FALLBACKS[data.id] ?? "/images/og-cover.jpg";
+
+  if (data.id === "story" && data.videoId && data.gallery?.length && !reduceMotion) {
+    return (
+      <div className="grid items-center gap-4 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:gap-5">
+        <LazyStoryVideo
+          src={`${basePath}/videos/${data.videoId}`}
+          alt="วิดีโอเรื่องราวของกาบกระบือ"
+          fallbackSrc={fallbackSrc}
+          variant="story"
+        />
+        <div className="overflow-hidden rounded-[2rem] border border-ink/10 bg-rice/70 shadow-[0_30px_80px_-35px_rgba(31,33,27,0.35)]">
+          <StoryCarousel data={data} />
+        </div>
+      </div>
+    );
+  }
 
   if (data.videoId && !reduceMotion) {
     const variant: VideoVariant =
