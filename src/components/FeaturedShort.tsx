@@ -36,7 +36,14 @@ function LazyShortCard({
   const [loaded, setLoaded] = useState(false);
 
   const thumbnailUrl = `https://i.ytimg.com/vi/${short.id}/hqdefault.jpg`;
-  const embedUrl = `https://www.youtube-nocookie.com/embed/${short.id}?rel=0&modestbranding=1&playsinline=1`;
+  const embedUrl =
+    `https://www.youtube-nocookie.com/embed/${short.id}` +
+    `?rel=0` +
+    `&modestbranding=1` +
+    `&playsinline=1` +
+    `&enablejsapi=1` +
+    `&autoplay=1` +
+    `&mute=0`;
   
   return (
     <article className="w-[82vw] max-w-[292px] shrink-0 snap-start sm:w-[300px] lg:w-[310px]">
