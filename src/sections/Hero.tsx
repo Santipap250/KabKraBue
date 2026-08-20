@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, ChevronDown, Eye, EyeOff, Images } from "lucide-react";
+import { ArrowRight, ChevronDown, Eye, EyeOff, Images, Moon, Sun } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { InstallAppButton } from "@/components/InstallAppButton";
@@ -12,18 +12,57 @@ const videoSrc = `${basePath}/videos/village-hero.mp4`;
 const fallbackVideoSrc = `${basePath}/videos/village-hero.webm`;
 const posterSrc = `${basePath}/images/village-hero-poster.jpg`;
 
+const BANGKOK_TIME_ZONE = "Asia/Bangkok";
+
+function formatThailandClock(date: Date) {
+  const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: BANGKOK_TIME_ZONE,
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: BANGKOK_TIME_ZONE,
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+
+  const hourFormatter = new Intl.DateTimeFormat("en-GB", {
+    timeZone: BANGKOK_TIME_ZONE,
+    hour: "2-digit",
+    hour12: false,
+  });
+
+  return {
+    time: timeFormatter.format(date),
+    date: dateFormatter.format(date).toUpperCase(),
+    hour: Number.parseInt(hourFormatter.format(date), 10),
+  };
+}
+
 export function Hero() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [textHidden, setTextHidden] = useState(false);
+  const [now, setNow] = useState(() => new Date());
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduceMotion(mediaQuery.matches);
     update();
     mediaQuery.addEventListener("change", update);
+
     return () => mediaQuery.removeEventListener("change", update);
   }, []);
 
+  useEffect(() => {
+    const timer = window.setInterval(() => setNow(new Date()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const clock = formatThailandClock(now);
+  const isDaytime = clock.hour >= 6 && clock.hour < 18;
   const slideTransition = { duration: reduceMotion ? 0 : 0.65, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
@@ -48,6 +87,30 @@ export function Hero() {
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/30 to-ink/10" />
         <div className="grain-overlay absolute inset-0" />
+      </div>
+
+      <div
+        className="absolute left-1/2 top-[13%] z-10 -translate-x-1/2"
+        aria-label={`เวลาประเทศไทย ${clock.time} ${clock.date}`}
+        aria-live="polite"
+      >
+        <div
+          className="relative flex h-[92px] w-[92px] items-center justify-center rounded-full border border-gold/55 bg-ink/10 shadow-[0_0_40px_rgba(0,0,0,0.16)] backdrop-blur-[2px] sm:h-[106px] sm:w-[106px]"
+        >
+          <div className="absolute inset-[5px] rounded-full border border-rice/12" />
+          <div className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold shadow-[0_0_14px_rgba(196,159,78,0.72)]" />
+
+          <div className="flex flex-col items-center leading-none text-rice">
+            {isDaytime ? (
+              <Sun className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+            ) : (
+              <Moon className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+            )}
+            <span className="font-display text-[24px] tracking-[0.08em] sm:text-[28px]">{clock.time}</span>
+            <span className="mt-2 font-mono text-[7px] tracking-[0.26em] text-rice/70 sm:text-[8px]">THAILAND</span>
+            <span className="mt-1.5 font-mono text-[7px] tracking-[0.12em] text-gold/85 sm:text-[8px]">{clock.date}</span>
+          </div>
+        </div>
       </div>
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
