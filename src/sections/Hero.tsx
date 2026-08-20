@@ -136,7 +136,7 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <button type="button" onClick={() => setTextHidden((value) => !value)} aria-pressed={textHidden} aria-label={textHidden ? "แสดงข้อความ" : "ซ่อนข้อความเพื่อดูวิดีโอเต็มจอ"} className="group absolute bottom-8 left-6 z-10 inline-flex items-center gap-2 rounded-full border border-rice/15 bg-ink/10 px-4 py-2 text-rice/40 backdrop-blur-sm transition-all duration-300 hover:border-rice/40 hover:bg-ink/20 hover:text-rice/85 sm:left-12">
+      <button type="button" onClick={() => setTextHidden((value) => !value)} aria-pressed={textHidden} aria-label={textHidden ? "แสดงข้อความ" : "ซ่อนข้อความเพื่อดูวิดีโอเต็มจอ"} className="group absolute bottom-8 left-6 z-10 inline-flex items-center gap-2 rounded-full border border-rice/15 bg-ink/10 px-4 py-2 text-rice/65 backdrop-blur-sm transition-all duration-300 hover:border-rice/40 hover:bg-ink/20 hover:text-rice/85 sm:left-12">
         {textHidden ? <Eye className="h-3.5 w-3.5" strokeWidth={1.5} /> : <EyeOff className="h-3.5 w-3.5" strokeWidth={1.5} />}
         <span className="font-mono text-[10px] uppercase tracking-[0.2em]">{textHidden ? "แสดงข้อความ" : "ซ่อนข้อความ"}</span>
       </button>
