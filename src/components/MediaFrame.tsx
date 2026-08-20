@@ -45,7 +45,7 @@ export function MediaFrame({
           aria-label={alt}
         >
           <ImageOff className="h-6 w-6 text-paddy/50" strokeWidth={1.5} aria-hidden="true" />
-          <span className="font-mono text-[11px] uppercase tracking-wide text-ink/40">
+          <span className="font-mono text-[11px] uppercase tracking-wide text-ink/55">
             {src.split("/").pop()}
           </span>
         </div>

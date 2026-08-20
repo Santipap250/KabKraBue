@@ -86,7 +86,7 @@ function LazyShortCard({
       </div>
 
       <div className="mt-3 flex items-center justify-between px-1">
-        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/30">
+        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/45">
           {short.label}
         </span>
 
@@ -155,7 +155,7 @@ export function FeaturedShort() {
               </a>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-rice/30">
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-rice/45">
               <span>Featured Video</span>
               <span className="h-px w-10 bg-rice/15" aria-hidden="true" />
               <span>Obixconfig · YouTube Shorts</span>
@@ -173,7 +173,7 @@ export function FeaturedShort() {
             </div>
 
             <div className="mt-2 flex items-center justify-between gap-4 px-1">
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/25">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/40">
                 Swipe to explore · Tap to play
               </span>
 

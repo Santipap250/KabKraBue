@@ -61,7 +61,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-rice/10 pt-6 font-mono text-[11px] uppercase tracking-[0.15em] text-rice/40 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-16 flex flex-col gap-3 border-t border-rice/10 pt-6 font-mono text-[11px] uppercase tracking-[0.15em] text-rice/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} {siteConfig.name}. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="/privacy/" className="hover:text-rice/70">Privacy</a>

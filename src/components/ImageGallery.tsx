@@ -50,7 +50,7 @@ export function ImageGallery() {
             ภาพของกาบกระบือจากมุมสูง ผืนนา สายน้ำ และชีวิตรอบบ้าน — แตะภาพเพื่อเปิดดูแบบเต็มจอ
           </p>
         </div>
-        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/35 sm:block">
+        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45 sm:block">
           Tap / Swipe / Explore
         </span>
       </div>
