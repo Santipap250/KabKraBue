@@ -1,5 +1,5 @@
-// Photo gallery data. Add more photos by placing the optimized file in
-// /public/images/gallery/ and adding one entry below.
+// Photo gallery data. Add more photos by placing optimized files in
+// /public/images/gallery/ or /public/images/ and adding one entry below.
 
 export interface GalleryImage {
   id: string;
@@ -56,5 +56,87 @@ export const galleryImages: GalleryImage[] = [
     category: "village",
     width: 864,
     height: 1536,
+  },
+
+  {
+    id: "culture-04",
+    src: "/images/culture-04.webp",
+    alt: "Village temple set within open green grounds under a cloudy sky",
+    caption: "วัดประจำหมู่บ้านท่ามกลางลานกว้างและผืนสีเขียว",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-05",
+    src: "/images/culture-05.webp",
+    alt: "Wooded temple grounds with a small pavilion beneath tall trees",
+    caption: "ศาลาและพื้นที่รอบวัดใต้ร่มไม้ใหญ่",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-06",
+    src: "/images/culture-06.webp",
+    alt: "Sunlight filtering through trees beside the village temple grounds",
+    caption: "แสงอุ่นยามเย็นลอดผ่านต้นไม้ในพื้นที่วัด",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-07",
+    src: "/images/culture-07.webp",
+    alt: "Village temple building viewed across an open grassy courtyard",
+    caption: "วิหารกลางลานวัดในช่วงแสงเย็น",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-08",
+    src: "/images/culture-08.webp",
+    alt: "Monks and villagers working with wood beneath a temple pavilion",
+    caption: "ผู้คนและพระสงฆ์ร่วมกันทำงานไม้ใต้ศาลา",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-09",
+    src: "/images/culture-09.webp",
+    alt: "Monk standing in front of the village temple under construction",
+    caption: "พระสงฆ์หน้าวิหารที่กำลังก่อสร้าง",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-10",
+    src: "/images/culture-10.webp",
+    alt: "Aerial view of the village temple and surrounding rice fields",
+    caption: "มุมสูงของวัดท่ามกลางหมู่บ้านและผืนนา",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-11",
+    src: "/images/culture-11.webp",
+    alt: "Village temple courtyard with a golden Buddha statue and surrounding trees",
+    caption: "ลานวัดกับพระพุทธรูปทองและบรรยากาศโดยรอบ",
+    category: "culture",
+    width: 1200,
+    height: 900,
+  },
+  {
+    id: "culture-12",
+    src: "/images/culture-12.webp",
+    alt: "Wide aerial view of the village temple complex surrounded by rice fields",
+    caption: "ภาพมุมสูงกว้างของวัดและผืนนารอบหมู่บ้าน",
+    category: "culture",
+    width: 1200,
+    height: 900,
   },
 ];
