@@ -115,8 +115,9 @@ export const galleryImages: GalleryImage[] = [
   {
     id: "culture-10",
     src: "/images/culture-10.webp",
-    alt: "Aerial view of the village มุมสูงของวัดท่ามกลางหมู่บ้านและผืนนา and surrounding rice fields",
-    caption: "มุมสูงของวัดท่ามกลางหมู่บ้านและผืนนา",widthcategory: "culture",
+    alt: "Aerial view of the village temple and surrounding rice fields",
+    caption: "มุมสูงของวัดท่ามกลางหมู่บ้านและผืนนา",
+    category: "culture",
     width: 1200,
     height: 900,
   },
