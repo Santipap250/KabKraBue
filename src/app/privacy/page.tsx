@@ -67,7 +67,7 @@ export default function PrivacyPage() {
             </section>
           </div>
 
-          <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/40">
+          <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">
             {siteConfig.name} · {new Date().getFullYear()}
           </p>
         </div>
