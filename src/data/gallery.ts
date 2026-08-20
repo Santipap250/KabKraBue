@@ -25,7 +25,7 @@ export const galleryImages: GalleryImage[] = [
     id: "gallery-02",
     src: "/images/gallery/gallery-02.webp",
     alt: "Village water tower surrounded by fields",
-    caption: "หอถังน้ำท่ามกลางผืนนาและแสงยามเย็น 03/12/2024",
+    caption: "หอถังน้ำตั้งตระหง่าน พร้อมกับแสงเย็นที่เปลี่ยนไปทุกวัน 03/12/2024",
     category: "village",
     width: 864,
     height: 1536,
