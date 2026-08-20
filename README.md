@@ -24,8 +24,8 @@ npm run build
 ## Content
 
 Content lives under `src/data/` and real media assets live under `public/images/` and
-`public/videos/`. Placeholder records remain intentionally hidden until real source
-material is available.
+`public/videos/`. The optional video showcase stays empty until real published
+sources and thumbnails are available, so placeholder content is never exposed in production.
 
 ## Repository
 
