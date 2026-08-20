@@ -1,9 +1,17 @@
-const CACHE = "kabkrabue-v2";
+const CACHE = "kabkrabue-v3";
+
+// The service worker can live at the site root on Vercel or under a basePath
+// on GitHub Pages. Derive the deployed path from the SW URL so every cached
+// asset and offline fallback stays inside the correct scope.
+const BASE_PATH = new URL(".", self.location.href).pathname.replace(/\/$/, "");
+const withBasePath = (path) => `${BASE_PATH}${path}` || "/";
+const APP_ROOT = withBasePath("/");
+
 const APP_SHELL = [
-  "/",
-  "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
+  APP_ROOT,
+  withBasePath("/manifest.webmanifest"),
+  withBasePath("/icons/icon-192.png"),
+  withBasePath("/icons/icon-512.png"),
 ];
 
 const isVideoRequest = (url) =>
@@ -54,8 +62,8 @@ self.addEventListener("fetch", (event) => {
   // MP4/WebM requests and Range requests natively.
   if (isVideoRequest(url)) return;
 
-  // HTML navigation: network-first so new Vercel deployments appear
-  // immediately, while still providing an offline fallback.
+  // HTML navigation: network-first so new deployments appear immediately,
+  // while still providing an offline fallback inside the deployed scope.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -69,7 +77,7 @@ self.addEventListener("fetch", (event) => {
         })
         .catch(() =>
           caches.match(request).then(
-            (cached) => cached || caches.match("/"),
+            (cached) => cached || caches.match(APP_ROOT),
           ),
         ),
     );
