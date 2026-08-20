@@ -125,7 +125,7 @@ export const galleryImages: GalleryImage[] = [
     id: "culture-11",
     src: "/images/culture-11.webp",
     alt: "Village temple courtyard with a golden Buddha statue and surrounding trees",
-    caption: "ลานวัดกับพระพุทธรูปทองและบรรยากาศโดยรอบ 04/03/2021",
+    caption: "ลานวัดกับหลวงพ่อและบรรยากาศโบสถ์รอบ 04/03/2021",
     category: "culture",
     width: 1200,
     height: 900,
