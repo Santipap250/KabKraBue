@@ -107,7 +107,7 @@ export const galleryImages: GalleryImage[] = [
     id: "culture-09",
     src: "/images/culture-09.webp",
     alt: "Monk standing in front of the village temple under construction",
-    caption: "พระสงฆ์หน้าวิหารที่กำลังก่อสร้าง 15/06/2021",
+    caption: "พระสงฆ์หน้าวิหารกับผู้คนที่กำลังก่อสร้าง 15/06/2021",
     category: "culture",
     width: 1200,
     height: 900,
