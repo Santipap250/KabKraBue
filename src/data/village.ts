@@ -149,6 +149,10 @@ export const storySections: StorySection[] = [
         imageId: "culture-15.webp",
         imageAlt: "พระสงฆ์ยิ้มท่ามกลางร่มไม้และสายน้ำในบริเวณวัด",
       },
+      {
+        imageId: "culture-16.webp",
+        imageAlt: "ผู้คนรวมตัวกันใต้ร่มไม้ในบริเวณวัดของชุมชนกาบกระบือ",
+      },
     ],
   },
   {
