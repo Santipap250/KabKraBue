@@ -95,6 +95,12 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนท้องนา",
     imageId: "village-story-03.webp",
     videoId: "people-section.mp4",
+    gallery: [
+      {
+        imageId: "village-story-03.webp",
+        imageAlt: "ภาพมุมสูงลวดลายแปลงนาและบ้านเรือนในหมู่บ้านกาบกระบือ",
+      },
+    ],
   },
   {
     id: "nature",
