@@ -27,9 +27,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["Fraunces", "Georgia", "serif"],
-        body: ["'IBM Plex Sans Thai'", "Inter", "sans-serif"],
-        mono: ["'IBM Plex Mono'", "monospace"],
+        display: ["var(--font-display)", "Georgia", "serif"],
+        body: ["var(--font-body)", "Inter", "sans-serif"],
+        mono: ["var(--font-mono)", "monospace"],
       },
       maxWidth: {
         content: "1400px",

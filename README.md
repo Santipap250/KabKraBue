@@ -10,7 +10,7 @@
 - PWA install support
 - Lazy-loaded video playback
 - Editorial Explore showcase
-- Culture / Village Temple gallery with 12 optimized WebP images
+- Culture / Village Temple story set with 16 optimized WebP images
 - Privacy, robots.txt, and sitemap.xml
 
 ## Development
@@ -24,7 +24,9 @@ npm run build
 ## Content
 
 Content lives under `src/data/` and real media assets live under `public/images/` and
-`public/videos/`. The optional video showcase stays empty until real published
+`public/videos/`. Culture story images are stored as `culture-01.webp` through
+`culture-16.webp`; the browseable photo gallery additionally uses entries in
+`src/data/gallery.ts`. The optional video showcase stays empty until real published
 sources and thumbnails are available, so placeholder content is never exposed in production.
 
 ## Repository
