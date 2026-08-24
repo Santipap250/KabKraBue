@@ -26,7 +26,6 @@ function formatThailandClock(date: Date) {
     timeZone: BANGKOK_TIME_ZONE,
     day: "2-digit",
     month: "short",
-    year: "numeric",
   });
 
   const hourFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -95,20 +94,18 @@ export function Hero() {
         aria-live="polite"
       >
         <div
-          className="relative flex h-[92px] w-[92px] items-center justify-center rounded-full border border-gold/55 bg-ink/10 shadow-[0_0_40px_rgba(0,0,0,0.16)] backdrop-blur-[2px] sm:h-[106px] sm:w-[106px]"
+          className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full border border-gold/55 bg-ink/10 shadow-[0_0_40px_rgba(0,0,0,0.16)] backdrop-blur-[2px] sm:h-[122px] sm:w-[122px]"
         >
-          <div className="absolute inset-[5px] rounded-full border border-rice/12" />
-          <div className="absolute -bottom-1 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-gold shadow-[0_0_14px_rgba(196,159,78,0.72)]" />
-
           <div className="flex flex-col items-center leading-none text-rice">
             {isDaytime ? (
-              <Sun className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+              <Sun className="mb-2 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
             ) : (
-              <Moon className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+              <Moon className="mb-2 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
             )}
-            <span className="font-display text-[24px] tracking-[0.08em] sm:text-[28px]">{clock.time}</span>
-            <span className="mt-2 font-mono text-[7px] tracking-[0.26em] text-rice/70 sm:text-[8px]">THAILAND</span>
-            <span className="mt-1.5 font-mono text-[7px] tracking-[0.12em] text-gold/85 sm:text-[8px]">{clock.date}</span>
+            <span className="font-display text-[26px] tracking-[0.08em] sm:text-[30px]">{clock.time}</span>
+            <span className="mt-2.5 whitespace-nowrap font-mono text-[7px] tracking-[0.16em] text-rice/70 sm:text-[8px]">
+              THAILAND <span className="text-gold/85">· {clock.date}</span>
+            </span>
           </div>
         </div>
       </div>
