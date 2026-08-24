@@ -17,7 +17,8 @@ export const siteConfig = {
   themeColor: "#3F5A3D",
   contact: {
     email: "santipap350z@gmail.com",
-    phone: "[TODO: ใส่เบอร์โทรติดต่อ]",
+    // Optional contact field. Leave empty until an official number is available.
+    phone: "",
     address: "หมู่บ้านกาบกระบือ ตำบลโคกสะอาด อำเภอปราสาท จังหวัดสุรินทร์ 32140 ประเทศไทย",
   },
   social: {
@@ -25,7 +26,8 @@ export const siteConfig = {
     instagram: "https://www.instagram.com/tuizsky",
     youtube: "https://www.youtube.com/@obixconfig",
     tiktok: "https://www.tiktok.com/@tuizfpv",
-    line: "[TODO: ลิงก์ Line Official Account]",
+    // Optional social field. Leave empty until an official Line account is available.
+    line: "",
   },
   nav: [
     { label: "The Village", href: "#village" },
