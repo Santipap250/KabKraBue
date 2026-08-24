@@ -7,7 +7,7 @@
 | File / folder | Used by |
 |---|---|
 | `og-cover.jpg` | Open Graph / social sharing preview |
-| `culture-01.webp` … `culture-12.webp` | Culture — Village Temple + Gallery culture collection |
+| `culture-01.webp` … `culture-16.webp` | Culture — Village Temple story set + selected Gallery culture collection |
 | `gallery/*` | Photo Gallery — see `src/data/gallery.ts` |
 | `places/*` | Retained image assets for existing visual content |
 | `*.webp`, `*.jpg` | Story / Explore imagery as referenced by `src/data/` |
