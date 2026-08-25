@@ -57,16 +57,6 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนนา",
     imageId: "village-story-01.jpg",
     videoId: "story-02.mp4",
-    gallery: [
-      {
-        imageId: "village-story-02.webp",
-        imageAlt: "ภาพมุมสูงท้องนากาบกระบือยามเย็น เมฆลอยต่ำเหนือแหล่งน้ำ",
-      },
-      {
-        imageId: "village-story-03.webp",
-        imageAlt: "ภาพมุมสูงลวดลายแปลงนาและบ้านเรือนในหมู่บ้านกาบกระบือ",
-      },
-    ],
   },
   {
     id: "people",
@@ -95,12 +85,6 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนท้องนา",
     imageId: "village-story-03.webp",
     videoId: "people-section.mp4",
-    gallery: [
-      {
-        imageId: "village-story-03.webp",
-        imageAlt: "ภาพมุมสูงลวดลายแปลงนาและบ้านเรือนในหมู่บ้านกาบกระบือ",
-      },
-    ],
   },
   {
     id: "nature",
