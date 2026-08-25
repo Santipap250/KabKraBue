@@ -14,6 +14,8 @@ export interface StorySection {
   imageAlt: string;
   imageId: string;
   videoId?: string;
+  // Optional poster used while the video loads; kept separate from the semantic/fallback image.
+  posterId?: string;
   // Optional supporting photos shown alongside the main image as a
   // small collage. Only a few sections need this — most stay single-image.
   gallery?: StoryGalleryImage[];
@@ -36,6 +38,7 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของท้องนาและหมู่บ้านกาบกระบือ",
     imageId: "village-story-01.jpg",
     videoId: "village-opening.mp4",
+    posterId: "village-story-01.jpg",
   },
   {
     id: "story",
@@ -57,6 +60,7 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนนา",
     imageId: "village-story-01.jpg",
     videoId: "story-02.mp4",
+    posterId: "story-02-poster.jpg",
   },
   {
     id: "people",
@@ -85,6 +89,7 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพมุมสูงของหมู่บ้านกาบกระบือและผืนท้องนา",
     imageId: "village-story-03.webp",
     videoId: "people-section.mp4",
+    posterId: "village-story-03.webp",
   },
   {
     id: "nature",
@@ -100,6 +105,7 @@ export const storySections: StorySection[] = [
     imageAlt: "ภาพท้องนาและแสงธรรมชาติของหมู่บ้านกาบกระบือ",
     imageId: "village-story-02.webp",
     videoId: "nature-section.mp4",
+    posterId: "village-story-02.webp",
   },
   {
     id: "culture",
@@ -159,5 +165,6 @@ export const storySections: StorySection[] = [
     imageAlt: "Everyday lifestyle and rural life in KabKraBue",
   imageId: "culture-01.webp",
     videoId: "lifestyle-section.mp4",
+    posterId: "culture-01.webp",
 },
 ];
