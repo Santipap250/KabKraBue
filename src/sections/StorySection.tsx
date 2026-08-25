@@ -120,7 +120,13 @@ function LazyStoryVideo({
   }, [reduceMotion]);
 
   if (failed || reduceMotion) {
-    return <MediaFrame src={fallbackSrc} alt={alt} aspect="aspect-[4/5]" />;
+    return (
+      <MediaFrame
+        src={fallbackSrc}
+        alt={alt}
+        aspect={variant === "nature" ? "aspect-[40/17]" : "aspect-[4/5]"}
+      />
+    );
   }
 
   const toggleSound = () => {
@@ -132,7 +138,7 @@ function LazyStoryVideo({
     if (!nextMuted) void video.play().catch(() => undefined);
   };
 
-  const storyShape = variant === "story" || variant === "nature";
+  const storyShape = variant === "story";
 
   const videoContent = (
     <div className="relative h-full w-full">
@@ -170,7 +176,18 @@ function LazyStoryVideo({
   if (variant !== "default") {
     return (
       <VideoFrameShell variant={variant} alt={alt}>
-        <div className={cn("relative overflow-hidden", storyShape ? "aspect-[9/16] sm:aspect-[4/5]" : "aspect-[4/5]")}>{videoContent}</div>
+        <div
+          className={cn(
+            "relative overflow-hidden",
+            variant === "nature"
+              ? "aspect-[40/17]"
+              : storyShape
+                ? "aspect-[9/16] sm:aspect-[4/5]"
+                : "aspect-[4/5]",
+          )}
+        >
+          {videoContent}
+        </div>
       </VideoFrameShell>
     );
   }
