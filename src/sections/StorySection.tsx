@@ -83,12 +83,14 @@ function LazyStoryVideo({
   src,
   alt,
   fallbackSrc,
+  posterSrc,
   variant = "default",
   className,
 }: {
   src: string;
   alt: string;
   fallbackSrc: string;
+  posterSrc?: string;
   className?: string;
   variant?: VideoVariant;
 }) {
@@ -130,7 +132,7 @@ function LazyStoryVideo({
     if (!nextMuted) void video.play().catch(() => undefined);
   };
 
-  const storyShape = variant === "story";
+  const storyShape = variant === "story" || variant === "nature";
 
   const videoContent = (
     <div className="relative h-full w-full">
@@ -141,7 +143,7 @@ function LazyStoryVideo({
         loop
         playsInline
         preload="metadata"
-        poster={`${basePath}${fallbackSrc}`}
+        poster={`${basePath}${posterSrc ?? fallbackSrc}`}
         aria-label={alt}
         onError={() => setFailed(true)}
       >
@@ -168,18 +170,7 @@ function LazyStoryVideo({
   if (variant !== "default") {
     return (
       <VideoFrameShell variant={variant} alt={alt}>
-        <div
-          className={cn(
-            "relative overflow-hidden",
-            variant === "nature"
-              ? "aspect-[40/17]"
-              : storyShape
-                ? "aspect-[9/16] sm:aspect-[4/5]"
-                : "aspect-[4/5]",
-          )}
-        >
-          {videoContent}
-        </div>
+        <div className={cn("relative overflow-hidden", storyShape ? "aspect-[9/16] sm:aspect-[4/5]" : "aspect-[4/5]")}>{videoContent}</div>
       </VideoFrameShell>
     );
   }
@@ -237,7 +228,14 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
           <button type="button" onClick={() => goTo(index + 1)} aria-label="ภาพถัดไป" className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100">
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
           </button>
-          <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
+          <div
+        className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-rice/20 bg-ink/25 px-2.5 py-1 font-mono text-[9px] tracking-[0.18em] text-rice/80 backdrop-blur-md sm:right-5 sm:top-5"
+        aria-label={`ภาพที่ ${index + 1} จาก ${slides.length}`}
+      >
+        {index + 1} / {slides.length}
+      </div>
+
+      <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
             {slides.map((slide, i) => (
               <button key={slide.imageId} type="button" onClick={() => goTo(i)} aria-label={`ไปที่ภาพที่ ${i + 1} จาก ${slides.length}`} aria-current={i === index} className={cn("h-1.5 rounded-full transition-all duration-200", i === index ? "w-6 bg-rice" : "w-1.5 bg-rice/45 hover:bg-rice/75")} />
             ))}
@@ -258,11 +256,22 @@ const VIDEO_FALLBACKS: Record<string, string> = {
 function StoryMedia({ data }: { data: StorySectionData }) {
   const reduceMotion = useReducedMotion();
   const fallbackSrc = VIDEO_FALLBACKS[data.id] ?? "/images/og-cover.jpg";
+  const posterSrc = data.posterId ? `/images/${data.posterId}` : fallbackSrc;
 
-  if (data.id === "story" && data.videoId && data.gallery?.length && !reduceMotion) {
+  if (data.videoId && data.gallery?.length && !reduceMotion) {
+    const variant: VideoVariant =
+      data.id === "village" ? "village" :
+      data.id === "people" ? "people" :
+      data.id === "nature" ? "nature" : "default";
+
     return (
       <div className="grid items-center gap-4 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:gap-5">
-        <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt="วิดีโอเรื่องราวของกาบกระบือ" fallbackSrc={fallbackSrc} variant="story" />
+        <LazyStoryVideo
+          src={`${basePath}/videos/${data.videoId}`}
+          alt={data.imageAlt}
+          fallbackSrc={fallbackSrc}
+          variant={variant}
+        />
         <div className="overflow-hidden rounded-[2rem] border border-ink/10 bg-rice/70 shadow-[0_30px_80px_-35px_rgba(31,33,27,0.35)]">
           <StoryCarousel data={data} />
         </div>
@@ -275,7 +284,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
       data.id === "village" ? "village" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
-    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} fallbackSrc={fallbackSrc} variant={variant} />;
+    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
   }
 
   if (data.gallery?.length) return <StoryCarousel data={data} />;
@@ -360,6 +369,3 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
     </section>
   );
 }
-
-
-
