@@ -93,17 +93,71 @@ export function Hero() {
         aria-label={`เวลาประเทศไทย ${clock.time} ${clock.date}`}
         aria-live="polite"
       >
-        <div
-          className="relative flex h-[104px] w-[104px] items-center justify-center rounded-full border border-gold/55 bg-ink/10 shadow-[0_0_40px_rgba(0,0,0,0.16)] backdrop-blur-[2px] sm:h-[122px] sm:w-[122px]"
-        >
-          <div className="flex flex-col items-center leading-none text-rice">
+        <div className="relative flex h-[112px] w-[112px] items-center justify-center sm:h-[132px] sm:w-[132px]">
+          {/* Soft ambient glow lifting the dial off the sky */}
+          <div
+            className="absolute inset-[-18%] rounded-full bg-gold/20 blur-2xl"
+            aria-hidden="true"
+          />
+
+          {/* Bezel ring with fine hairline hour ticks (static, like a real watch face) */}
+          <svg
+            viewBox="0 0 200 200"
+            className="absolute inset-0 h-full w-full drop-shadow-[0_6px_18px_rgba(0,0,0,0.28)]"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="kkbGoldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#F3DFA6" />
+                <stop offset="45%" stopColor="#C99A3E" />
+                <stop offset="100%" stopColor="#8A6423" />
+              </linearGradient>
+            </defs>
+
+            {/* faint outer halo ring */}
+            <circle cx="100" cy="100" r="98" fill="none" stroke="#F3DFA6" strokeOpacity="0.18" strokeWidth="1" />
+
+            {/* fine hour ticks — thin hairlines, slightly longer at 12/3/6/9 */}
+            {Array.from({ length: 12 }).map((_, i) => {
+              const angle = (i * 30 - 90) * (Math.PI / 180);
+              const isMajor = i % 3 === 0;
+              const rOuter = 94;
+              const rInner = isMajor ? 84 : 89;
+              const x1 = 100 + rOuter * Math.cos(angle);
+              const y1 = 100 + rOuter * Math.sin(angle);
+              const x2 = 100 + rInner * Math.cos(angle);
+              const y2 = 100 + rInner * Math.sin(angle);
+              return (
+                <line
+                  key={i}
+                  x1={x1}
+                  y1={y1}
+                  x2={x2}
+                  y2={y2}
+                  stroke="#F3DFA6"
+                  strokeOpacity={isMajor ? 0.85 : 0.4}
+                  strokeWidth={isMajor ? 1.25 : 0.75}
+                  strokeLinecap="butt"
+                />
+              );
+            })}
+
+            {/* main polished bezel */}
+            <circle cx="100" cy="100" r="72" fill="none" stroke="url(#kkbGoldSheen)" strokeWidth="2" />
+          </svg>
+
+          {/* Glass face */}
+          <div className="absolute inset-[13%] rounded-full bg-[radial-gradient(circle_at_32%_28%,rgba(255,255,255,0.14),rgba(20,22,18,0.22)_65%)] shadow-inner backdrop-blur-[2px]" />
+
+          <div className="absolute inset-0 flex flex-col items-center justify-center leading-none text-rice">
             {isDaytime ? (
-              <Sun className="mb-2 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+              <Sun className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
             ) : (
-              <Moon className="mb-2 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
+              <Moon className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
             )}
             <span className="font-display text-[26px] tracking-[0.08em] sm:text-[30px]">{clock.time}</span>
-            <span className="mt-2.5 whitespace-nowrap font-mono text-[7px] tracking-[0.16em] text-rice/70 sm:text-[8px]">
+            <span className="my-1.5 h-px w-6 bg-gradient-to-r from-transparent via-gold/70 to-transparent" aria-hidden="true" />
+            <span className="whitespace-nowrap font-mono text-[7px] tracking-[0.16em] text-rice/70 sm:text-[8px]">
               THAILAND <span className="text-gold/85">· {clock.date}</span>
             </span>
           </div>
