@@ -2,40 +2,42 @@
 
 ## Scope and constraints
 
-Continue from the existing Next.js App Router project and its current content/assets. Work only on `manus/kabkrabue-premium-upgrade`; do not merge into `main`, change production, or invent village history, people, location data, coordinates, or video records. Keep `output: "export"`, Vercel compatibility, the original media, existing YouTube IDs, and the current public content. Validate any path/basePath behavior before claiming GitHub Pages support.
+Continue from the existing Next.js App Router project and its current content/assets. Work only on `manus/kabkrabue-premium-upgrade`; do not merge into `main`, change production, or invent village history, people, location data, coordinates, or video records. Keep `output: "export"`, Vercel compatibility, original media and existing YouTube IDs. Validate `basePath` behavior before claiming GitHub Pages support.
 
-Current starting point: `main` SHA `5a7c5058d7535327585f5420d9000a35bee05418`.
+Starting/latest `main` SHA: `5a7c5058d7535327585f5420d9000a35bee05418`.
 
 ## Implementation approach
 
-1. Patch Next.js and aligned framework packages to the current secure maintenance release without a major-version upgrade. Resolve transitive audit findings where semver-compatible and verify with `npm ci`, `npm audit`, lint, TypeScript, build, and exported files.
-2. Preserve the current editorial site architecture. Improve its shared design tokens, typography rhythm, hero clock, media loading, mobile navigation, gallery filtering/lightbox, PWA cache boundaries, metadata, privacy disclosure, and documentation where audit evidence shows defects.
-3. Centralize internal static paths so root-hosted Vercel and a tested project `basePath` produce working assets, icons, manifest, service-worker scope, and privacy navigation. Preserve accurate canonical metadata for the production origin.
-4. Keep YouTube embeds click-to-load, videos outside service-worker caches, real video IDs/content intact, and optimized media as separate files so originals remain available. Reduce offscreen video work and prefer an efficient supported source.
-5. Commit in meaningful units on the working branch, inspect diffs, push only this branch, open a PR if GitHub authorizes it, and verify a Vercel preview only if the linked project automatically creates one. Never merge or promote to production.
+1. Patch Next.js and aligned framework packages to a current secure maintenance release without a major-version upgrade. Resolve transitive audit findings where compatibility allows; verify with clean install, audit, lint, TypeScript, build and exported files.
+2. Preserve the editorial site architecture while improving media loading, Hero clock, mobile navigation, gallery filtering/lightbox, PWA cache boundaries, metadata, privacy disclosures and documentation where audit evidence shows issues.
+3. Centralize internal static paths so root-hosted Vercel and tested project `basePath` produce working assets, icons, manifest, service-worker scope and privacy navigation. Preserve accurate canonical metadata.
+4. Keep YouTube embeds click-to-load, videos outside service-worker caches, real video IDs/content intact, originals untouched and optimized media separate. Reduce offscreen video work.
+5. Commit in meaningful units, inspect diffs, push only the feature branch, open a PR and verify Vercel status/Preview through GitHub. Never merge or promote to production.
 
 ## Project structure
 
-- `src/app/`: static App Router pages, metadata, robots and sitemap.
-- `src/components/`: reusable navigation, gallery, media, PWA, map, UI and footer components.
-- `src/sections/`: homepage hero and editorial story sections.
-- `src/data/`: site configuration and village, gallery, explore, short, video and event content.
+- `src/app/`: static App Router pages, metadata, manifest, robots and sitemap.
+- `src/components/`: navigation, gallery, media, PWA, map, UI and footer.
+- `src/sections/`: Hero and editorial story sections.
+- `src/data/`: site configuration and village, gallery, explore, Shorts, video and event content.
 - `src/hooks/`, `src/lib/`: browser interaction hooks and shared utilities.
-- `src/styles/`: global design tokens and styles.
+- `src/styles/`, `tailwind.config.ts`: design tokens, typography and global styles.
 - `public/images/`, `public/videos/`, `public/icons/`, `public/sw.js`: static media and PWA files.
+- `docs/`: project audit, QA and Before/After screenshots.
 
 ## Design direction
 
-**Quiet Luxury × Cinematic Editorial × Thai Village Heritage.** Preserve the existing rice/ink/paddy/clay palette and terrace-line motif, using gold sparingly. Keep an editorial, image-led composition with generous but mobile-conscious spacing, restrained transitions, legible Thai body type, and clear bilingual hierarchy. Display typography uses Fraunces; Thai body text uses IBM Plex Sans Thai; metadata uses IBM Plex Mono. Brand essence: a calm, image-led introduction to KabKraBue for people discovering or remembering the village; grounded, reflective, welcoming. Voice: specific and warm rather than promotional. Wordmark stays text-led with the existing name and Thai identity; no invented emblem or fabricated heritage symbol.
+**Quiet Luxury × Cinematic Editorial × Thai Village Heritage.** Preserve the rice/ink/paddy/clay palette and terrace motif; use gold sparingly. Keep editorial image-led compositions, generous but mobile-conscious spacing, restrained transitions, legible Thai body type and a clear bilingual hierarchy. Display typography uses Fraunces; Thai body text uses IBM Plex Sans Thai; metadata uses IBM Plex Mono. Keep the voice specific, warm and grounded; do not invent emblems or heritage symbols.
 
-## Current audit baseline
+## Starting audit baseline
 
-- Latest `main` and branch starting SHA: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- `npm ci`, `npm run lint`, `npx tsc --noEmit`, and `npm run build` passed on the starting tree; Next produced static routes including `/`, `/privacy`, `/robots.txt`, and `/sitemap.xml`.
-- Baseline `npm audit`: 12 findings (7 moderate, 4 high, 1 critical). Official Next.js November 2026 release identifies `15.5.29` as the Maintenance LTS security release; installed Next.js was `15.5.25`.
-- Confirmed source risks include the Hero clock using render-time `new Date()` and one-second updates, empty gallery filters, missing dialog focus management, service-worker activation deleting every origin cache, hard-coded root paths that need testing under `basePath`, and incomplete privacy disclosure for map/thumbnail/cache behavior.
-- Video inventory was checked with `ffprobe`; originals will not be overwritten. No broken referenced image/video assets was confirmed by the first source check, but generated export URLs still require validation.
+- `npm ci`, lint, TypeScript and root static build passed on the starting tree; Next.js exported Home, Privacy, robots and sitemap.
+- Baseline `npm audit`: 12 findings (7 moderate, 4 high, 1 critical); installed Next.js was 15.5.25. Official November 2026 Next.js security release selected 15.5.29 for the patched 15.x line.
+- Confirmed issues included render-time Hero clock/one-second updates, empty gallery filters, missing dialog focus management, service-worker activation deleting all origin caches, untested root paths under `basePath`, and incomplete third-party privacy disclosure.
+- Media inventory used `ffprobe`; originals were preserved. Initial referenced asset scan found no broken image/video paths; generated export URLs still needed browser verification.
 
-## Implementation status — 2026-11-12
+## Implementation and QA status — 2026-11-12
 
-Code changes and QA are complete on `manus/kabkrabue-premium-upgrade`. `npm ci`, lint, TypeScript, root static build, GitHub Pages static build, responsive/browser interactions, PWA offline and media loading checks pass. The final audit still reports six moderate development-tooling dependency findings (zero high/critical); see `docs/PROJECT_AUDIT.md`. The next step is push/PR and verify the automatically generated Vercel deployment through GitHub checks. Do not merge or promote to production.
+Code changes are complete on `manus/kabkrabue-premium-upgrade`. `npm ci`, lint, TypeScript, root static build, GitHub Pages static build, responsive/browser interactions, PWA offline and media-loading checks pass. Final `npm audit` reports 6 moderate development-tooling findings (0 high/critical); see `docs/PROJECT_AUDIT.md`.
+
+[PR #1](https://github.com/Santipap250/KabKraBue/pull/1) is open and mergeable. Vercel’s GitHub check reports deployment success and the Preview URL is https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ . An unauthenticated browser is shown `Login – Vercel` with a 403 asset response, so actual hosted content still requires a user/reviewer Vercel session. Do not merge or promote to production without explicit authorization.

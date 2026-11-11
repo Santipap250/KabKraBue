@@ -54,12 +54,13 @@ Status reflects tests performed on `manus/kabkrabue-premium-upgrade`. `main` and
 - [x] Expand README with project structure, setup/build/deploy, images/video, PWA/cache and design tokens.
 - [x] Add audit report, work plan, TODO and Before/After screenshots.
 
-## 8. Pull request / preview — IN PROGRESS
+## 8. Pull request / preview — OPEN; preview is protected
 
 - [x] Work on `manus/kabkrabue-premium-upgrade`; verify latest `origin/main` still matches the recorded base SHA.
-- [ ] Create meaningful commit(s), push only the feature branch, and open a PR to `main`.
-- [ ] Verify the Vercel Preview URL and status from the GitHub PR checks/deployment. Vercel MCP OAuth was not available in this session; use GitHub deployment checks if the project creates previews automatically.
-- [ ] Do not merge, promote, or change production without explicit authorization.
+- [x] Create meaningful commits, push only the feature branch, and open [PR #1](https://github.com/Santipap250/KabKraBue/pull/1) to `main`.
+- [x] Verify Vercel Preview URL and GitHub checks: deployment `success`; 2 checks successful, 0 failing and 0 pending at the time checked. Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ .
+- [ ] Page-level Preview verification remains blocked: unauthenticated browser shows `Login – Vercel` and a 403 asset response. User/reviewer with Vercel project access must sign in to confirm content. Vercel MCP OAuth returned no token in this session.
+- [x] Do not merge, promote, or change production without explicit authorization.
 
 ## 9. Final verification
 

@@ -28,8 +28,8 @@
 - `npm run build` (root/Vercel static export) — ผ่าน; routes `/`, `/privacy`, `/manifest.webmanifest`, `/robots.txt`, `/sitemap.xml` ถูก prerender/export.
 - `GITHUB_PAGES=true npm run build` — ผ่าน; ตรวจ `out/`, manifest `start_url`/`scope` ใต้ `/KabKraBue/`, icons/favicon, worker, privacy route และ static assets.
 - Chromium basePath run (390/1280 px, reduced-motion): root/privacy status 200; desktop เลือก `/KabKraBue/images/places/viewpoint-01.jpg`, มือถือคง `/KabKraBue/images/village-hero-poster.jpg`; service worker scope `/KabKraBue/`; ไม่มี console/page errors หรือ failed/unprefixed local requests.
-- Chromium root run ทั้ง `no-preference` และ `reduce`: status 200, ไม่มี page/console errors หรือ failed local responses; ไม่พบ YouTube iframe ตอนแรก; `Nature` filter เหลือภาพจริง 1 ภาพจาก Gallery 14 ภาพ; ไม่มีหมวด People ที่ว่าง; lightbox Arrow/Escape/focus restoration ผ่าน; install-help Escape/restoration ผ่านจาก browser test รอบ interaction.
-- Mobile navigation: dialog semantics, Escape close และ focus restoration ผ่าน.
+- Chromium root run ทั้ง `no-preference` และ `reduce`: status 200, ไม่มี page/console errors หรือ failed local responses; ไม่พบ YouTube iframe ตอนแรก; `Nature` filter เหลือภาพจริง 1 ภาพจาก Gallery 14 ภาพ; ไม่มีหมวด People ที่ว่าง; lightbox Arrow/Escape/focus restoration ผ่าน; install-help Escape/restoration ผ่าน.
+- Mobile navigation: dialog semantics, focus cycling ด้วย Tab/Shift+Tab, Escape close และ focus restoration ผ่าน.
 - Shorts: YouTube iframe 0 ก่อนกด Play และ 1 หลังคลิก thumbnail; CTA ของ TikTok/YouTube คงอยู่.
 - Optional Video Showcase: `src/data/videos.ts` ว่างโดยตั้งใจและ section `#video` ไม่ถูก render.
 - Story video QA (no-preference): story clips มี `preload="none"` และ `readyState=0` ก่อนเข้า viewport; เริ่มเล่นเมื่อเข้า viewport; clip ก่อนหน้าหยุดเมื่อเปิด clip ถัดไป; มี story clip ที่เล่นพร้อมกันหนึ่งรายการ; worker cache ไม่มีไฟล์วิดีโอ.
@@ -47,9 +47,12 @@ npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รั�
 
 ## GitHub / Vercel delivery status
 
-- Branch: `manus/kabkrabue-premium-upgrade`.
-- Main/latest-base: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- Pull request, Vercel status check และ preview URL: เติมหลัง push/เปิด PR และตรวจผลจาก GitHub. Vercel MCP OAuth ใน session ยังไม่มี token; ใช้ GitHub deployment/check status หาก Vercel สร้าง preview อัตโนมัติ.
+- Branch: `manus/kabkrabue-premium-upgrade`; starting/latest-main SHA `5a7c5058d7535327585f5420d9000a35bee05418`.
+- Pull request: [#1 — KabKraBue 2.0: harden static site and elevate experience](https://github.com/Santipap250/KabKraBue/pull/1), OPEN and mergeable. มี commits แยกเป็น security/static paths, experience/accessibility และ docs/QA; ไม่มี commit ไป `main`.
+- GitHub PR checks รายงาน **2 successful, 0 failing, 0 pending** ณ ตอนตรวจ; Vercel deployment state `success`.
+- Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ .
+- **ข้อจำกัดการตรวจ Preview:** unauthenticated Chromium เปิด Preview แล้วได้หน้า `Login – Vercel`; มี asset response `403` จึงยืนยัน readiness/URL ได้จาก GitHub/Vercel bot comment แต่ยืนยันเนื้อหาหน้า Preview โดยตรงไม่ได้หากไม่มี Vercel authentication. “After” screenshots จึงเป็น local static export ที่ build/test ผ่าน ไม่ใช่ภาพจากหน้า Preview ที่ถูกล็อก.
+- Vercel MCP OAuth ใน session ยังไม่มี token หลังการเชื่อมต่อที่พยายาม; ผู้ใช้หรือผู้รีวิวที่มีสิทธิ์ Vercel สามารถเปิด Preview URL เพื่อยืนยัน content.
 - ไม่ merge และไม่เปลี่ยน production.
 
 ## Official security references
