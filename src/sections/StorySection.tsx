@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
-  Play,
   Volume2,
   VolumeX,
 } from "lucide-react";
@@ -14,10 +13,12 @@ import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { cn } from "@/lib/cn";
+import { withBasePath } from "@/lib/paths";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const COLLAPSED_HEIGHT = 210;
 const COLLAPSE_THRESHOLD = 260;
+let activeStoryVideo: HTMLVideoElement | null = null;
 
 interface StorySectionProps {
   data: StorySectionData;
@@ -51,7 +52,7 @@ function VideoFrameShell({
       ? "01 / The Village"
       : variant === "story"
         ? "02 / Our Story"
-        : "03 / People";
+        : "03 / Place & Memory";
   const accent = variant === "story" ? "border-gold/30" : "border-clay/30";
   const caption =
     variant === "village"
@@ -97,7 +98,7 @@ function LazyStoryVideo({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
   const [muted, setMuted] = useState(true);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -105,18 +106,27 @@ function LazyStoryVideo({
     if (!video) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          void video.play().catch(() => undefined);
-        } else {
-          video.pause();
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            if (activeStoryVideo && activeStoryVideo !== video) activeStoryVideo.pause();
+            activeStoryVideo = video;
+            void video.play().catch(() => {
+              if (activeStoryVideo === video) activeStoryVideo = null;
+            });
+          } else {
+            video.pause();
+            if (activeStoryVideo === video) activeStoryVideo = null;
         }
       },
       { rootMargin: "120px 0px", threshold: 0.2 },
     );
 
     observer.observe(video);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      video.pause();
+      if (activeStoryVideo === video) activeStoryVideo = null;
+    };
   }, [reduceMotion]);
 
   if (failed || reduceMotion) {
@@ -148,8 +158,8 @@ function LazyStoryVideo({
         muted={muted}
         loop
         playsInline
-        preload="metadata"
-        poster={`${basePath}${posterSrc ?? fallbackSrc}`}
+        preload="none"
+        poster={withBasePath(posterSrc ?? fallbackSrc)}
         aria-label={alt}
         onError={() => setFailed(true)}
       >
@@ -200,7 +210,7 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
 
   const goTo = (target: number) => {
     const next = (target + slides.length) % slides.length;
@@ -271,7 +281,7 @@ const VIDEO_FALLBACKS: Record<string, string> = {
 };
 
 function StoryMedia({ data }: { data: StorySectionData }) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
   const fallbackSrc = VIDEO_FALLBACKS[data.id] ?? "/images/og-cover.jpg";
   const posterSrc = data.posterId ? `/images/${data.posterId}` : fallbackSrc;
 
@@ -284,7 +294,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
     return (
       <div className="grid items-center gap-4 sm:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] sm:gap-5">
         <LazyStoryVideo
-          src={`${basePath}/videos/${data.videoId}`}
+          src={withBasePath(`/videos/${data.videoId}`)}
           alt={data.imageAlt}
           fallbackSrc={fallbackSrc}
           variant={variant}
@@ -301,7 +311,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
       data.id === "village" ? "village" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
-    return <LazyStoryVideo src={`${basePath}/videos/${data.videoId}`} alt={data.imageAlt} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
+    return <LazyStoryVideo src={withBasePath(`/videos/${data.videoId}`)} alt={data.imageAlt} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
   }
 
   if (data.gallery?.length) return <StoryCarousel data={data} />;
@@ -312,7 +322,7 @@ function StoryBody({ id, body }: { id: string; body: string }) {
   const [expanded, setExpanded] = useState(false);
   const paragraphs = body.split("\n\n");
   const isLong = body.length > COLLAPSE_THRESHOLD;
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
 
   return (
     <div className="mt-7 max-w-xl">
@@ -338,7 +348,7 @@ function StoryBody({ id, body }: { id: string; body: string }) {
 
 export function StorySection({ data, reverse = false }: StorySectionProps) {
   const isNature = data.id === "nature";
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
 
   return (
     <section id={data.id} className="relative overflow-hidden border-t border-border">
@@ -356,6 +366,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
         )}>
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 24 }}
+            animate={reduceMotion ? { opacity: 1, y: 0 } : undefined}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.18, margin: "0px 0px -12% 0px" }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
@@ -373,6 +384,7 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
 
           <motion.div
             initial={reduceMotion ? false : { opacity: 0, y: 20, scale: 0.99 }}
+            animate={reduceMotion ? { opacity: 1, y: 0, scale: 1 } : undefined}
             whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.18, margin: "0px 0px -12% 0px" }}
             transition={reduceMotion ? { duration: 0 } : { duration: 0.65, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}

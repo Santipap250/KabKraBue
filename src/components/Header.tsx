@@ -10,7 +10,7 @@ import { MobileMenu } from "./MobileMenu";
 const navItems = siteConfig.nav;
 
 export function Header() {
-  const { scrolled } = useScrollProgress(60);
+  const { scrolled } = useScrollProgress(60, false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (

@@ -1,20 +1,27 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowUpRight, Images, Maximize2 } from "lucide-react";
 import { galleryImages, type GalleryImage } from "@/data/gallery";
 import { MediaFrame } from "@/components/MediaFrame";
 import { GalleryLightbox } from "@/components/GalleryLightbox";
 import { cn } from "@/lib/cn";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
-const categories: Array<{ id: GalleryImage["category"] | "all"; label: string }> = [
-  { id: "all", label: "All" },
-  { id: "landscape", label: "Landscape" },
-  { id: "people", label: "People" },
-  { id: "culture", label: "Culture" },
-  { id: "nature", label: "Nature" },
-  { id: "village", label: "Village" },
+const categoryLabels: Record<GalleryImage["category"], string> = {
+  landscape: "Landscape",
+  people: "People",
+  culture: "Culture",
+  nature: "Nature",
+  village: "Village",
+};
+const categories = [
+  { id: "all" as const, label: "All" },
+  ...Array.from(new Set(galleryImages.map((image) => image.category))).map((id) => ({
+    id,
+    label: categoryLabels[id],
+  })),
 ];
 
 const featuredLayouts = [
@@ -29,7 +36,7 @@ const featuredLayouts = [
 export function ImageGallery() {
   const [filter, setFilter] = useState<(typeof categories)[number]["id"]>("all");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
 
   const filtered = useMemo(
     () => (filter === "all" ? galleryImages : galleryImages.filter((img) => img.category === filter)),
@@ -57,7 +64,6 @@ export function ImageGallery() {
 
       <div
         className="flex gap-2 overflow-x-auto pb-2"
-        role="tablist"
         aria-label="Filter gallery by category"
         style={{ scrollbarWidth: "none" }}
       >
@@ -65,8 +71,7 @@ export function ImageGallery() {
           <button
             key={cat.id}
             type="button"
-            role="tab"
-            aria-selected={filter === cat.id}
+            aria-pressed={filter === cat.id}
             onClick={() => setFilter(cat.id)}
             className={cn(
               "whitespace-nowrap rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] transition-all duration-300",
@@ -100,6 +105,7 @@ export function ImageGallery() {
                   type="button"
                   onClick={() => openAt(i)}
                   initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+                  animate={reduceMotion ? { opacity: 1, y: 0 } : undefined}
                   whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.12 }}
                   transition={

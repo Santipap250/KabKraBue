@@ -7,6 +7,8 @@ import { videos, type VillageVideo } from "@/data/videos";
 import { MediaFrame } from "@/components/MediaFrame";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { hasContent } from "@/lib/content";
+import { useDialogFocus } from "@/hooks/useDialogFocus";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
 function embedSrc(video: VillageVideo): string {
   if (video.provider === "youtube") {
@@ -21,6 +23,9 @@ function embedSrc(video: VillageVideo): string {
 export function VideoShowcase() {
   const playableVideos = videos.filter((video) => hasContent(video.source));
   const [active, setActive] = useState<VillageVideo | null>(null);
+  const reduceMotion = useReducedMotionPreference();
+  const closeDialog = () => setActive(null);
+  const dialogRef = useDialogFocus(active !== null, closeDialog);
   useLockBodyScroll(active !== null);
 
   if (playableVideos.length === 0) return null;
@@ -52,12 +57,14 @@ export function VideoShowcase() {
       <AnimatePresence>
         {active && (
           <motion.div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label={active.title}
-            initial={{ opacity: 0 }}
+            tabIndex={-1}
+            initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0 }}
             className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/95 p-4 backdrop-blur sm:p-10"
             onClick={() => setActive(null)}
           >
@@ -67,8 +74,9 @@ export function VideoShowcase() {
             >
               <button
                 type="button"
-                onClick={() => setActive(null)}
+                onClick={closeDialog}
                 aria-label="Close video"
+                data-dialog-initial-focus
                 className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center text-rice/80 hover:text-rice"
               >
                 <X strokeWidth={1.5} />

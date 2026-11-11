@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { exploreScenes } from "@/data/explore";
+import { withBasePath } from "@/lib/paths";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
 const sizeClass = {
   hero: "sm:col-span-2 lg:col-span-2 lg:row-span-2",
@@ -18,6 +20,7 @@ const imageClass = {
 } as const;
 
 export function ExploreShowcase() {
+  const reduceMotion = useReducedMotionPreference();
   return (
     <div className="relative">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:auto-rows-[220px]">
@@ -25,16 +28,17 @@ export function ExploreShowcase() {
           <motion.a
             key={scene.id}
             href={scene.href}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={reduceMotion ? { opacity: 1, y: 0 } : undefined}
+            whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.55, delay: (index % 4) * 0.06 }}
+            transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : (index % 4) * 0.06 }}
             className={`group relative overflow-hidden bg-ink ${sizeClass[scene.size]}`}
             aria-label={`ดูเรื่องราว ${scene.title}`}
           >
             <div className={`relative w-full ${imageClass[scene.size]}`}>
               <Image
-                src={scene.image}
+                src={withBasePath(scene.image)}
                 alt={scene.alt}
                 fill
                 unoptimized

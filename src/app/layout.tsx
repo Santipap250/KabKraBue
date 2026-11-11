@@ -3,6 +3,7 @@ import { Fraunces, IBM_Plex_Mono, IBM_Plex_Sans_Thai } from "next/font/google";
 import { siteConfig } from "@/data/site";
 import "@/styles/globals.css";
 import { PwaBootstrap } from "@/components/PwaBootstrap";
+import { withBasePath } from "@/lib/paths";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -50,10 +51,10 @@ export const metadata: Metadata = {
     images: ["/images/og-cover.jpg"],
   },
   icons: {
-    icon: "/favicon/favicon.svg",
-    apple: "/favicon/apple-touch-icon.png",
+    icon: withBasePath("/favicon/favicon.svg"),
+    apple: withBasePath("/favicon/apple-touch-icon.png"),
   },
-  manifest: "/manifest.webmanifest",
+  manifest: withBasePath("/manifest.webmanifest"),
   alternates: {
     canonical: siteConfig.url,
   },

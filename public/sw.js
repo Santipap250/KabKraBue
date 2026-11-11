@@ -1,4 +1,5 @@
-const CACHE = "kabkrabue-v3";
+const CACHE_PREFIX = "kabkrabue-";
+const CACHE = "kabkrabue-v4";
 
 // The service worker can live at the site root on Vercel or under a basePath
 // on GitHub Pages. Derive the deployed path from the SW URL so every cached
@@ -6,6 +7,7 @@ const CACHE = "kabkrabue-v3";
 const BASE_PATH = new URL(".", self.location.href).pathname.replace(/\/$/, "");
 const withBasePath = (path) => `${BASE_PATH}${path}` || "/";
 const APP_ROOT = withBasePath("/");
+const APP_SCOPE = new URL(APP_ROOT, self.location.origin).pathname;
 
 const APP_SHELL = [
   APP_ROOT,
@@ -41,7 +43,7 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key !== CACHE)
+            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE)
             .map((key) => caches.delete(key)),
         ),
       )
@@ -57,6 +59,8 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
 
   if (url.origin !== self.location.origin) return;
+  if (!url.pathname.startsWith(APP_SCOPE)) return;
+  if (request.headers.has("range")) return;
 
   // Never intercept video delivery. Let the browser/Vercel CDN handle
   // MP4/WebM requests and Range requests natively.
@@ -76,8 +80,8 @@ self.addEventListener("fetch", (event) => {
           return response;
         })
         .catch(() =>
-          caches.match(request).then(
-            (cached) => cached || caches.match(APP_ROOT),
+          caches.open(CACHE).then((cache) =>
+            cache.match(request).then((cached) => cached || cache.match(APP_ROOT)),
           ),
         ),
     );
@@ -88,17 +92,17 @@ self.addEventListener("fetch", (event) => {
   // Static same-origin assets: cache-first for speed, with a network
   // fallback that refreshes the cache when a newer asset exists.
   event.respondWith(
-    caches.match(request).then((cached) => {
+    caches.open(CACHE).then((cache) => cache.match(request).then((cached) => {
       if (cached) return cached;
 
       return fetch(request).then((response) => {
         if (shouldCacheResponse(response)) {
           const copy = response.clone();
-          void caches.open(CACHE).then((cache) => cache.put(request, copy));
+          void cache.put(request, copy);
         }
 
         return response;
       });
-    }),
+    })),
   );
 });

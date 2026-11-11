@@ -5,12 +5,13 @@ import { getDirectionsUrl, getEmbedUrl, villageCoordinates } from "@/lib/map";
 
 export function MapSection() {
   return (
-    <div className="relative overflow-hidden border border-border">
+    <div className="relative overflow-hidden rounded-2xl border border-border shadow-xl shadow-ink/5 sm:rounded-3xl">
       <iframe
         title="Map of KabKraBue village"
         src={getEmbedUrl(villageCoordinates)}
         className="h-[420px] w-full grayscale-[15%] sm:h-[480px]"
         loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
       />
       <a
         href={getDirectionsUrl(villageCoordinates)}
