@@ -65,7 +65,7 @@ export const storySections: StorySection[] = [
   {
     id: "people",
     index: "03",
-    eyebrow: "People",
+    eyebrow: "Place & Memory",
     title: "A place we remember",
     titleThai: "สถานที่ที่เราเห็นจนกลายเป็นความทรงจำ",
     body: `บางครั้งสิ่งที่เราจำได้ที่สุดจากบ้าน ไม่ใช่เหตุการณ์สำคัญ แต่เป็นภาพธรรมดาที่เห็นซ้ำอยู่ทุกวัน
@@ -104,7 +104,7 @@ export const storySections: StorySection[] = [
 และเมื่อฤดูแล้งมาเยือน ผืนดินที่เคยเขียวก็แปรเปลี่ยนไปอีกแบบ เผยให้เห็นเส้นสายของคันนาและแนวต้นไม้ริมทางที่ตัดกับท้องฟ้าใส ธรรมชาติของกาบกระบือจึงไม่เคยซ้ำเดิมในแต่ละฤดู แต่ยังคงความงามในแบบของตัวเองเสมอ`,
     imageAlt: "ภาพท้องนาและแสงธรรมชาติของหมู่บ้านกาบกระบือ",
     imageId: "village-story-02.webp",
-    videoId: "nature-section.mp4",
+    videoId: "optimized/nature-section.mp4",
     posterId: "village-story-02.webp",
   },
   {

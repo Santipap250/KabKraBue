@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 
 /**
- * Tracks vertical scroll progress (0–1) and whether the page has been
- * scrolled past a threshold. Used for the sticky header transition and
- * the scroll-progress terrace-line indicator.
+ * Tracks threshold state and, when requested, document progress (0–1).
  */
-export function useScrollProgress(threshold = 80) {
+export function useScrollProgress(threshold = 80, trackProgress = true) {
   const [progress, setProgress] = useState(0);
   const [scrolled, setScrolled] = useState(false);
 
@@ -16,9 +14,11 @@ export function useScrollProgress(threshold = 80) {
     const onScroll = () => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
-        const doc = document.documentElement;
-        const max = doc.scrollHeight - doc.clientHeight;
-        setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+        if (trackProgress) {
+          const doc = document.documentElement;
+          const max = doc.scrollHeight - doc.clientHeight;
+          setProgress(max > 0 ? Math.min(window.scrollY / max, 1) : 0);
+        }
         setScrolled(window.scrollY > threshold);
       });
     };
@@ -28,7 +28,7 @@ export function useScrollProgress(threshold = 80) {
       window.removeEventListener("scroll", onScroll);
       cancelAnimationFrame(raf);
     };
-  }, [threshold]);
+  }, [threshold, trackProgress]);
 
   return { progress, scrolled };
 }

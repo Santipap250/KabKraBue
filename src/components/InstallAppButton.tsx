@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Download, ExternalLink, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { PWA_INSTALL_AVAILABLE_EVENT } from "./PwaBootstrap";
+import { useDialogFocus } from "@/hooks/useDialogFocus";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -24,6 +25,8 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
   const [promptEvent, setPromptEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
   const [showHelp, setShowHelp] = useState(false);
+  const closeHelp = () => setShowHelp(false);
+  const dialogRef = useDialogFocus(showHelp, closeHelp);
 
   useEffect(() => {
     setInstalled(isStandalone());
@@ -78,17 +81,17 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
       </button>
 
       {showHelp && (
-        <div className="fixed inset-0 z-[80] flex items-end justify-center bg-ink/55 p-4 backdrop-blur-sm sm:items-center">
-          <div className="w-full max-w-md overflow-hidden border border-rice/15 bg-ink text-rice shadow-2xl">
+        <div className="fixed inset-0 z-[80] flex items-end justify-center bg-ink/55 p-4 backdrop-blur-sm sm:items-center" onClick={closeHelp}>
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="install-help-title" tabIndex={-1} onClick={(event) => event.stopPropagation()} className="w-full max-w-md overflow-hidden border border-rice/15 bg-ink text-rice shadow-2xl">
             <div className="flex items-start justify-between border-b border-rice/10 p-6">
               <div>
                 <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-gold">
                   <Smartphone className="h-3.5 w-3.5" strokeWidth={1.5} />
                   KabKraBue / Home Screen
                 </div>
-                <h2 className="mt-3 font-display text-2xl">พกหมู่บ้านกาบกระบือไว้กับคุณ</h2>
+                <h2 id="install-help-title" className="mt-3 font-display text-2xl">พกหมู่บ้านกาบกระบือไว้กับคุณ</h2>
               </div>
-              <button type="button" onClick={() => setShowHelp(false)} className="rounded-full p-2 text-rice/70 hover:bg-rice/10 hover:text-rice" aria-label="ปิด">
+              <button type="button" onClick={closeHelp} data-dialog-initial-focus className="rounded-full p-2 text-rice/70 hover:bg-rice/10 hover:text-rice" aria-label="ปิด">
                 <X className="h-5 w-5" strokeWidth={1.5} />
               </button>
             </div>
@@ -100,7 +103,7 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
               </div>
               <p className="flex items-center gap-2 text-xs text-rice/50"><ExternalLink className="h-3.5 w-3.5" />หลังติดตั้ง จะเปิดในหน้าต่างแบบแอปและเข้าถึงเว็บได้เร็วขึ้น</p>
             </div>
-            <button type="button" onClick={() => setShowHelp(false)} className="m-6 mt-0 w-[calc(100%-3rem)] border border-rice/20 bg-rice px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-ink hover:bg-gold">
+            <button type="button" onClick={closeHelp} className="m-6 mt-0 w-[calc(100%-3rem)] border border-rice/20 bg-rice px-5 py-3 font-mono text-xs uppercase tracking-[0.18em] text-ink hover:bg-gold">
               เข้าใจแล้ว
             </button>
           </div>

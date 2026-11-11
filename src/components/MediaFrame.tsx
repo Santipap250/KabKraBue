@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ImageOff } from "lucide-react";
 import { cn } from "@/lib/cn";
+import { withBasePath } from "@/lib/paths";
 
 interface MediaFrameProps {
   src: string;
@@ -28,7 +29,7 @@ export function MediaFrame({
     <div className={cn("relative overflow-hidden bg-mist", aspect, className)}>
       {!failed ? (
         <Image
-          src={src}
+          src={withBasePath(src)}
           alt={alt}
           fill
           priority={priority}

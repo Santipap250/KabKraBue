@@ -3,6 +3,7 @@ import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { hasContent } from "@/lib/content";
+import { withBasePath } from "@/lib/paths";
 
 const navItems = siteConfig.nav;
 
@@ -17,7 +18,7 @@ const socialLinks = [
 const contactLines = [siteConfig.contact.address, siteConfig.contact.phone, siteConfig.contact.email].filter(hasContent);
 
 export function Footer() {
-  const year = new Date().getFullYear();
+  const year = process.env.NEXT_PUBLIC_BUILD_YEAR ?? "2026";
 
   return (
     <footer className="bg-ink text-rice">
@@ -64,7 +65,7 @@ export function Footer() {
         <div className="mt-16 flex flex-col gap-3 border-t border-rice/10 pt-6 font-mono text-[11px] uppercase tracking-[0.15em] text-rice/50 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} {siteConfig.name}. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="/privacy/" className="hover:text-rice/70">Privacy</a>
+            <a href={withBasePath("/privacy/")} className="hover:text-rice/70">Privacy</a>
             <a href={siteConfig.github} target="_blank" rel="noopener noreferrer" className="hover:text-rice/70">GitHub</a>
           </div>
         </div>

@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { GalleryImage } from "@/data/gallery";
 import { MediaFrame } from "@/components/MediaFrame";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
+import { useDialogFocus } from "@/hooks/useDialogFocus";
+import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
 interface GalleryLightboxProps {
   images: GalleryImage[];
@@ -17,7 +19,8 @@ interface GalleryLightboxProps {
 export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: GalleryLightboxProps) {
   const open = activeIndex !== null;
   const touchStartX = useRef<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionPreference();
+  const dialogRef = useDialogFocus(open, onClose);
   useLockBodyScroll(open);
 
   const goTo = (delta: number) => {
@@ -29,7 +32,6 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") goTo(1);
       if (e.key === "ArrowLeft") goTo(-1);
     };
@@ -45,9 +47,11 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-label={image.alt}
+          tabIndex={-1}
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={reduceMotion ? undefined : { opacity: 0 }}
@@ -74,6 +78,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
             <button
               type="button"
               onClick={onClose}
+              data-dialog-initial-focus
               aria-label="Close gallery"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/15 text-rice transition-colors hover:border-rice/40 hover:bg-rice/10"
             >
