@@ -79,7 +79,7 @@ Status distinguishes application source from the live Production alias. The appl
 - [x] Fresh `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, root build and GitHub Pages basePath build all passed.
 - [x] Chromium smoke on static GitHub Pages export at 390×844 and reduced-motion; tested no horizontal overflow, hidden Hero content, nested menu/install dialogs, gallery category/lightbox keyboard, basePath assets, and offline Privacy response from service worker; no browser errors.
 - [ ] Formal WCAG/axe and screen-reader review; Lighthouse, Vercel Preview and real-device audits remain untested.
-- [ ] Push this branch and open a PR; merge is not authorized by this task.
+- [x] Push feature branch and open [PR #3](https://github.com/Santipap250/KabKraBue/pull/3); it remains unmerged and merge is not authorized by this task.
 - [ ] Coordinate ESLint/Next.js toolchain upgrade separately; npm warns `eslint@9.39.5` is out of support.
 
 ## 10. Final verification

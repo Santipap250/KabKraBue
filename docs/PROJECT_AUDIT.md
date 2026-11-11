@@ -67,7 +67,7 @@ Branch นี้แยกจาก `main` ที่ `a92a60739ec325366aa0dea77f3
 - GitHub Actions `quality.yml` เพิ่ม audit/lint/typecheck และ build สำหรับ root/basePath, ใช้ permission `contents: read`.
 - npm แสดง deprecation warning ของ `eslint@9.39.5`; เป็น toolchain lifecycle note ไม่ใช่ vulnerability และยังควรวางแผนอัปเกรดร่วมกับ Next.js แยกต่างหาก. Formal WCAG/axe, screen-reader, Lighthouse และ real-device audit ยังไม่ได้ทำ.
 
-ณ เวลาจัดทำรายงาน ผลงานยังอยู่ใน feature branch; จะเติม PR URL/CI status หลัง push/เปิด PR. ห้ามถือว่า Production หรือ `main` เปลี่ยนจากการทดสอบนี้.
+เปิด PR [#3 — Polish accessibility, PWA freshness, and CI quality checks](https://github.com/Santipap250/KabKraBue/pull/3) จาก `manus/kabkrabue-final-polish` เข้า `main` แล้ว. PR ยังไม่ merge; ไม่มีการ push ไป `main` และไม่ได้แก้ Vercel Production. GitHub Actions CI เริ่มตรวจหลัง PR ถูกสร้าง; สถานะ checks ให้ดูจาก PR โดยตรง.
 
 ## GitHub / Vercel delivery status
 
