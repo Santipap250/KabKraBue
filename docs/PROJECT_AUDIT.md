@@ -2,7 +2,7 @@
 
 ## Scope and baseline
 
-ตรวจ repository `Santipap250/KabKraBue` จาก latest `main` ก่อนแก้ไข บน feature branch `manus/kabkrabue-premium-upgrade`. Starting/latest-main SHA: `5a7c5058d7535327585f5420d9000a35bee05418`; final `git fetch origin main` ยืนยันว่า main ยังอยู่ที่ SHA นี้และ branch มีจุดเริ่มร่วมกันตรงกัน งานนี้ไม่ได้ merge หรือเปลี่ยน production.
+ตรวจ repository `Santipap250/KabKraBue` จาก baseline `main` SHA `5a7c5058d7535327585f5420d9000a35bee05418` ก่อนแก้ไข บน branch `manus/kabkrabue-premium-upgrade`. Implementation ถูก merge เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af` ผ่าน PR #1; Vercel รายงาน Production deployment สำเร็จ. ดังนั้นข้อความเก่าที่ว่า main/production ยังไม่เปลี่ยนไม่เป็นปัจจุบันแล้ว.
 
 ตรวจ architecture/routes/components/sections/hooks/data/styles/config/dependencies/assets/PWA/SEO/accessibility/performance/security/responsive behavior และ static export. รายงาน audit รอบต้นครอบคลุม 38 source files. ไม่พบ P0; ไม่พบ broken local image/video path ที่ใช้งานอยู่ใน source inventory.
 
@@ -28,7 +28,7 @@
 - `npm run build` (root/Vercel static export) — ผ่าน; routes `/`, `/privacy`, `/manifest.webmanifest`, `/robots.txt`, `/sitemap.xml` ถูก prerender/export.
 - `GITHUB_PAGES=true npm run build` — ผ่าน; ตรวจ `out/`, manifest `start_url`/`scope` ใต้ `/KabKraBue/`, icons/favicon, worker, privacy route และ static assets.
 - Chromium basePath run (390/1280 px, reduced-motion): root/privacy status 200; desktop เลือก `/KabKraBue/images/places/viewpoint-01.jpg`, มือถือคง `/KabKraBue/images/village-hero-poster.jpg`; service worker scope `/KabKraBue/`; ไม่มี console/page errors หรือ failed/unprefixed local requests.
-- Chromium root run ทั้ง `no-preference` และ `reduce`: status 200, ไม่มี page/console errors หรือ failed local responses; ไม่พบ YouTube iframe ตอนแรก; `Nature` filter เหลือภาพจริง 1 ภาพจาก Gallery 14 ภาพ; ไม่มีหมวด People ที่ว่าง; lightbox Arrow/Escape/focus restoration ผ่าน; install-help Escape/restoration ผ่านจาก browser test รอบ interaction.
+- Chromium root run ทั้ง `no-preference` และ `reduce`: status 200, ไม่มี page/console errors หรือ failed local responses; ไม่พบ YouTube iframe ตอนแรก; `Nature` filter เหลือภาพจริง 1 ภาพจาก Gallery 14 ภาพ; ไม่มีหมวด People ที่ว่าง; lightbox Arrow/Escape/focus restoration ผ่าน; install-help Escape/restoration ผ่าน.
 - Mobile navigation: dialog semantics, Escape close และ focus restoration ผ่าน.
 - Shorts: YouTube iframe 0 ก่อนกด Play และ 1 หลังคลิก thumbnail; CTA ของ TikTok/YouTube คงอยู่.
 - Optional Video Showcase: `src/data/videos.ts` ว่างโดยตั้งใจและ section `#video` ไม่ถูก render.
@@ -36,21 +36,26 @@
 - PWA offline: หลัง install/activate และโหลดหน้า online แล้ว จำลอง offline navigation root และ `/KabKraBue/` ได้ response 200 จาก cache; worker scope ถูกต้อง.
 - Breakpoints 360, 390, 768, 1024 และ 1440 px — `documentElement.scrollWidth` ไม่เกิน viewport.
 - Privacy route, map iframe accessible title/directions URL และ custom `out/404.html` copy/CTA ตรวจพบ.
-- Screenshots Before มาจาก production baseline และ After จาก local export: [`SCREENSHOTS.md`](SCREENSHOTS.md).
+- หลัง merge เปิด production Home (`https://kab-kra-bue.vercel.app/`) และ Privacy (`https://kab-kra-bue.vercel.app/privacy/`) แบบ read-only; ทั้งสองหน้าแสดงเนื้อหาและ title ที่คาดไว้. Manifest, `sw.js`, robots และ sitemap ตอบสนองต่อ read-only request.
+- Screenshots Before มาจาก production baseline และ After จาก local export: [`SCREENSHOTS.md`](SCREENSHOTS.md). After ไม่ใช่ screenshot จาก protected Vercel Preview.
 - Lighthouse/real-device Android/iPhone/screen-reader audit ไม่ได้รัน; ไม่อ้างว่าได้ทดสอบ.
 
 ## Residual dependency risk
 
-`npm audit` หลัง clean install: **6 moderate, 0 high, 0 critical**; dependency findings อยู่ใน ESLint/TypeScript-ESLint/minimatch development/lint chain ไม่ใช่ runtime dependency ของ static site. Tree ปัจจุบันมี `@typescript-eslint` ถึง `8.72.2` และ `minimatch@10.2.6`; registry ที่ตรวจให้ `@typescript-eslint` ล่าสุดยังเป็น `8.72.2` (อยู่ใน affected range) และ patched `minimatch` release เป็น 11.x ซึ่งเป็น major/เปลี่ยน Node engine requirement. `npm audit fix` ไม่ได้แก้ findings. หลีกเลี่ยง forced override/major upgrade ที่เสี่ยงกับ Next.js 15/tooling/Node compatibility; ตรวจใหม่เมื่อมี compatible patch หรือทำ coordinated toolchain upgrade.
+`npm audit` ล่าสุด: **6 moderate, 0 high, 0 critical**; findings อยู่ใน ESLint/TypeScript-ESLint/minimatch development/lint chain ไม่ใช่ runtime dependency ของ static site. Tree ปัจจุบันมี `@typescript-eslint/eslint-plugin@8.69.0`, `@typescript-eslint/parser@8.72.2`, `@typescript-eslint/typescript-estree@8.69.0/8.72.2` และ `minimatch@10.2.6`. `npm audit` ระบุ `fixAvailable: true`; อย่างไรก็ตาม `npm audit fix --dry-run` รอบล่าสุดยังเหลือ 6 findings, ไม่ได้เปลี่ยน package version และเตือน peer dependency. จึงยังต้องตรวจ remediation candidate ใน branch แยก โดยไม่ใช้ `--force` และไม่ถือว่า audit สะอาด.
 
-npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; `eslint-config-next@15.5.29` รับ ESLint ถึง v9 จึงควรวางแผนอัปเกรด ESLint/Next.js ร่วมกันในงานแยก แทนการฝืน peer range ใน patch นี้.
+Registry/advisory evidence ก่อนหน้านี้ชี้ว่า patched `minimatch` เป็น 11.x และอาจเปลี่ยน Node engine requirement; `npm audit fix` ก่อนหน้านี้ไม่เคลียร์ findings. หลีกเลี่ยง forced override/major upgrade ที่เสี่ยงกับ Next.js 15/tooling/Node compatibility; ตรวจใหม่เมื่อมี compatible fix หรือทำ coordinated toolchain upgrade.
+
+npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; `eslint-config-next@15.5.29` รับ ESLint ถึง v9 จึงควรวางแผนอัปเกรด ESLint/Next.js ร่วมกันในงานแยก แทนการฝืน peer range.
 
 ## GitHub / Vercel delivery status
 
-- Branch: `manus/kabkrabue-premium-upgrade`.
-- Main/latest-base: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- Pull request, Vercel status check และ preview URL: เติมหลัง push/เปิด PR และตรวจผลจาก GitHub. Vercel MCP OAuth ใน session ยังไม่มี token; ใช้ GitHub deployment/check status หาก Vercel สร้าง preview อัตโนมัติ.
-- ไม่ merge และไม่เปลี่ยน production.
+- Baseline before upgrade: `5a7c5058d7535327585f5420d9000a35bee05418`.
+- Current `main`: merge commit `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, PR [#1 — KabKraBue 2.0](https://github.com/Santipap250/KabKraBue/pull/1). GitHub records merge time `2026-11-11T19:16:53Z` and merger account `Santipap250`.
+- Vercel created Production deployment `7719355534` and reported `success` at `2026-11-11T19:17:46Z`; deployment URL: https://kab-kra-oopf7zs0y-obixconfig.vercel.app/ . Public production Home and Privacy routes were opened read-only after the merge.
+- Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ . An unauthenticated browser sees `Login – Vercel` and an asset response `403`; readiness/URL are known from GitHub/Vercel status, but page-level Preview content was not validated without an authorized Vercel session.
+- A later docs-only commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` remains on `manus/kabkrabue-premium-upgrade`, is not part of `main`, and contains stale PR #1 status wording; do not use it as the current source of truth.
+- This follow-up changes only `TODO.md` and this audit report. It does not change application code, merge, or alter Production; Vercel may create its normal protected PR Preview automatically.
 
 ## Official security references
 
