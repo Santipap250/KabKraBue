@@ -1,6 +1,6 @@
 # KabKraBue 2.0 — Work Items
 
-Status distinguishes the application source on `main` from the live Production alias. `main` is at `682e3492a8c0405b9f69f5df19c562ef822cef56`; PR #2 changed documentation only, so its application source is the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`. Before this documentation update is pushed, Vercel Production was manually promoted to the existing deployment built from baseline `5a7c5058d7535327585f5420d9000a35bee05418` (deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4`). A new commit on `main` may trigger Vercel to deploy the current `main` application source and supersede that rollback. The implementation checklist below describes the PR #1 source, not necessarily the version currently served by Production.
+Status distinguishes application source from the live Production alias. The application source on `main` remains the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; PR #2 (`682e349`) and later commits changed documentation only. The user-requested rollback to `5a7c505` was superseded after documentation commit `c60c46a` was pushed: Vercel marked deployment `3YeusiWhr51j67AA9ws3YM8cLB9h` Ready/Current for `kab-kra-bue.vercel.app`, and Home and Privacy returned HTTP 200. Further pushes to `main`, including documentation-only changes, can trigger another Production deployment. The implementation checklist below describes the PR #1 application source.
 
 ## 1. Secure static build — COMPLETE; dependency follow-up OPEN
 
@@ -57,10 +57,11 @@ Status distinguishes the application source on `main` from the live Production a
 
 ## 8. Main / Production delivery status
 
-- `main` was at `682e3492a8c0405b9f69f5df19c562ef822cef56` before this update. PR #2 (`https://github.com/Santipap250/KabKraBue/pull/2`) merged as that commit and changed only `TODO.md` and `docs/PROJECT_AUDIT.md`; it did not alter application source.
+- PR #2 (`https://github.com/Santipap250/KabKraBue/pull/2`) merged as `682e3492a8c0405b9f69f5df19c562ef822cef56` and changed only `TODO.md` and `docs/PROJECT_AUDIT.md`; it did not alter application source.
 - PR #1 application code is the first-parent source at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; its Vercel Production deployment completed successfully at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app/`.
 - On 2026-11-12, the user requested rollback of the Production alias to Vercel deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4`, built from commit `5a7c5058d7535327585f5420d9000a35bee05418`. Vercel confirmed promotion; the deployment page showed `kab-kra-bue.vercel.app` as Current, and Home and Privacy returned HTTP 200 afterward.
-- This documentation update is authorized for `main`. Because pushes to `main` trigger Vercel Production deployments in this project, verify the deployment status after pushing; the new deployment can supersede the manual rollback while still using PR #1 application source.
+- The subsequent documentation-only commit `c60c46ac287918d6862f6b3129cc6bb18ed5ae91` was pushed to `main`; Vercel created deployment `3YeusiWhr51j67AA9ws3YM8cLB9h`, reported it Ready/Current, and assigned `kab-kra-bue.vercel.app`. Home and Privacy returned HTTP 200. This auto-deployment superseded the manual rollback and serves the PR #1 application source.
+- Any further push to `main` can trigger another Production deployment, even when the changes are documentation-only; verify Vercel after publishing.
 - Preview page-level QA remains distinct from Production QA; do not claim it based only on a Ready status or URL.
 - The old side-branch documentation commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` is not the current `main` source of truth.
 

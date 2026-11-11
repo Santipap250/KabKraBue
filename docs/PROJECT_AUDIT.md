@@ -2,7 +2,7 @@
 
 ## Scope and baseline
 
-ตรวจ repository `Santipap250/KabKraBue` จาก baseline `5a7c5058d7535327585f5420d9000a35bee05418` บน branch `manus/kabkrabue-premium-upgrade`. PR #1 merge application implementation เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; PR #2 merge เป็น `682e3492a8c0405b9f69f5df19c562ef822cef56` และแก้เฉพาะเอกสารสองไฟล์. วันที่ 2026-11-12 ผู้ใช้สั่งและยืนยันให้ Vercel promote Production กลับไปยัง deployment ที่สร้างจาก baseline `5a7c505`; การทำเช่นนี้เปลี่ยน alias ใน Vercel แต่ไม่ reset GitHub `main`. การ push เอกสารขึ้น `main` อาจ trigger Production deployment จาก app source ของ PR #1 และ supersede การ rollback.
+ตรวจ repository `Santipap250/KabKraBue` จาก baseline `5a7c5058d7535327585f5420d9000a35bee05418` บน branch `manus/kabkrabue-premium-upgrade`. PR #1 merge application implementation เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; PR #2 merge เป็น `682e3492a8c0405b9f69f5df19c562ef822cef56` และแก้เฉพาะเอกสารสองไฟล์. วันที่ 2026-11-12 ผู้ใช้สั่งให้ Vercel promote Production กลับไปยัง deployment ที่สร้างจาก baseline `5a7c505`; การทำเช่นนี้เปลี่ยน alias ใน Vercel แต่ไม่ reset GitHub `main`. หลัง push เอกสาร commit `c60c46a` ขึ้น `main`, Vercel auto-deploy แล้วกำหนด alias Production กลับไปยัง app source ของ PR #1.
 
 ตรวจ architecture/routes/components/sections/hooks/data/styles/config/dependencies/assets/PWA/SEO/accessibility/performance/security/responsive behavior และ static export. รายงาน audit รอบต้นครอบคลุม 38 source files. ไม่พบ P0; ไม่พบ broken local image/video path ที่ใช้งานอยู่ใน source inventory.
 
@@ -52,10 +52,11 @@ npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รั�
 ## GitHub / Vercel delivery status
 
 - Baseline before upgrade: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- `main` before this documentation update: merge commit `682e3492a8c0405b9f69f5df19c562ef822cef56`, PR [#2 — Docs: reflect current Production status](https://github.com/Santipap250/KabKraBue/pull/2); PR #2 changed only `TODO.md` and this report. The application source remains the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, merged at `2026-11-11T19:16:53Z` by `Santipap250`.
+- PR [#2 — Docs: reflect current Production status](https://github.com/Santipap250/KabKraBue/pull/2) merged as `682e3492a8c0405b9f69f5df19c562ef822cef56`; it changed only `TODO.md` and this report. The application source remains the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, merged at `2026-11-11T19:16:53Z` by `Santipap250`.
 - Vercel Production deployment for PR #1 completed successfully at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app/`. The later Production deployment for `682e349` also reported Ready/success; its build completed, with npm warnings but no build failure.
 - On 2026-11-12 the user authorized promoting the existing Vercel deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4` from commit `5a7c5058d7535327585f5420d9000a35bee05418`. Vercel confirmed promotion and showed `kab-kra-bue.vercel.app` as Current; Home and Privacy returned HTTP 200 after the rollback. GitHub `main` remained unchanged by that Vercel action.
-- This documentation update changes only these two docs and is authorized for `main`. Publishing a commit to `main` triggers Vercel Production deployments in this project; verify Vercel afterward because a resulting deployment can supersede the manual rollback and serve the app source from PR #1.
+- The documentation-only commit `c60c46ac287918d6862f6b3129cc6bb18ed5ae91` was then pushed to `main`. Vercel created deployment `3YeusiWhr51j67AA9ws3YM8cLB9h`, reported it Ready/Current for `kab-kra-bue.vercel.app`, and assigned the Production alias. Home and Privacy returned HTTP 200 afterward. This deployment superseded the manual rollback and serves the PR #1 application source; the rollback deployment remains available as a historical deployment.
+- Future pushes to `main`, including docs-only commits, can trigger another Production deployment in this project.
 - Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ . An unauthenticated browser sees `Login – Vercel` and an asset response `403`; readiness/URL are known from GitHub/Vercel status, but page-level Preview content was not validated without an authorized Vercel session.
 - A later docs-only commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` remains on `manus/kabkrabue-premium-upgrade`, is not part of `main`, and contains stale PR #1 status wording; do not use it as the current source of truth.
 
