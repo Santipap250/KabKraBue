@@ -1,6 +1,6 @@
 # KabKraBue 2.0 — Work Items
 
-Status reflects the merged implementation on current `main` (`43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`) and the successful Vercel Production deployment. The pre-upgrade baseline was `5a7c5058d7535327585f5420d9000a35bee05418`. This follow-up changes documentation only and does not alter the application or Production; Vercel may create its normal protected Preview deployment for the PR.
+Status distinguishes the application source on `main` from the live Production alias. `main` is at `682e3492a8c0405b9f69f5df19c562ef822cef56`; PR #2 changed documentation only, so its application source is the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`. Before this documentation update is pushed, Vercel Production was manually promoted to the existing deployment built from baseline `5a7c5058d7535327585f5420d9000a35bee05418` (deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4`). A new commit on `main` may trigger Vercel to deploy the current `main` application source and supersede that rollback. The implementation checklist below describes the PR #1 source, not necessarily the version currently served by Production.
 
 ## 1. Secure static build — COMPLETE; dependency follow-up OPEN
 
@@ -57,11 +57,12 @@ Status reflects the merged implementation on current `main` (`43eb9bc1f5ffe32fc4
 
 ## 8. Main / Production delivery status
 
-- [x] PR #1 merged into `main` at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; GitHub records merge time 2026-11-11 19:16:53 UTC and merger account `Santipap250`.
-- [x] Vercel created a Production deployment and reported `success` at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app`; public Home and Privacy routes were opened read-only after deployment.
-- [ ] Preview content still requires an authenticated Vercel session; an unauthenticated browser sees `Login – Vercel`, so do not claim page-level Preview QA.
-- [ ] Review merge/production-approval expectations before any future code PR or deployment; this follow-up is documentation-only and does not change production.
-- Note: later documentation commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` on `manus/kabkrabue-premium-upgrade` is not part of `main` and contains stale PR-state wording; do not treat it as the current source of truth.
+- `main` was at `682e3492a8c0405b9f69f5df19c562ef822cef56` before this update. PR #2 (`https://github.com/Santipap250/KabKraBue/pull/2`) merged as that commit and changed only `TODO.md` and `docs/PROJECT_AUDIT.md`; it did not alter application source.
+- PR #1 application code is the first-parent source at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; its Vercel Production deployment completed successfully at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app/`.
+- On 2026-11-12, the user requested rollback of the Production alias to Vercel deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4`, built from commit `5a7c5058d7535327585f5420d9000a35bee05418`. Vercel confirmed promotion; the deployment page showed `kab-kra-bue.vercel.app` as Current, and Home and Privacy returned HTTP 200 afterward.
+- This documentation update is authorized for `main`. Because pushes to `main` trigger Vercel Production deployments in this project, verify the deployment status after pushing; the new deployment can supersede the manual rollback while still using PR #1 application source.
+- Preview page-level QA remains distinct from Production QA; do not claim it based only on a Ready status or URL.
+- The old side-branch documentation commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` is not the current `main` source of truth.
 
 ## 9. Final verification
 

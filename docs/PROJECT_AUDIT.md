@@ -2,7 +2,7 @@
 
 ## Scope and baseline
 
-ตรวจ repository `Santipap250/KabKraBue` จาก baseline `main` SHA `5a7c5058d7535327585f5420d9000a35bee05418` ก่อนแก้ไข บน branch `manus/kabkrabue-premium-upgrade`. Implementation ถูก merge เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af` ผ่าน PR #1; Vercel รายงาน Production deployment สำเร็จ. ดังนั้นข้อความเก่าที่ว่า main/production ยังไม่เปลี่ยนไม่เป็นปัจจุบันแล้ว.
+ตรวจ repository `Santipap250/KabKraBue` จาก baseline `5a7c5058d7535327585f5420d9000a35bee05418` บน branch `manus/kabkrabue-premium-upgrade`. PR #1 merge application implementation เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; PR #2 merge เป็น `682e3492a8c0405b9f69f5df19c562ef822cef56` และแก้เฉพาะเอกสารสองไฟล์. วันที่ 2026-11-12 ผู้ใช้สั่งและยืนยันให้ Vercel promote Production กลับไปยัง deployment ที่สร้างจาก baseline `5a7c505`; การทำเช่นนี้เปลี่ยน alias ใน Vercel แต่ไม่ reset GitHub `main`. การ push เอกสารขึ้น `main` อาจ trigger Production deployment จาก app source ของ PR #1 และ supersede การ rollback.
 
 ตรวจ architecture/routes/components/sections/hooks/data/styles/config/dependencies/assets/PWA/SEO/accessibility/performance/security/responsive behavior และ static export. รายงาน audit รอบต้นครอบคลุม 38 source files. ไม่พบ P0; ไม่พบ broken local image/video path ที่ใช้งานอยู่ใน source inventory.
 
@@ -36,7 +36,8 @@
 - PWA offline: หลัง install/activate และโหลดหน้า online แล้ว จำลอง offline navigation root และ `/KabKraBue/` ได้ response 200 จาก cache; worker scope ถูกต้อง.
 - Breakpoints 360, 390, 768, 1024 และ 1440 px — `documentElement.scrollWidth` ไม่เกิน viewport.
 - Privacy route, map iframe accessible title/directions URL และ custom `out/404.html` copy/CTA ตรวจพบ.
-- หลัง merge เปิด production Home (`https://kab-kra-bue.vercel.app/`) และ Privacy (`https://kab-kra-bue.vercel.app/privacy/`) แบบ read-only; ทั้งสองหน้าแสดงเนื้อหาและ title ที่คาดไว้. Manifest, `sw.js`, robots และ sitemap ตอบสนองต่อ read-only request.
+- ก่อน rollback หลัง merge เปิด production Home (`https://kab-kra-bue.vercel.app/`) และ Privacy (`https://kab-kra-bue.vercel.app/privacy/`) แบบ read-only; ทั้งสองหน้าแสดงเนื้อหาและ title ที่คาดไว้. Manifest, `sw.js`, robots และ sitemap ตอบสนองต่อ read-only request.
+- หลัง rollback วันที่ 2026-11-12 หน้า Home และ Privacy ของ Production ตอบ HTTP 200 จาก deployment `5a7c505`.
 - Screenshots Before มาจาก production baseline และ After จาก local export: [`SCREENSHOTS.md`](SCREENSHOTS.md). After ไม่ใช่ screenshot จาก protected Vercel Preview.
 - Lighthouse/real-device Android/iPhone/screen-reader audit ไม่ได้รัน; ไม่อ้างว่าได้ทดสอบ.
 
@@ -51,11 +52,12 @@ npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รั�
 ## GitHub / Vercel delivery status
 
 - Baseline before upgrade: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- Current `main`: merge commit `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, PR [#1 — KabKraBue 2.0](https://github.com/Santipap250/KabKraBue/pull/1). GitHub records merge time `2026-11-11T19:16:53Z` and merger account `Santipap250`.
-- Vercel created Production deployment `7719355534` and reported `success` at `2026-11-11T19:17:46Z`; deployment URL: https://kab-kra-oopf7zs0y-obixconfig.vercel.app/ . Public production Home and Privacy routes were opened read-only after the merge.
+- `main` before this documentation update: merge commit `682e3492a8c0405b9f69f5df19c562ef822cef56`, PR [#2 — Docs: reflect current Production status](https://github.com/Santipap250/KabKraBue/pull/2); PR #2 changed only `TODO.md` and this report. The application source remains the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, merged at `2026-11-11T19:16:53Z` by `Santipap250`.
+- Vercel Production deployment for PR #1 completed successfully at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app/`. The later Production deployment for `682e349` also reported Ready/success; its build completed, with npm warnings but no build failure.
+- On 2026-11-12 the user authorized promoting the existing Vercel deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4` from commit `5a7c5058d7535327585f5420d9000a35bee05418`. Vercel confirmed promotion and showed `kab-kra-bue.vercel.app` as Current; Home and Privacy returned HTTP 200 after the rollback. GitHub `main` remained unchanged by that Vercel action.
+- This documentation update changes only these two docs and is authorized for `main`. Publishing a commit to `main` triggers Vercel Production deployments in this project; verify Vercel afterward because a resulting deployment can supersede the manual rollback and serve the app source from PR #1.
 - Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ . An unauthenticated browser sees `Login – Vercel` and an asset response `403`; readiness/URL are known from GitHub/Vercel status, but page-level Preview content was not validated without an authorized Vercel session.
 - A later docs-only commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` remains on `manus/kabkrabue-premium-upgrade`, is not part of `main`, and contains stale PR #1 status wording; do not use it as the current source of truth.
-- This follow-up changes only `TODO.md` and this audit report. It does not change application code, merge, or alter Production; Vercel may create its normal protected PR Preview automatically.
 
 ## Official security references
 
