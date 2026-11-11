@@ -44,7 +44,7 @@ function VideoFrameShell({
         : "relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-rice/80 p-3 shadow-[0_30px_80px_-35px_rgba(31,33,27,0.45)] sm:p-4";
 
   if (variant === "nature") {
-    return <div className={shell} aria-label={`${alt} — cinematic frame`}>{children}</div>;
+    return <div className={shell} role="group" aria-label={`${alt} — cinematic frame`}>{children}</div>;
   }
 
   const label =
@@ -62,17 +62,17 @@ function VideoFrameShell({
         : ["A place we remember", "ถนน ผืนนา ท้องฟ้า และภาพที่ยังอยู่ในความทรงจำ"];
 
   return (
-    <div className={shell} aria-label={`${alt} — cinematic frame`}>
+    <div className={shell} role="group" aria-label={`${alt} — cinematic frame`}>
       <div className={`pointer-events-none absolute inset-2 rounded-[1.8rem] border sm:inset-3 ${accent}`} aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[1.65rem] bg-ink shadow-[0_20px_45px_-25px_rgba(31,33,27,0.55)] sm:rounded-[1.8rem]">
         {children}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-rice/10 via-transparent to-ink/30" aria-hidden="true" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/55 via-transparent to-ink/75" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-5 top-5 flex items-center justify-between text-rice/85 sm:inset-x-6 sm:top-6">
           <span className="font-mono text-[9px] uppercase tracking-[0.24em]">{label}</span>
           <span className="h-px w-10 bg-rice/45 sm:w-14" aria-hidden="true" />
         </div>
         <div className="pointer-events-none absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
-          <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-rice/55">{caption[0]}</p>
+          <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-rice/80">{caption[0]}</p>
           <p className="mt-1 font-body text-sm text-rice/95">{caption[1]}</p>
         </div>
       </div>
@@ -172,12 +172,12 @@ function LazyStoryVideo({
         aria-pressed={!muted}
         aria-label={muted ? "เปิดเสียงวิดีโอ" : "ปิดเสียงวิดีโอ"}
         title={muted ? "เปิดเสียง" : "ปิดเสียง"}
-        className="absolute right-4 top-4 z-20 inline-flex items-center justify-center rounded-full border border-rice/25 bg-ink/50 p-2.5 text-rice/95 shadow-lg backdrop-blur-md transition hover:border-rice/50 hover:bg-ink/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
+        className="absolute right-4 top-4 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-rice/25 bg-ink/75 text-rice shadow-lg backdrop-blur-md transition hover:border-rice/50 hover:bg-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold"
       >
         {muted ? <VolumeX className="h-4 w-4" strokeWidth={1.7} /> : <Volume2 className="h-4 w-4" strokeWidth={1.7} />}
       </button>
 
-      <span className="absolute bottom-4 left-4 z-20 rounded-full border border-rice/20 bg-ink/35 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.18em] text-rice/75 backdrop-blur-md">
+      <span className="absolute bottom-4 left-4 z-20 rounded-full border border-rice/20 bg-ink/75 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.18em] text-rice/75 backdrop-blur-md">
         {muted ? "Muted · Tap sound" : "Sound on"}
       </span>
     </div>
@@ -249,22 +249,26 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
       {slides.length > 1 && (
         <>
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" aria-hidden="true" />
-          <button type="button" onClick={() => goTo(index - 1)} aria-label="ภาพก่อนหน้า" className="absolute left-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100">
+          <button type="button" onClick={() => goTo(index - 1)} aria-label="ภาพก่อนหน้า" className="absolute left-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/65 text-rice backdrop-blur-sm transition-colors duration-200 hover:bg-ink/85">
             <ChevronLeft className="h-4 w-4" strokeWidth={1.75} />
           </button>
-          <button type="button" onClick={() => goTo(index + 1)} aria-label="ภาพถัดไป" className="absolute right-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-ink/30 text-rice opacity-0 backdrop-blur-sm transition-opacity duration-200 hover:bg-ink/55 focus-visible:opacity-100 group-hover/carousel:opacity-100">
+          <button type="button" onClick={() => goTo(index + 1)} aria-label="ภาพถัดไป" className="absolute right-3 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full bg-ink/65 text-rice backdrop-blur-sm transition-colors duration-200 hover:bg-ink/85">
             <ChevronRight className="h-4 w-4" strokeWidth={1.75} />
           </button>
           <div
-        className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-rice/20 bg-ink/25 px-2.5 py-1 font-mono text-[9px] tracking-[0.18em] text-rice/80 backdrop-blur-md sm:right-5 sm:top-5"
-        aria-label={`ภาพที่ ${index + 1} จาก ${slides.length}`}
-      >
-        {index + 1} / {slides.length}
-      </div>
+            className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-rice/20 bg-ink/75 px-2.5 py-1 font-mono text-[9px] tracking-[0.18em] text-rice/90 backdrop-blur-md sm:right-5 sm:top-5"
+            role="status"
+            aria-live="polite"
+            aria-label={`ภาพที่ ${index + 1} จาก ${slides.length}`}
+          >
+            {index + 1} / {slides.length}
+          </div>
 
-      <div className="absolute inset-x-0 bottom-4 z-10 flex justify-center gap-1.5">
+          <div className="absolute inset-x-0 bottom-1 z-10 flex justify-center gap-0.5">
             {slides.map((slide, i) => (
-              <button key={slide.imageId} type="button" onClick={() => goTo(i)} aria-label={`ไปที่ภาพที่ ${i + 1} จาก ${slides.length}`} aria-current={i === index} className={cn("h-1.5 rounded-full transition-all duration-200", i === index ? "w-6 bg-rice" : "w-1.5 bg-rice/45 hover:bg-rice/75")} />
+              <button key={slide.imageId} type="button" onClick={() => goTo(i)} aria-label={`ไปที่ภาพที่ ${i + 1} จาก ${slides.length}`} aria-current={i === index} className="flex h-11 w-11 items-center justify-center">
+                <span aria-hidden="true" className={cn("h-1.5 rounded-full transition-all duration-200", i === index ? "w-6 bg-rice" : "w-1.5 bg-rice/75")} />
+              </button>
             ))}
           </div>
         </>
@@ -288,6 +292,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
   if (data.videoId && data.gallery?.length && !reduceMotion) {
     const variant: VideoVariant =
       data.id === "village" ? "village" :
+      data.id === "story" ? "story" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
 
@@ -309,6 +314,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
   if (data.videoId && !reduceMotion) {
     const variant: VideoVariant =
       data.id === "village" ? "village" :
+      data.id === "story" ? "story" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
     return <LazyStoryVideo src={withBasePath(`/videos/${data.videoId}`)} alt={data.imageAlt} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
@@ -337,7 +343,7 @@ function StoryBody({ id, body }: { id: string; body: string }) {
         {isLong && !expanded && <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-rice to-transparent" />}
       </motion.div>
       {isLong && (
-        <button type="button" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} aria-controls={`${id}-story-body`} className="mt-3 inline-flex items-center gap-1.5 font-mono text-xs uppercase tracking-[0.15em] text-paddy transition-colors hover:text-clay">
+        <button type="button" onClick={() => setExpanded((value) => !value)} aria-expanded={expanded} aria-controls={`${id}-story-body`} className="mt-3 inline-flex min-h-11 items-center gap-1.5 px-2 font-mono text-xs uppercase tracking-[0.15em] text-paddy transition-colors hover:text-clay">
           {expanded ? "ย่อเรื่องราว" : "อ่านเพิ่มเติม"}
           <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", expanded && "rotate-180")} strokeWidth={1.5} />
         </button>

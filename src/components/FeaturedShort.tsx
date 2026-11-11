@@ -67,7 +67,7 @@ function LazyShortCard({
       </div>
 
       <div className="mt-3 flex items-center justify-between px-1">
-        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/45">
+        <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/60">
           {short.label}
         </span>
 
@@ -75,7 +75,7 @@ function LazyShortCard({
           href={short.pageUrl}
           target="_blank"
           rel="noreferrer"
-          className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/75 transition-colors hover:text-gold"
+          className="inline-flex min-h-11 items-center px-2 font-mono text-[9px] uppercase tracking-[0.18em] text-gold/85 transition-colors hover:text-gold"
         >
           Open →
         </a>
@@ -136,7 +136,7 @@ export function FeaturedShort() {
               </a>
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-rice/45">
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.16em] text-rice/60">
               <span>Featured Video</span>
               <span className="h-px w-10 bg-rice/15" aria-hidden="true" />
               <span>Obixconfig · YouTube Shorts</span>
@@ -145,8 +145,10 @@ export function FeaturedShort() {
 
           <div className="min-w-0">
             <div
-              className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 pr-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-6"
+              className="flex snap-x snap-mandatory gap-5 overflow-x-auto overscroll-x-contain pb-4 pr-2 outline-none focus-visible:ring-2 focus-visible:ring-gold [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:gap-6"
+              role="region"
               aria-label="Featured YouTube Shorts"
+              tabIndex={0}
             >
               {SHORTS.map((short) => (
                 <LazyShortCard key={short.id} short={short} />
@@ -154,11 +156,11 @@ export function FeaturedShort() {
             </div>
 
             <div className="mt-2 flex items-center justify-between gap-4 px-1">
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/40">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-rice/60">
                 Swipe to explore · Tap to play
               </span>
 
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/45" aria-hidden="true">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/80" aria-hidden="true">
                 01 / {String(SHORTS.length).padStart(2, "0")}
               </span>
             </div>

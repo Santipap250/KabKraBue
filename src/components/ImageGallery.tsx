@@ -53,17 +53,18 @@ export function ImageGallery() {
             <Images className="h-3.5 w-3.5" strokeWidth={1.4} />
             <span>{filtered.length} photographs</span>
           </div>
-          <p className="mt-2 max-w-xl font-body text-sm leading-relaxed text-ink/55">
+          <p className="mt-2 max-w-xl font-body text-sm leading-relaxed text-ink/70">
             ภาพของกาบกระบือจากมุมสูง ผืนนา สายน้ำ และชีวิตรอบบ้าน — แตะภาพเพื่อเปิดดูแบบเต็มจอ
           </p>
         </div>
-        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/45 sm:block">
+        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/70 sm:block">
           Tap / Swipe / Explore
         </span>
       </div>
 
       <div
         className="flex gap-2 overflow-x-auto pb-2"
+        role="group"
         aria-label="Filter gallery by category"
         style={{ scrollbarWidth: "none" }}
       >
@@ -74,10 +75,10 @@ export function ImageGallery() {
             aria-pressed={filter === cat.id}
             onClick={() => setFilter(cat.id)}
             className={cn(
-              "whitespace-nowrap rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] transition-all duration-300",
+              "min-h-11 whitespace-nowrap rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.15em] transition-all duration-300",
               filter === cat.id
                 ? "border-paddy bg-paddy text-rice shadow-sm"
-                : "border-border bg-transparent text-ink/55 hover:border-paddy/50 hover:text-ink"
+                : "border-border bg-transparent text-ink/70 hover:border-paddy/50 hover:text-ink"
             )}
           >
             {cat.label}
@@ -124,13 +125,12 @@ export function ImageGallery() {
                     src={img.src}
                     alt={img.alt}
                     aspect="aspect-auto"
-                    priority={i === 0}
                     sizes="(min-width: 1024px) 55vw, (min-width: 640px) 50vw, 100vw"
                     className="h-full min-h-[190px]"
                   />
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/75 via-ink/5 to-transparent opacity-75 transition-opacity duration-500 group-hover:opacity-95" />
 
-                  <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-rice/20 bg-ink/20 px-3 py-1.5 text-rice/85 backdrop-blur-md">
+                  <div className="absolute left-4 top-4 flex items-center gap-2 rounded-full border border-rice/20 bg-ink/75 px-3 py-1.5 text-rice backdrop-blur-md">
                     <span className="font-mono text-[9px] uppercase tracking-[0.18em]">
                       {String(i + 1).padStart(2, "0")}
                     </span>

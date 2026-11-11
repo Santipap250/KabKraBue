@@ -13,6 +13,7 @@ interface MediaFrameProps {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  fit?: "cover" | "contain";
 }
 
 export function MediaFrame({
@@ -22,6 +23,7 @@ export function MediaFrame({
   className,
   priority = false,
   sizes = "(min-width: 1024px) 50vw, 100vw",
+  fit = "cover",
 }: MediaFrameProps) {
   const [failed, setFailed] = useState(false);
 
@@ -37,7 +39,10 @@ export function MediaFrame({
           unoptimized
           sizes={sizes}
           onError={() => setFailed(true)}
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+          className={cn(
+            fit === "contain" ? "object-contain" : "object-cover",
+            "transition-transform duration-700 ease-out group-hover:scale-105",
+          )}
         />
       ) : (
         <div
@@ -46,7 +51,7 @@ export function MediaFrame({
           aria-label={alt}
         >
           <ImageOff className="h-6 w-6 text-paddy/50" strokeWidth={1.5} aria-hidden="true" />
-          <span className="font-mono text-[11px] uppercase tracking-wide text-ink/55">
+          <span className="font-mono text-[11px] uppercase tracking-wide text-ink/70">
             {src.split("/").pop()}
           </span>
         </div>

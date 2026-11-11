@@ -20,7 +20,7 @@ export function Header() {
         "fixed inset-x-0 top-0 z-40 transition-all duration-500",
         scrolled
           ? "bg-rice/95 shadow-[0_1px_0_0_rgba(28,27,23,0.08)] backdrop-blur-sm"
-          : "bg-gradient-to-b from-ink/50 to-transparent"
+          : "bg-gradient-to-b from-ink/70 to-transparent"
       )}>
         <div className="container-content flex h-20 items-center justify-between">
           <a href="#top" className={cn(
@@ -28,7 +28,7 @@ export function Header() {
             scrolled ? "text-ink" : "text-rice"
           )}>
             {siteConfig.name}
-            <span className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-60">
+            <span className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-70">
               {siteConfig.nameThai}
             </span>
           </a>
@@ -38,8 +38,8 @@ export function Header() {
               {navItems.map((item) => (
                 <li key={item.href}>
                   <a href={item.href} className={cn(
-                    "font-mono text-xs uppercase tracking-[0.15em] transition-colors hover:text-clay",
-                    scrolled ? "text-ink/70" : "text-rice/85"
+                    "inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-[0.15em] transition-colors",
+                    scrolled ? "text-ink/70 hover:text-clay" : "text-rice/85 hover:text-gold"
                   )}>{item.label}</a>
                 </li>
               ))}
@@ -55,7 +55,7 @@ export function Header() {
             )}
             aria-label="Open menu"
             aria-expanded={menuOpen}
-            aria-controls="mobile-menu"
+            aria-controls={menuOpen ? "mobile-menu" : undefined}
           >
             <Menu strokeWidth={1.5} />
           </button>
