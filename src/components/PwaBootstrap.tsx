@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { basePath, withBasePath } from "@/lib/paths";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -17,12 +18,10 @@ const INSTALL_AVAILABLE_EVENT = "kabkrabue:installavailable";
 
 export function PwaBootstrap() {
   useEffect(() => {
-    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
-
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register(`${basePath}/sw.js`, {
-          scope: `${basePath || "/"}`,
+        .register(withBasePath("/sw.js"), {
+          scope: basePath ? `${basePath}/` : "/",
         })
         .catch(() => undefined);
     }

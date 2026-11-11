@@ -17,12 +17,14 @@ export const metadata = {
     locale: siteConfig.locale,
     title: "Privacy — KabKraBue",
     description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
+    images: ["/images/og-cover.jpg"],
   },
 
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Privacy — KabKraBue",
     description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
+    images: ["/images/og-cover.jpg"],
   },
 };
 
@@ -53,12 +55,12 @@ export default function PrivacyPage() {
 
             <section>
               <h2 className="font-display text-2xl text-ink">บริการจากภายนอก</h2>
-              <p className="mt-3">เมื่อคุณกดเล่น YouTube Short ระบบจึงค่อยโหลดตัวเล่นจาก YouTube และเมื่อเปิดแผนที่หรือกดลิงก์ภายนอก คุณอาจอยู่ภายใต้นโยบายความเป็นส่วนตัวของผู้ให้บริการนั้น ๆ</p>
+              <p className="mt-3">ภาพตัวอย่าง YouTube Shorts โหลดจาก i.ytimg.com เมื่อส่วนวิดีโอแสดงบนหน้า ส่วนตัวเล่น YouTube จะโหลดเมื่อคุณกดเล่นเท่านั้น แผนที่ OpenStreetMap เป็นเนื้อหาฝังในหน้าและจะโหลดเมื่อแผนที่เข้าใกล้บริเวณที่มองเห็น เมื่อกดเส้นทางหรือเครือข่ายสังคม คุณจะไปยังบริการภายนอกซึ่งมีนโยบายความเป็นส่วนตัวของตนเอง</p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl text-ink">การติดตั้งเว็บไซต์เป็นแอป</h2>
-              <p className="mt-3">ฟีเจอร์ Install App ใช้ความสามารถของเบราว์เซอร์สำหรับ Progressive Web App (PWA) เพื่อเพิ่มเว็บไซต์ไว้บนหน้าจอหลัก โดยเว็บไซต์ไม่ได้สร้างบัญชีผู้ใช้จากขั้นตอนนี้</p>
+              <p className="mt-3">ฟีเจอร์ Install App ใช้ความสามารถของเบราว์เซอร์สำหรับ Progressive Web App (PWA) เพื่อเพิ่มเว็บไซต์ไว้บนหน้าจอหลัก โดยเว็บไซต์ไม่ได้สร้างบัญชีผู้ใช้จากขั้นตอนนี้ Service worker อาจเก็บหน้าเริ่มต้น ไอคอน และไฟล์คงที่ของเว็บไซต์ไว้ใน cache ของเบราว์เซอร์เพื่อเปิดซ้ำหรือใช้งานบางส่วนขณะออฟไลน์ วิดีโอจะไม่ถูกเก็บใน cache นี้ คุณลบข้อมูลเว็บไซต์หรือ cache ได้จากการตั้งค่าเบราว์เซอร์</p>
             </section>
 
             <section>
@@ -68,7 +70,7 @@ export default function PrivacyPage() {
           </div>
 
           <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">
-            {siteConfig.name} · {new Date().getFullYear()}
+            {siteConfig.name} · {process.env.NEXT_PUBLIC_BUILD_YEAR ?? "2026"}
           </p>
         </div>
       </div>
