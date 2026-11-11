@@ -2,6 +2,8 @@
 
 import { useEffect, useRef } from "react";
 
+const activeDialogStack: symbol[] = [];
+
 const FOCUSABLE_SELECTOR = [
   "a[href]",
   "button:not([disabled])",
@@ -20,6 +22,8 @@ export function useDialogFocus(open: boolean, onClose: () => void) {
     if (!open) return;
     const dialog = dialogRef.current;
     if (!dialog) return;
+    const dialogToken = Symbol("dialog-focus-trap");
+    activeDialogStack.push(dialogToken);
     const previouslyFocused = document.activeElement instanceof HTMLElement
       ? document.activeElement
       : null;
@@ -35,6 +39,7 @@ export function useDialogFocus(open: boolean, onClose: () => void) {
     initial.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
+      if (activeDialogStack[activeDialogStack.length - 1] !== dialogToken) return;
       if (event.key === "Escape") {
         event.preventDefault();
         closeRef.current();
@@ -62,6 +67,8 @@ export function useDialogFocus(open: boolean, onClose: () => void) {
     document.addEventListener("keydown", onKeyDown);
     return () => {
       document.removeEventListener("keydown", onKeyDown);
+      const stackIndex = activeDialogStack.lastIndexOf(dialogToken);
+      if (stackIndex !== -1) activeDialogStack.splice(stackIndex, 1);
       if (previouslyFocused?.isConnected) previouslyFocused.focus();
     };
   }, [open]);

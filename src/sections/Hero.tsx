@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ChevronDown, Eye, EyeOff, Images, Moon, Sun } from "lucide-react";
@@ -43,8 +43,16 @@ function formatThailandClock(date: Date) {
 export function Hero() {
   const [reduceMotion, setReduceMotion] = useState(false);
   const [motionPreferenceKnown, setMotionPreferenceKnown] = useState(false);
+  const [networkPreferenceKnown, setNetworkPreferenceKnown] = useState(false);
+  const [dataSaverEnabled, setDataSaverEnabled] = useState(false);
   const [textHidden, setTextHidden] = useState(false);
   const [now, setNow] = useState<Date | null>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
+  const textContentRef = useCallback((element: HTMLDivElement | null) => {
+    if (!element) return;
+    if (textHidden) element.setAttribute("inert", "");
+    else element.removeAttribute("inert");
+  }, [textHidden]);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -54,6 +62,19 @@ export function Hero() {
     mediaQuery.addEventListener("change", update);
 
     return () => mediaQuery.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    type NetworkInformation = EventTarget & { saveData?: boolean; effectiveType?: string };
+    const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+    const update = () => setDataSaverEnabled(Boolean(
+      connection?.saveData || connection?.effectiveType === "slow-2g" || connection?.effectiveType === "2g",
+    ));
+
+    update();
+    setNetworkPreferenceKnown(true);
+    connection?.addEventListener("change", update);
+    return () => connection?.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
@@ -73,7 +94,33 @@ export function Hero() {
     ? formatThailandClock(now)
     : { time: "--:--", date: "--", hour: 12 };
   const isDaytime = clock.hour >= 6 && clock.hour < 18;
-  const motionEnabled = motionPreferenceKnown && !reduceMotion;
+  const motionEnabled = motionPreferenceKnown && !reduceMotion && networkPreferenceKnown && !dataSaverEnabled;
+  useEffect(() => {
+    if (!motionEnabled) return;
+    const video = heroVideoRef.current;
+    if (!video || typeof IntersectionObserver === "undefined") return;
+
+    let isIntersecting = false;
+    const syncPlayback = () => {
+      if (!isIntersecting || document.visibilityState !== "visible") {
+        video.pause();
+        return;
+      }
+      void video.play().catch(() => video.pause());
+    };
+    const observer = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      syncPlayback();
+    }, { threshold: 0.15 });
+
+    observer.observe(video);
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", syncPlayback);
+      video.pause();
+    };
+  }, [motionEnabled]);
   const slideTransition = { duration: motionEnabled ? 0.65 : 0, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
@@ -95,8 +142,8 @@ export function Hero() {
           </picture>
         ) : (
           <video
+            ref={heroVideoRef}
             className="h-full w-full object-cover object-center"
-            autoPlay
             muted
             loop
             playsInline
@@ -114,6 +161,7 @@ export function Hero() {
 
       <div
         className="absolute left-1/2 top-[13%] z-10 -translate-x-1/2"
+        role="img"
         aria-label={`เวลาประเทศไทย ${clock.time} ${clock.date}`}
         aria-live="off"
       >
@@ -189,26 +237,28 @@ export function Hero() {
       </div>
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
-        <motion.div animate={{ x: textHidden ? "-130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
-          <motion.div initial={motionEnabled ? { opacity: 0, scaleX: 0.4 } : false} animate={{ opacity: 1, scaleX: 1 }} transition={{ duration: motionEnabled ? 0.9 : 0, ease: [0.16, 1, 0.3, 1] }} className="w-24 origin-left">
-            <TerraceDivider tone="rice" className="opacity-80" />
+        <div ref={textContentRef} aria-hidden={textHidden}>
+          <motion.div animate={{ x: textHidden ? "-130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
+            <motion.div initial={motionEnabled ? { opacity: 0, scaleX: 0.4 } : false} animate={{ opacity: 1, scaleX: 1 }} transition={{ duration: motionEnabled ? 0.9 : 0, ease: [0.16, 1, 0.3, 1] }} className="w-24 origin-left">
+              <TerraceDivider tone="rice" className="opacity-80" />
+            </motion.div>
+            <motion.h1 initial={motionEnabled ? { opacity: 0, y: 24 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.9 : 0, delay: motionEnabled ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }} className="heading-display -mt-2 max-w-3xl text-rice">
+              <span className="block text-3xl font-normal text-rice/80 sm:text-4xl lg:text-5xl">Discover</span>
+              <span className="block bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl text-transparent sm:text-7xl lg:text-8xl">{siteConfig.name}</span>
+            </motion.h1>
           </motion.div>
-          <motion.h1 initial={motionEnabled ? { opacity: 0, y: 24 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.9 : 0, delay: motionEnabled ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }} className="heading-display -mt-2 max-w-3xl text-rice">
-            <span className="block text-3xl font-normal text-rice/80 sm:text-4xl lg:text-5xl">Discover</span>
-            <span className="block bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl text-transparent sm:text-7xl lg:text-8xl">{siteConfig.name}</span>
-          </motion.h1>
-        </motion.div>
 
-        <motion.div animate={{ x: textHidden ? "130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
-          <motion.p initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.4 : 0 }} className="mt-6 max-w-xl text-lg leading-relaxed text-rice/85">{siteConfig.heroSubtitleThai}</motion.p>
-          <motion.div initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.55 : 0 }} className="mt-9 flex flex-wrap items-center gap-4">
-            <motion.a href="#village" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink shadow-lg shadow-ink/20 transition-colors hover:border-gold hover:bg-gold">Enter the village<ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.75} /></motion.a>
-            <motion.a href="#gallery" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice backdrop-blur-sm transition-colors hover:border-rice hover:bg-rice/10"><Images className="h-3.5 w-3.5" strokeWidth={1.75} />View gallery</motion.a>
+          <motion.div animate={{ x: textHidden ? "130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
+            <motion.p initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.4 : 0 }} className="mt-6 max-w-xl text-lg leading-relaxed text-rice/85">{siteConfig.heroSubtitleThai}</motion.p>
+            <motion.div initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.55 : 0 }} className="mt-9 flex flex-wrap items-center gap-4">
+              <motion.a href="#village" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink shadow-lg shadow-ink/20 transition-colors hover:border-gold hover:bg-gold">Enter the village<ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.75} /></motion.a>
+              <motion.a href="#gallery" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice backdrop-blur-sm transition-colors hover:border-rice hover:bg-rice/10"><Images className="h-3.5 w-3.5" strokeWidth={1.75} />View gallery</motion.a>
+            </motion.div>
+            <motion.div initial={motionEnabled ? { opacity: 0, y: 12 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.68 : 0 }} className="mt-4">
+              <InstallAppButton />
+            </motion.div>
           </motion.div>
-          <motion.div initial={motionEnabled ? { opacity: 0, y: 12 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.68 : 0 }} className="mt-4">
-            <InstallAppButton />
-          </motion.div>
-        </motion.div>
+        </div>
       </div>
 
       <button type="button" onClick={() => setTextHidden((value) => !value)} aria-pressed={textHidden} aria-label={textHidden ? "แสดงข้อความ" : "ซ่อนข้อความเพื่อดูวิดีโอเต็มจอ"} className="group absolute bottom-8 left-6 z-10 inline-flex items-center gap-2 rounded-full border border-rice/15 bg-ink/10 px-4 py-2 text-rice/65 backdrop-blur-sm transition-all duration-300 hover:border-rice/40 hover:bg-ink/20 hover:text-rice/85 sm:left-12">

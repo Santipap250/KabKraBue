@@ -70,7 +70,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
         >
           <div className="flex items-center justify-between px-5 py-4 sm:px-8">
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-rice/45">KabKraBue Gallery</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-rice/70">KabKraBue Gallery</span>
               <span className="ml-3 font-mono text-xs uppercase tracking-[0.2em] text-rice/75">
                 {String(activeIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
               </span>
@@ -107,7 +107,8 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
                 src={image.src}
                 alt={image.alt}
                 aspect="aspect-auto"
-                className="max-h-[74vh] w-auto max-w-[92vw] sm:max-h-[78vh] sm:max-w-[82vw]"
+                fit="contain"
+                className="h-[74vh] w-[92vw] max-w-5xl sm:h-[78vh] sm:w-[82vw]"
                 sizes="90vw"
               />
               <figcaption className="mt-4 max-w-2xl text-center font-body text-sm leading-relaxed text-rice/65 sm:text-base">

@@ -19,7 +19,7 @@ export function SectionHeading({ index, eyebrow, title, titleThai, align = "left
         {title}
       </h2>
       {titleThai && (
-        <p className="mt-2 font-body text-lg text-ink/60">{titleThai}</p>
+        <p className="mt-2 font-body text-lg text-ink/70">{titleThai}</p>
       )}
     </div>
   );

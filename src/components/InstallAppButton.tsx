@@ -91,7 +91,7 @@ export function InstallAppButton({ className = "" }: { className?: string }) {
                 </div>
                 <h2 id="install-help-title" className="mt-3 font-display text-2xl">พกหมู่บ้านกาบกระบือไว้กับคุณ</h2>
               </div>
-              <button type="button" onClick={closeHelp} data-dialog-initial-focus className="rounded-full p-2 text-rice/70 hover:bg-rice/10 hover:text-rice" aria-label="ปิด">
+              <button type="button" onClick={closeHelp} data-dialog-initial-focus className="flex h-11 w-11 items-center justify-center rounded-full text-rice/70 hover:bg-rice/10 hover:text-rice" aria-label="ปิด">
                 <X className="h-5 w-5" strokeWidth={1.5} />
               </button>
             </div>

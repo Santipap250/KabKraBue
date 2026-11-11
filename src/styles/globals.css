@@ -93,7 +93,7 @@ textarea:focus-visible,
 /* Story editorial typography */
 .story-title-thai {
   color: theme("colors.ink");
-  opacity: 0.52;
+  opacity: 0.75;
   font-size: clamp(1.05rem, 2vw, 1.35rem);
   line-height: 1.7;
   letter-spacing: 0.01em;

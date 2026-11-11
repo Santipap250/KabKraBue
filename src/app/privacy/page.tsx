@@ -43,7 +43,7 @@ export default function PrivacyPage() {
           </div>
 
           <h1 className="heading-display mt-3 text-5xl sm:text-6xl">Privacy</h1>
-          <p className="mt-3 font-body text-lg text-ink/60">ข้อมูลความเป็นส่วนตัว</p>
+          <p className="mt-3 font-body text-lg text-ink/70">ข้อมูลความเป็นส่วนตัว</p>
 
           <div className="mt-10"><TerraceDivider className="opacity-70" /></div>
 
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
             </section>
           </div>
 
-          <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/50">
+          <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/70">
             {siteConfig.name} · {process.env.NEXT_PUBLIC_BUILD_YEAR ?? "2026"}
           </p>
         </div>

@@ -73,18 +73,11 @@ export const viewport = {
 
 const jsonLd = {
   "@context": "https://schema.org",
-  "@type": "TouristDestination",
+  "@type": "Place",
   name: siteConfig.name,
   alternateName: siteConfig.nameThai,
   description: siteConfig.shortDescription,
   url: siteConfig.url,
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: "ตำบลโคกสะอาด",
-    addressRegion: "จังหวัดสุรินทร์",
-    postalCode: "32140",
-    addressCountry: "TH",
-  },
   geo: {
     "@type": "GeoCoordinates",
     latitude: 14.52646,
@@ -97,7 +90,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="th" className={`${fraunces.variable} ${plexSansThai.variable} ${plexMono.variable}`}>
       <head />
       <body>
-        <script          type="application/ld+json"
+        <script
+          type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <PwaBootstrap />

@@ -17,7 +17,7 @@ export function MapSection() {
         href={getDirectionsUrl(villageCoordinates)}
         target="_blank"
         rel="noopener noreferrer"
-        className="absolute bottom-5 left-5 inline-flex items-center gap-2 bg-ink px-5 py-3 font-mono text-xs uppercase tracking-[0.15em] text-rice transition-colors hover:bg-paddy"
+        className="absolute bottom-5 left-5 inline-flex min-h-11 items-center gap-2 bg-ink px-5 py-3 font-mono text-xs uppercase tracking-[0.15em] text-rice transition-colors hover:bg-paddy"
       >
         <Navigation className="h-3.5 w-3.5" strokeWidth={1.5} />
         Get Directions

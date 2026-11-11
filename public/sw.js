@@ -1,16 +1,16 @@
 const CACHE_PREFIX = "kabkrabue-";
-const CACHE = "kabkrabue-v4";
+const CACHE = "kabkrabue-v5";
 
-// The service worker can live at the site root on Vercel or under a basePath
-// on GitHub Pages. Derive the deployed path from the SW URL so every cached
-// asset and offline fallback stays inside the correct scope.
+// Support both root-hosted deployments and a static-export basePath.
 const BASE_PATH = new URL(".", self.location.href).pathname.replace(/\/$/, "");
 const withBasePath = (path) => `${BASE_PATH}${path}` || "/";
 const APP_ROOT = withBasePath("/");
+const PRIVACY_ROOT = withBasePath("/privacy/");
 const APP_SCOPE = new URL(APP_ROOT, self.location.origin).pathname;
 
 const APP_SHELL = [
   APP_ROOT,
+  PRIVACY_ROOT,
   withBasePath("/manifest.webmanifest"),
   withBasePath("/icons/icon-192.png"),
   withBasePath("/icons/icon-512.png"),
@@ -55,6 +55,7 @@ self.addEventListener("fetch", (event) => {
   const request = event.request;
 
   if (request.method !== "GET") return;
+  if (request.destination === "serviceworker") return;
 
   const url = new URL(request.url);
 
@@ -62,47 +63,53 @@ self.addEventListener("fetch", (event) => {
   if (!url.pathname.startsWith(APP_SCOPE)) return;
   if (request.headers.has("range")) return;
 
-  // Never intercept video delivery. Let the browser/Vercel CDN handle
-  // MP4/WebM requests and Range requests natively.
+  // Never intercept video delivery. Let the browser/CDN handle media and ranges.
   if (isVideoRequest(url)) return;
 
-  // HTML navigation: network-first so new deployments appear immediately,
-  // while still providing an offline fallback inside the deployed scope.
+  // HTML navigation is network-first, with scoped offline fallbacks.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
-        .then((response) => {
+        .then(async (response) => {
           if (shouldCacheResponse(response)) {
-            const copy = response.clone();
-            void caches.open(CACHE).then((cache) => cache.put(request, copy));
+            const cache = await caches.open(CACHE);
+            await cache.put(request, response.clone()).catch(() => undefined);
           }
-
           return response;
         })
-        .catch(() =>
-          caches.open(CACHE).then((cache) =>
-            cache.match(request).then((cached) => cached || cache.match(APP_ROOT)),
-          ),
-        ),
-    );
+        .catch(async () => {
+          const cache = await caches.open(CACHE);
+          const cached = await cache.match(request);
+          if (cached) return cached;
 
+          if (url.pathname === PRIVACY_ROOT) {
+            const privacyPage = await cache.match(PRIVACY_ROOT);
+            if (privacyPage) return privacyPage;
+          }
+
+          return cache.match(APP_ROOT);
+        }),
+    );
     return;
   }
 
-  // Static same-origin assets: cache-first for speed, with a network
-  // fallback that refreshes the cache when a newer asset exists.
+  // Mutable same-origin assets are stale-while-revalidate: use a cached copy
+  // immediately, while refreshing it for the next visit. Keep the worker alive
+  // until the background refresh has either completed or failed.
+  const cachePromise = caches.open(CACHE);
+  const refresh = fetch(request).then(async (response) => {
+    if (shouldCacheResponse(response)) {
+      const cache = await cachePromise;
+      await cache.put(request, response.clone()).catch(() => undefined);
+    }
+    return response;
+  });
+
+  event.waitUntil(refresh.then(() => undefined).catch(() => undefined));
   event.respondWith(
-    caches.open(CACHE).then((cache) => cache.match(request).then((cached) => {
-      if (cached) return cached;
-
-      return fetch(request).then((response) => {
-        if (shouldCacheResponse(response)) {
-          const copy = response.clone();
-          void cache.put(request, copy);
-        }
-
-        return response;
-      });
-    })),
+    cachePromise.then(async (cache) => {
+      const cached = await cache.match(request);
+      return cached || refresh;
+    }),
   );
 });

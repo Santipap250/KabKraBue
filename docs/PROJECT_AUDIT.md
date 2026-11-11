@@ -15,10 +15,12 @@
 - **Shorts:** thumbnail-first; YouTube iframe ไม่ถูกสร้างใน initial load และถูกเพิ่มหลังผู้ใช้กดเล่น.
 - **BasePath/PWA:** เพิ่ม `withBasePath`, normalize `NEXT_PUBLIC_BASE_PATH`, รองรับ static manifest route, metadata/icons/media/service-worker paths. Worker ใช้ namespace `kabkrabue-*`, ลบเฉพาะ cache ของตัวเอง, จำกัด scope, network-first navigation/offline fallback และไม่ intercept/cache video หรือ range request.
 - **Accessibility:** mobile menu, Gallery Lightbox, Video dialog และ install help ใช้ focus management/Escape/restoration. Gallery แสดงเฉพาะ category ที่มีภาพจริงและ filter มี `aria-pressed`; Explore/Story/Gallery แสดง final state เมื่อ reduced motion ปิด viewport reveals เพื่อไม่ให้ content ค้างที่ opacity 0.
-- **Content/SEO/privacy:** People imagery ใช้คำว่า “Place & Memory” ให้ตรงกับภาพจริง. Privacy อธิบาย YouTube thumbnail/player, OpenStreetMap และ PWA cache. Metadata/social cards, manifest, robots, sitemap, JSON-LD, address/coordinates เดิมได้รับการคงไว้; เอา sitemap `lastModified` ที่ไม่ได้สะท้อนวันแก้ไขจริงออก.
+- **Content/SEO/privacy:** People imagery ใช้คำว่า “Place & Memory” ให้ตรงกับภาพจริง. Privacy อธิบาย YouTube thumbnail/player, OpenStreetMap และ PWA cache. Metadata/social cards, manifest, robots, sitemap และ coordinates เดิมคงไว้; JSON-LD ใช้ `Place` และไม่ยืนยัน postal address ที่ยังไม่ได้ independently verify; เอา sitemap `lastModified` ที่ไม่ได้สะท้อนวันแก้ไขจริงออก.
 - **Scroll/handoff:** Header ใช้ threshold แทนการ update state ทุก animation frame. เพิ่ม README, TODO, implementation plan, audit และ Before/After screenshots.
 
-## Verification performed
+## Previous PR #1 verification
+
+รายการตรวจด้านล่างเป็นหลักฐาน historical ของ PR #1 และไม่ใช่ผลทดสอบ follow-up branch รอบนี้:
 
 ผลทดสอบบน final source/export:
 
@@ -41,13 +43,31 @@
 - Screenshots Before มาจาก production baseline และ After จาก local export: [`SCREENSHOTS.md`](SCREENSHOTS.md). After ไม่ใช่ screenshot จาก protected Vercel Preview.
 - Lighthouse/real-device Android/iPhone/screen-reader audit ไม่ได้รัน; ไม่อ้างว่าได้ทดสอบ.
 
-## Residual dependency risk
+## Current dependency status and residual toolchain risk
 
-`npm audit` ล่าสุด: **6 moderate, 0 high, 0 critical**; findings อยู่ใน ESLint/TypeScript-ESLint/minimatch development/lint chain ไม่ใช่ runtime dependency ของ static site. Tree ปัจจุบันมี `@typescript-eslint/eslint-plugin@8.69.0`, `@typescript-eslint/parser@8.72.2`, `@typescript-eslint/typescript-estree@8.69.0/8.72.2` และ `minimatch@10.2.6`. `npm audit` ระบุ `fixAvailable: true`; อย่างไรก็ตาม `npm audit fix --dry-run` รอบล่าสุดยังเหลือ 6 findings, ไม่ได้เปลี่ยน package version และเตือน peer dependency. จึงยังต้องตรวจ remediation candidate ใน branch แยก โดยไม่ใช้ `--force` และไม่ถือว่า audit สะอาด.
+การตรวจรอบก่อน follow-up เคยพบ **6 moderate, 0 high, 0 critical** ใน ESLint/TypeScript-ESLint/minimatch development/lint chain ไม่ใช่ runtime dependency ของ static site. ผลดังกล่าวเป็น historical baseline; remediation และผลสดของ follow-up branch อยู่ในหัวข้อถัดไป.
 
-Registry/advisory evidence ก่อนหน้านี้ชี้ว่า patched `minimatch` เป็น 11.x และอาจเปลี่ยน Node engine requirement; `npm audit fix` ก่อนหน้านี้ไม่เคลียร์ findings. หลีกเลี่ยง forced override/major upgrade ที่เสี่ยงกับ Next.js 15/tooling/Node compatibility; ตรวจใหม่เมื่อมี compatible fix หรือทำ coordinated toolchain upgrade.
+Follow-up แก้ advisory GHSA-g3hv-75wg-m249 ด้วย scoped override `@typescript-eslint/typescript-estree > minimatch@11.0.1`; Node engine ของแพ็กเกจนี้รองรับ Node 18/20 และ >=22. `npm ci`, `npm run security`, และตรวจ dependency tree ผ่าน; override ไม่เปลี่ยน minimatch 3.x ของ ESLint packages อื่น.
 
 npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; `eslint-config-next@15.5.29` รับ ESLint ถึง v9 จึงควรวางแผนอัปเกรด ESLint/Next.js ร่วมกันในงานแยก แทนการฝืน peer range.
+
+## Premium polish follow-up — `manus/kabkrabue-final-polish`
+
+Branch นี้แยกจาก `main` ที่ `a92a60739ec325366aa0dea77f334636258e4b15`; ไม่แก้ `main` หรือ Vercel Production โดยตรง. เพิ่ม CI ที่ permission `contents: read` สำหรับ audit/lint/typecheck และ static build ทั้ง root กับ GitHub Pages basePath. ปรับ hidden Hero/ScrollToTop accessibility, topmost-only nested dialog focus trap, Hero video pause/resume และ Data Saver/reduced-motion poster, contrast/touch targets, image priority/fit, story video variant, service-worker stale-while-revalidate และ offline Privacy shell. Dead `LoadingState` ที่ไม่มี consumer ถูกลบ.
+
+ผลตรวจของ follow-up branch บน source ล่าสุด:
+
+- `npm ci` — ผ่าน; ติดตั้ง 376 packages และรายงาน 0 vulnerabilities.
+- `npm run security` (`npm audit --audit-level=moderate`) — ผ่าน; 0 vulnerabilities.
+- `npm run lint` และ `npm run typecheck` — ผ่าน.
+- `npm run build` และ `GITHUB_PAGES=true npm run build` — ผ่านทั้ง root และ `/KabKraBue/` static exports.
+- Chromium บน GitHub Pages export ที่ 390×844, `prefers-reduced-motion: reduce`: ไม่มี horizontal overflow, missing image alt หรือ unnamed controls; local assets ใช้ basePath; initial YouTube iframes 0; gallery NATURE filter/lightbox, Arrow/Escape และ focus restoration ผ่าน.
+- Hero video เป็น poster เมื่อ reduced motion เปิด; Hero hidden content เป็น `inert`/`aria-hidden` และกลับมาได้หลัง toggle. Mobile menu ซ้อน install-help dialog ได้; เฉพาะ dialog ชั้นบนดัก Tab, Escape ปิดทีละชั้น และ focus กลับไปยัง trigger ที่ถูกต้อง.
+- Service worker ใช้ scope `/KabKraBue/`; privacy page ถูก precache และ offline navigation ได้ HTTP 200 โดย CDP ยืนยัน `fromServiceWorker: true`; ไม่มี browser console/runtime errors.
+- GitHub Actions `quality.yml` เพิ่ม audit/lint/typecheck และ build สำหรับ root/basePath, ใช้ permission `contents: read`.
+- npm แสดง deprecation warning ของ `eslint@9.39.5`; เป็น toolchain lifecycle note ไม่ใช่ vulnerability และยังควรวางแผนอัปเกรดร่วมกับ Next.js แยกต่างหาก. Formal WCAG/axe, screen-reader, Lighthouse และ real-device audit ยังไม่ได้ทำ.
+
+ณ เวลาจัดทำรายงาน ผลงานยังอยู่ใน feature branch; จะเติม PR URL/CI status หลัง push/เปิด PR. ห้ามถือว่า Production หรือ `main` เปลี่ยนจากการทดสอบนี้.
 
 ## GitHub / Vercel delivery status
 

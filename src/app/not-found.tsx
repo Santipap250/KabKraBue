@@ -9,7 +9,7 @@ export default function NotFound() {
       <h1 className="heading-display mt-4 text-4xl text-ink sm:text-5xl">
         This path doesn&apos;t lead into {siteConfig.name}
       </h1>
-      <p className="mt-4 max-w-md text-ink/60">
+      <p className="mt-4 max-w-md text-ink/70">
         The page you&apos;re looking for may have moved, or never existed. Let&apos;s
         take you back to the village.
       </p>

@@ -79,7 +79,7 @@ export default function HomePage() {
               <MapSection />
             </div>
             {hasContent(siteConfig.contact.address) && (
-              <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/60">
+              <p className="mt-6 max-w-lg text-sm leading-relaxed text-ink/70">
                 {siteConfig.contact.address}
               </p>
             )}

@@ -1,0 +1,47 @@
+name: Website quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches:
+      - "manus/**"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Audit, lint, typecheck, and static builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Check dependency advisories
+        run: npm run security
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build root-hosted export
+        run: npm run build
+
+      - name: Build GitHub Pages basePath export
+        run: GITHUB_PAGES=true npm run build

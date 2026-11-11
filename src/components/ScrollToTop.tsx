@@ -13,6 +13,8 @@ export function ScrollToTop() {
       type="button"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Scroll back to top"
+      aria-hidden={!scrolled}
+      disabled={!scrolled}
       className={cn(
         "fixed bottom-6 right-6 z-30 flex h-12 w-12 items-center justify-center rounded-full bg-ink text-rice shadow-lg transition-all duration-300",
         scrolled ? "opacity-100 translate-y-0" : "pointer-events-none translate-y-4 opacity-0"
