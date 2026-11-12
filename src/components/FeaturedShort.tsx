@@ -160,7 +160,7 @@ export function FeaturedShort() {
                 Swipe to explore · Tap to play
               </span>
 
-              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold/80" aria-hidden="true">
+              <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-gold" aria-hidden="true">
                 01 / {String(SHORTS.length).padStart(2, "0")}
               </span>
             </div>
