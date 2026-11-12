@@ -1,91 +1,77 @@
 # KabKraBue — Audit and Remediation Report
 
-## Scope and baseline
+## สถานะปัจจุบัน
 
-ตรวจ repository `Santipap250/KabKraBue` จาก baseline `5a7c5058d7535327585f5420d9000a35bee05418` บน branch `manus/kabkrabue-premium-upgrade`. PR #1 merge application implementation เข้า `main` เป็น `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`; PR #2 merge เป็น `682e3492a8c0405b9f69f5df19c562ef822cef56` และแก้เฉพาะเอกสารสองไฟล์. วันที่ 2026-11-12 ผู้ใช้สั่งให้ Vercel promote Production กลับไปยัง deployment ที่สร้างจาก baseline `5a7c505`; การทำเช่นนี้เปลี่ยน alias ใน Vercel แต่ไม่ reset GitHub `main`. หลัง push เอกสาร commit `c60c46a` ขึ้น `main`, Vercel auto-deploy แล้วกำหนด alias Production กลับไปยัง app source ของ PR #1.
+ข้อมูลนี้ตรวจเมื่อ 2026-11-12 (UTC/ICT) บน repository `Santipap250/KabKraBue`:
 
-ตรวจ architecture/routes/components/sections/hooks/data/styles/config/dependencies/assets/PWA/SEO/accessibility/performance/security/responsive behavior และ static export. รายงาน audit รอบต้นครอบคลุม 38 source files. ไม่พบ P0; ไม่พบ broken local image/video path ที่ใช้งานอยู่ใน source inventory.
+- `main` ปัจจุบันคือ `662d0e95bf599228c851eb08422a0e26b34cf98f` ซึ่งเป็น merge commit ของ PR [#4 — Harden service worker and reduced-motion behavior](https://github.com/Santipap250/KabKraBue/pull/4).
+- PR #4 ถูก merge โดยบัญชี `Santipap250` (`TUIzFPV`) เวลา `2026-11-12T00:17:04Z` (07:17:04 ICT) จาก head `8c4ce1fe2f75572fcba1b05bb96fe2c3793a3088` โดยมีฐาน `72583c51e026becffe8525d17926d9939e738b06`. การ merge นี้เกิดระหว่างที่กำลังทำ QA; Manus ไม่ได้กด merge หรือ push ไป `main`.
+- GitHub ระบุ Vercel Production deployment record `7724621029` ของ commit `662d0e9` ว่าสำเร็จ โดย URL คือ https://kab-kra-5kksu7vw9-obixconfig.vercel.app . Public alias `https://kab-kra-bue.vercel.app/`, `/privacy/` และ `/sw.js` ตอบ HTTP 200 ในการตรวจ read-only. เนื่องจาก repo มีการ deploy จาก `main` การ merge โดยเจ้าของทำให้ Production ได้รับ deployment ใหม่; Manus ไม่ได้สั่ง promote หรือแก้ alias.
+- Contrast fixes ที่พบจาก axe ถูกแยกออกจาก PR #4 บน feature branch ใหม่ `manus/kabkrabue-axe-contrast-followup` ซึ่งเริ่มจาก current `main` SHA ข้างต้น. Source commit ที่ตรวจคือ `929b008b1a6af390f95caf7199581e0f1338b164` (tree `afbf7c33b3abb92142efb9bc6d2fc8ad1b7e825c`). เปิดเป็น PR [#5 — Fix axe-detected contrast issues](https://github.com/Santipap250/KabKraBue/pull/5); state `OPEN`, no merge commit. GitHub/Vercel checks are tracked on the PR and must pass review before any owner-approved merge.
 
-## สิ่งที่ปรับปรุง
+## ประวัติและขอบเขต
 
-- **Framework/security:** อัปเดต Next.js และ `eslint-config-next` เป็น `15.5.29` ซึ่งเป็น patched 15.x line ที่ระบุจาก official advisory โดยไม่ทำ major upgrade; pin PostCSS `8.5.28` และใช้ npm override ให้ lockfile ไม่ย้อนกลับไปใช้ PostCSS patch เก่า.
-- **Hydration/time:** Hero ใช้ placeholder แบบ SSR-safe แล้วเริ่มเวลา real Thailand หลัง mount ด้วย `Intl`/`Asia/Bangkok`, อัปเดตนาทีละครั้ง. Copyright year ใช้ build-time constant.
-- **Hero/design:** เพิ่มภาพ desktop poster แบบ landscape (`viewpoint-01.jpg`) และคง portrait poster เดิมบนมือถือ; ใช้ source ที่ตอบกับ viewport และ basePath. คง palette/typography เดิมและสีทองแบบ accent.
-- **Story/media:** Hero เลือก WebM ก่อน MP4; Story video `preload="none"`, เริ่มเมื่อใกล้ viewport, pause เมื่อออก และประสานให้มี story clip เล่นพร้อมกันได้เพียงหนึ่งคลิป. วิดีโอต้นฉบับคงไว้; `nature-section.mp4` มี optimized H.264 720×306 สำเนา 4,416,202 bytes จากต้นฉบับ 11,129,273 bytes (ลด ~60.3%); ไม่มี audio ในสำเนาเพราะ player mute โดยค่าเริ่มต้น. เทียบ sample frames ก่อนใช้.
-- **Shorts:** thumbnail-first; YouTube iframe ไม่ถูกสร้างใน initial load และถูกเพิ่มหลังผู้ใช้กดเล่น.
-- **BasePath/PWA:** เพิ่ม `withBasePath`, normalize `NEXT_PUBLIC_BASE_PATH`, รองรับ static manifest route, metadata/icons/media/service-worker paths. Worker ใช้ namespace `kabkrabue-*`, ลบเฉพาะ cache ของตัวเอง, จำกัด scope, network-first navigation/offline fallback และไม่ intercept/cache video หรือ range request.
-- **Accessibility:** mobile menu, Gallery Lightbox, Video dialog และ install help ใช้ focus management/Escape/restoration. Gallery แสดงเฉพาะ category ที่มีภาพจริงและ filter มี `aria-pressed`; Explore/Story/Gallery แสดง final state เมื่อ reduced motion ปิด viewport reveals เพื่อไม่ให้ content ค้างที่ opacity 0.
-- **Content/SEO/privacy:** People imagery ใช้คำว่า “Place & Memory” ให้ตรงกับภาพจริง. Privacy อธิบาย YouTube thumbnail/player, OpenStreetMap และ PWA cache. Metadata/social cards, manifest, robots, sitemap และ coordinates เดิมคงไว้; JSON-LD ใช้ `Place` และไม่ยืนยัน postal address ที่ยังไม่ได้ independently verify; เอา sitemap `lastModified` ที่ไม่ได้สะท้อนวันแก้ไขจริงออก.
-- **Scroll/handoff:** Header ใช้ threshold แทนการ update state ทุก animation frame. เพิ่ม README, TODO, implementation plan, audit และ Before/After screenshots.
+PR #1 เป็นการปรับปรุงแอปจาก baseline `5a7c5058d7535327585f5420d9000a35bee05418`; PR #2 ปรับเอกสารสถานะ Production. รายงานในส่วนประวัติของ PR #1 และ PR #3 ด้านล่างเป็นหลักฐานย้อนหลัง ไม่ควรนำไปปะปนกับสถานะ current main/Production.
 
-## Previous PR #1 verification
+PR #3 (`manus/kabkrabue-final-polish`) merge เป็น `72583c51e026becffe8525d17926d9939e738b06`; CI และ browser smoke tests ของ head `56fc511ddf488c0664cce7bee034154c309d9510` ผ่าน. PR #4 เพิ่มการจำกัด dynamic service-worker cache ที่ 100 entries, reduced-motion behavior สำหรับ ScrollToTop, แก้คำผิดภาษาไทย, ปรับแผนและ TODO; CI ของ head `8c4ce1f` ผ่าน audit/lint/typecheck และ static builds.
 
-รายการตรวจด้านล่างเป็นหลักฐาน historical ของ PR #1 และไม่ใช่ผลทดสอบ follow-up branch รอบนี้:
+งานทั้งหมดในรอบปัจจุบันคง design/palette, village content, contact data, social links, original media, static export และ root/`/KabKraBue/` basePath. ไม่มีการเพิ่ม dependency สำหรับ axe หรือ Lighthouse และไม่มีการเปลี่ยน production code ผ่านการ push เข้า `main` จาก Manus.
 
-ผลทดสอบบน final source/export:
+## Axe contrast findings ที่แก้ใน branch ปัจจุบัน
 
-- `npm ci` — ผ่าน (375 packages ติดตั้ง; npm แสดง 6 moderate findings ตาม residual ด้านล่าง).
-- `npm run lint` — ผ่าน.
-- `npx tsc --noEmit` — ผ่าน.
-- `npm run build` (root/Vercel static export) — ผ่าน; routes `/`, `/privacy`, `/manifest.webmanifest`, `/robots.txt`, `/sitemap.xml` ถูก prerender/export.
-- `GITHUB_PAGES=true npm run build` — ผ่าน; ตรวจ `out/`, manifest `start_url`/`scope` ใต้ `/KabKraBue/`, icons/favicon, worker, privacy route และ static assets.
-- Chromium basePath run (390/1280 px, reduced-motion): root/privacy status 200; desktop เลือก `/KabKraBue/images/places/viewpoint-01.jpg`, มือถือคง `/KabKraBue/images/village-hero-poster.jpg`; service worker scope `/KabKraBue/`; ไม่มี console/page errors หรือ failed/unprefixed local requests.
-- Chromium root run ทั้ง `no-preference` และ `reduce`: status 200, ไม่มี page/console errors หรือ failed local responses; ไม่พบ YouTube iframe ตอนแรก; `Nature` filter เหลือภาพจริง 1 ภาพจาก Gallery 14 ภาพ; ไม่มีหมวด People ที่ว่าง; lightbox Arrow/Escape/focus restoration ผ่าน; install-help Escape/restoration ผ่าน.
-- Mobile navigation: dialog semantics, Escape close และ focus restoration ผ่าน.
-- Shorts: YouTube iframe 0 ก่อนกด Play และ 1 หลังคลิก thumbnail; CTA ของ TikTok/YouTube คงอยู่.
-- Optional Video Showcase: `src/data/videos.ts` ว่างโดยตั้งใจและ section `#video` ไม่ถูก render.
-- Story video QA (no-preference): story clips มี `preload="none"` และ `readyState=0` ก่อนเข้า viewport; เริ่มเล่นเมื่อเข้า viewport; clip ก่อนหน้าหยุดเมื่อเปิด clip ถัดไป; มี story clip ที่เล่นพร้อมกันหนึ่งรายการ; worker cache ไม่มีไฟล์วิดีโอ.
-- PWA offline: หลัง install/activate และโหลดหน้า online แล้ว จำลอง offline navigation root และ `/KabKraBue/` ได้ response 200 จาก cache; worker scope ถูกต้อง.
-- Breakpoints 360, 390, 768, 1024 และ 1440 px — `documentElement.scrollWidth` ไม่เกิน viewport.
-- Privacy route, map iframe accessible title/directions URL และ custom `out/404.html` copy/CTA ตรวจพบ.
-- ก่อน rollback หลัง merge เปิด production Home (`https://kab-kra-bue.vercel.app/`) และ Privacy (`https://kab-kra-bue.vercel.app/privacy/`) แบบ read-only; ทั้งสองหน้าแสดงเนื้อหาและ title ที่คาดไว้. Manifest, `sw.js`, robots และ sitemap ตอบสนองต่อ read-only request.
-- หลัง rollback วันที่ 2026-11-12 หน้า Home และ Privacy ของ Production ตอบ HTTP 200 จาก deployment `5a7c505`.
-- Screenshots Before มาจาก production baseline และ After จาก local export: [`SCREENSHOTS.md`](SCREENSHOTS.md). After ไม่ใช่ screenshot จาก protected Vercel Preview.
-- Lighthouse/real-device Android/iPhone/screen-reader audit ไม่ได้รัน; ไม่อ้างว่าได้ทดสอบ.
+`axe-core` 4.13.0 มีอยู่ใน clean install แบบ transitive; ไม่ได้เพิ่มเป็น direct dependency. รอบแรกพบ contrast จริง 4 nodes: ตัวเลข Shorts สี gold/80 บนพื้นมืด, index สี clay ใน Find Us บนพื้น mist, และหัวข้อ Footer `Navigate`/`Visit` ซึ่ง utility สี mist ถูก `.eyebrow` default สี paddy override. แก้เฉพาะ class/context โดยใช้ palette token เดิม: gold แบบทึบ, paddy สำหรับ index เฉพาะ Visit, และบังคับ intended mist/70 utility ให้มีผลใน Footer. ไม่ได้เปลี่ยน palette หรือเนื้อหาหน้าเว็บ.
 
-## Current dependency status and residual toolchain risk
+ผล axe หลังแก้ บน static export ของ source tree `afbf7c3`:
 
-การตรวจรอบก่อน follow-up เคยพบ **6 moderate, 0 high, 0 critical** ใน ESLint/TypeScript-ESLint/minimatch development/lint chain ไม่ใช่ runtime dependency ของ static site. ผลดังกล่าวเป็น historical baseline; remediation และผลสดของ follow-up branch อยู่ในหัวข้อถัดไป.
+| หน้า | Violations | Passed rules | Incomplete |
+| --- | ---: | ---: | --- |
+| Home `/` | 0 | 29 | `color-contrast`: 64 nodes บน background gradient ที่ axe คำนวณพื้นหลังไม่ได้; `video-caption`: ต้องให้คนตรวจ 5 Story video elements |
+| Privacy `/privacy/` | 0 | 19 | ไม่มี |
 
-Follow-up แก้ advisory GHSA-g3hv-75wg-m249 ด้วย scoped override `@typescript-eslint/typescript-estree > minimatch@11.0.1`; Node engine ของแพ็กเกจนี้รองรับ Node 18/20 และ >=22. `npm ci`, `npm run security`, และตรวจ dependency tree ผ่าน; override ไม่เปลี่ยน minimatch 3.x ของ ESLint packages อื่น.
+รายการ `incomplete` ไม่ใช่ข้อสรุปว่า element ผ่านหรือไม่ผ่าน. `ffprobe` พบ AAC stereo ในวิดีโอที่อ้างอิง `story-02.mp4` และ `people-section.mp4`; ยังไม่ได้ตรวจเนื้อหาเสียงหรือยืนยันว่ามี/จำเป็นต้องมี caption track. อีก 3 Story clips ที่ใช้อยู่ไม่มี audio stream ในไฟล์ที่อ้างอิง. จึงยังต้องมีคนตรวจความหมายของเสียง/captions และ contrast บน gradient; ไม่อ้างว่าได้รับการรับรอง WCAG 2.2 AA.
 
-npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; `eslint-config-next@15.5.29` รับ ESLint ถึง v9 จึงควรวางแผนอัปเกรด ESLint/Next.js ร่วมกันในงานแยก แทนการฝืน peer range.
+## Verification บน source tree ปัจจุบัน
 
-## Premium polish follow-up — `manus/kabkrabue-final-polish`
+รันเมื่อ 2026-11-12 บน branch `manus/kabkrabue-axe-contrast-followup`, source commit `929b008b1a6af390f95caf7199581e0f1338b164`:
 
-Branch นี้แยกจาก `main` ที่ `a92a60739ec325366aa0dea77f334636258e4b15`; ไม่แก้ `main` หรือ Vercel Production โดยตรง. เพิ่ม CI ที่ permission `contents: read` สำหรับ audit/lint/typecheck และ static build ทั้ง root กับ GitHub Pages basePath. ปรับ hidden Hero/ScrollToTop accessibility, topmost-only nested dialog focus trap, Hero video pause/resume และ Data Saver/reduced-motion poster, contrast/touch targets, image priority/fit, story video variant, service-worker stale-while-revalidate และ offline Privacy shell. Dead `LoadingState` ที่ไม่มี consumer ถูกลบ.
-
-ผลตรวจของ follow-up branch บน source ล่าสุด:
-
-- `npm ci` — ผ่าน; ติดตั้ง 376 packages และรายงาน 0 vulnerabilities.
-- `npm run security` (`npm audit --audit-level=moderate`) — ผ่าน; 0 vulnerabilities.
+- `npm ci` — ผ่าน, ติดตั้ง 376 packages; `npm audit` พบ 0 vulnerabilities. npm ยังแสดงคำเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว.
+- `npm run security` — ผ่าน; 0 vulnerabilities.
 - `npm run lint` และ `npm run typecheck` — ผ่าน.
 - `npm run build` และ `GITHUB_PAGES=true npm run build` — ผ่านทั้ง root และ `/KabKraBue/` static exports.
-- Chromium บน GitHub Pages export ที่ 390×844, `prefers-reduced-motion: reduce`: ไม่มี horizontal overflow, missing image alt หรือ unnamed controls; local assets ใช้ basePath; initial YouTube iframes 0; gallery NATURE filter/lightbox, Arrow/Escape และ focus restoration ผ่าน.
-- Hero video เป็น poster เมื่อ reduced motion เปิด; Hero hidden content เป็น `inert`/`aria-hidden` และกลับมาได้หลัง toggle. Mobile menu ซ้อน install-help dialog ได้; เฉพาะ dialog ชั้นบนดัก Tab, Escape ปิดทีละชั้น และ focus กลับไปยัง trigger ที่ถูกต้อง.
-- Service worker ใช้ scope `/KabKraBue/`; privacy page ถูก precache และ offline navigation ได้ HTTP 200 โดย CDP ยืนยัน `fromServiceWorker: true`; ไม่มี browser console/runtime errors.
-- GitHub Actions `quality.yml` เพิ่ม audit/lint/typecheck และ build สำหรับ root/basePath, ใช้ permission `contents: read`.
-- npm แสดง deprecation warning ของ `eslint@9.39.5`; เป็น toolchain lifecycle note ไม่ใช่ vulnerability และยังควรวางแผนอัปเกรดร่วมกับ Next.js แยกต่างหาก. Formal WCAG/axe, screen-reader, Lighthouse และ real-device audit ยังไม่ได้ทำ.
+- บน local static servers ตรวจ `/`, `/privacy/`, `/404.html`, manifest, robots, sitemap และ `sw.js` ทั้ง root และ `/KabKraBue/`; ทุก endpoint ที่ตรวจตอบ HTTP 200.
+- axe-core 4.13.0 — Home 0 violations/29 passed rules; Privacy 0 violations/19 passed rules. รายละเอียด incomplete อยู่ด้านบน; ผลนี้เป็น automated check เฉพาะสอง routes ไม่ใช่ formal accessibility audit.
 
-เปิด PR [#3 — Polish accessibility, PWA freshness, and CI quality checks](https://github.com/Santipap250/KabKraBue/pull/3) จาก `manus/kabkrabue-final-polish` เข้า `main` แล้ว. PR ยังไม่ merge; ไม่มีการ push ไป `main` และไม่ได้แก้ Vercel Production. GitHub Actions CI เริ่มตรวจหลัง PR ถูกสร้าง; สถานะ checks ให้ดูจาก PR โดยตรง.
+### Browser smoke/performance (local static export)
 
-## GitHub / Vercel delivery status
+การทดสอบ CDP keyboard/dialog, Gallery filters/lightbox (Arrow/Escape/focus restore), Hero toggle, ScrollToTop, reduced motion, mobile/responsive overflow, SW cache bound/version migration/offline Privacy ทำก่อน cherry-pick บน commit `773f1ca834f23b9455412d20d2f73ed923eb68bb`; Git tree นั้นตรงกับ source tree `929b008` ทุกไฟล์. ผลการทดสอบ interaction paths ผ่าน.
 
-- Baseline before upgrade: `5a7c5058d7535327585f5420d9000a35bee05418`.
-- PR [#2 — Docs: reflect current Production status](https://github.com/Santipap250/KabKraBue/pull/2) merged as `682e3492a8c0405b9f69f5df19c562ef822cef56`; it changed only `TODO.md` and this report. The application source remains the PR #1 implementation at `43eb9bc1f5ffe32fc4822ad976f7254aefa3f2af`, merged at `2026-11-11T19:16:53Z` by `Santipap250`.
-- Vercel Production deployment for PR #1 completed successfully at `https://kab-kra-oopf7zs0y-obixconfig.vercel.app/`. The later Production deployment for `682e349` also reported Ready/success; its build completed, with npm warnings but no build failure.
-- On 2026-11-12 the user authorized promoting the existing Vercel deployment `AMtk4AdgBevAKQmuYM7XsbDa7Dx4` from commit `5a7c5058d7535327585f5420d9000a35bee05418`. Vercel confirmed promotion and showed `kab-kra-bue.vercel.app` as Current; Home and Privacy returned HTTP 200 after the rollback. GitHub `main` remained unchanged by that Vercel action.
-- The documentation-only commit `c60c46ac287918d6862f6b3129cc6bb18ed5ae91` was then pushed to `main`. Vercel created deployment `3YeusiWhr51j67AA9ws3YM8cLB9h`, reported it Ready/Current for `kab-kra-bue.vercel.app`, and assigned the Production alias. Home and Privacy returned HTTP 200 afterward. This deployment superseded the manual rollback and serves the PR #1 application source; the rollback deployment remains available as a historical deployment.
-- Future pushes to `main`, including docs-only commits, can trigger another Production deployment in this project.
-- Preview URL: https://kab-kra-bue-git-manus-kabkrabue-premium-upgrade-obixconfig.vercel.app/ . An unauthenticated browser sees `Login – Vercel` and an asset response `403`; readiness/URL are known from GitHub/Vercel status, but page-level Preview content was not validated without an authorized Vercel session.
-- A later docs-only commit `1da43b38549208f1bdd11d313d1400fee7b5b16a` remains on `manus/kabkrabue-premium-upgrade`, is not part of `main`, and contains stale PR #1 status wording; do not use it as the current source of truth.
+Lighthouse package/CLI ไม่ติดตั้ง; ไม่ได้เพิ่ม dependency. Chromium Performance API snapshot ใหม่บน root export, cache ปิดและ Service Worker interception bypass:
 
-## Official security references
+| Emulated viewport | TTFB | FCP/LCP | CLS | Resources | First-party bytes | Hero WebM |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 390×844 | 17 ms | 260 ms | 0 | 33 | 3.48 MB | 1.31 MB |
+| 1440×900 | 18 ms | 292 ms | 0.00003 | 34 | 3.54 MB | 1.31 MB |
 
-- Next.js official security release overview: https://nextjs.org/blog/security
+เป็น snapshot จาก local static server โดยไม่มี CPU/network throttling; ไม่ใช่ Lighthouse score, field data หรือผลบนอุปกรณ์จริง และไม่ควรเทียบตรงกับ Production.
+
+## Production / Preview evidence
+
+PR #4 preview deployment ที่รายงานผ่าน GitHub (`https://kab-kra-nx65g819c-obixconfig.vercel.app/`) ต้องเข้าสู่ Vercel login ในการเรียกแบบไม่ authenticated; จึงยืนยันได้แค่ deployment status/URL ไม่ได้ยืนยันหน้า Preview ด้วย browser. PR #5 เป็น follow-up review-only; ตรวจ CI/Preview state ล่าสุดผ่าน [PR #5](https://github.com/Santipap250/KabKraBue/pull/5), ไม่บันทึก status แบบชั่วคราวใน source docs. Production evidence ของ main ปัจจุบันมาจาก GitHub deployment status และ public HTTP checks ที่ระบุข้างต้น; ไม่ได้ตรวจ Vercel Dashboard โดยตรงในรอบนี้.
+
+PR #5 เปิดจาก `manus/kabkrabue-axe-contrast-followup` เข้า `main` แล้ว; ห้าม merge, push ไป `main`, promote deployment หรือแก้ Production ในขั้นตอน follow-up นี้.
+
+## Residual items
+
+1. ตรวจ contrast บน 64 text nodes ที่วางบน gradient ด้วย human visual/color sampling; axe คำนวณ background ไม่ได้.
+2. ตรวจเสียง Story videos สองไฟล์ที่มี AAC เพื่อยืนยัน caption/subtitle requirement; ไม่แต่ง transcript/captions โดยเดา.
+3. ทำ screen-reader/real-device review ก่อนอ้าง conformance.
+4. วางแผนอัปเกรด ESLint/Next.js tooling ร่วมกัน; ไม่ฝืน peer ranges. npm audit ปัจจุบัน 0 vulnerabilities.
+5. Lighthouse ไม่ได้ติดตั้งและไม่ได้รัน; browser metrics ด้านบนเป็นเพียง local snapshot.
+
+## Historical security references
+
+- Next.js security releases: https://nextjs.org/blog/security
 - Next.js November 2026 security release: https://nextjs.org/blog/november-2026-security-release.md
-- Next.js advisory GHSA-vcvr-r3jv-pc5j: https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j
-- Next.js advisory GHSA-9qr9-h5gf-34mp: https://github.com/vercel/next.js/security/advisories/GHSA-9qr9-h5gf-34mp
-- PostCSS advisory GHSA-qx2v-qp2m-jg93: https://github.com/advisories/GHSA-qx2v-qp2m-jg93
-- PostCSS advisory GHSA-6g55-p6wh-862q: https://github.com/advisories/GHSA-6g55-p6wh-862q
-- minimatch advisory GHSA-g3hv-75wg-m249: https://github.com/advisories/GHSA-g3hv-75wg-m249
+- Next.js advisories: https://github.com/vercel/next.js/security/advisories/GHSA-vcvr-r3jv-pc5j and https://github.com/vercel/next.js/security/advisories/GHSA-9qr9-h5gf-34mp
+- PostCSS advisories: https://github.com/advisories/GHSA-qx2v-qp2m-jg93 and https://github.com/advisories/GHSA-6g55-p6wh-862q
+- minimatch advisory: https://github.com/advisories/GHSA-g3hv-75wg-m249
