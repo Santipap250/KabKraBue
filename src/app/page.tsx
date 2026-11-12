@@ -74,7 +74,7 @@ export default function HomePage() {
 
         <section id="visit" aria-label="Map" className="border-t border-border bg-mist/40">
           <div className="container-content py-20 sm:py-28">
-            <SectionHeading index="10" eyebrow="Find Us" title="On the map" titleThai="ตำแหน่งที่ตั้งหมู่บ้าน" />
+            <SectionHeading index="10" indexClassName="text-paddy" eyebrow="Find Us" title="On the map" titleThai="ตำแหน่งที่ตั้งหมู่บ้าน" />
             <div className="mt-12">
               <MapSection />
             </div>
