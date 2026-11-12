@@ -11,7 +11,7 @@
 - [x] คง Next.js static export และ root/basePath deployment.
 - [x] `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run build` และ `GITHUB_PAGES=true npm run build` ผ่านบน source commit `929b008`.
 - [x] `npm audit` รายงาน 0 vulnerabilities; scoped `minimatch@11.0.1` override ยังคงแก้ GHSA-g3hv-75wg-m249.
-- [ ] วางแผนอัปเกรด `eslint@9.39.5`/Next.js tooling ร่วมกัน; npm เตือน ESLint version ไม่ได้รับการ support แล้ว. ห้ามฝืน peer range ในงานนี้.
+- [ ] วางแผนอัปเกรด `eslint@9.39.5`/Next.js tooling ร่วมกัน; npm เตือน ESLint version ไม่ได้รับการ support แล้ว. GitHub Actions ยังเตือน `actions/checkout@v4`/`setup-node@v4` Node 20 deprecation/Node 24 และ `ubuntu-latest` migration; ห้ามฝืน peer range หรือเปลี่ยน workflow นอก scope โดยไม่มีเหตุผล.
 
 ## 2. Content/PWA — COMPLETE ผ่าน PR #4
 
@@ -34,12 +34,12 @@
 - [ ] Lighthouse ไม่ติดตั้ง; ไม่เพิ่ม toolchain ขนาดใหญ่ใน scope นี้. ค่า browser snapshot ไม่มี CPU/network throttling จึงไม่ใช่คะแนนหรือ field data.
 - [ ] หากต้องการ Lighthouse/field data, ให้รันจาก environment ที่มี tool/อุปกรณ์จริงและเก็บ profile แยกจาก local numbers.
 
-## 5. Delivery/docs — IN PROGRESS
+## 5. Delivery/docs — READY FOR REVIEW (PR #5 OPEN)
 
 - [x] ปรับ `docs/PROJECT_AUDIT.md`, `TODO.md` และ `plan.md` ให้สะท้อน main `662d0e9`, owner-merged PR #4, Production evidence, exact source SHA และ test limitations.
 - [x] เปิด [PR #5](https://github.com/Santipap250/KabKraBue/pull/5) จาก `manus/kabkrabue-axe-contrast-followup` เข้า `main`; review-only, ห้าม merge/auto-promote จากการกระทำของ Manus.
-- [ ] ตรวจ PR checks และ Vercel Preview status รอบสุดท้ายหลัง documentation commit; ถ้า Preview ถูกล็อกด้วย Vercel login ให้บันทึกข้อจำกัด ไม่อ้างว่าผ่าน browser review.
-- [ ] ยืนยัน remote `main` ไม่ถูกเปลี่ยนโดยการทำงานใน follow-up นี้.
+- [x] PR #5 checks บน full head `986946c`: push run `43128308229` ผ่าน; PR run `43128315404` ผ่านหลัง rerun หนึ่งครั้ง. Vercel deployment `7724901892` สำเร็จ; เนื้อหา Preview redirect ไป login จึงยังไม่ได้ browser-verify.
+- [x] ยืนยัน remote `main` ยังคง `662d0e95bf599228c851eb08422a0e26b34cf98f`; Manus ไม่ได้ push หรือ merge เข้า `main`.
 
 ## Historical record
 

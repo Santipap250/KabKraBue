@@ -56,7 +56,7 @@ Lighthouse package/CLI ไม่ติดตั้ง; ไม่ได้เพ�
 
 ## Production / Preview evidence
 
-PR #4 preview deployment ที่รายงานผ่าน GitHub (`https://kab-kra-nx65g819c-obixconfig.vercel.app/`) ต้องเข้าสู่ Vercel login ในการเรียกแบบไม่ authenticated; จึงยืนยันได้แค่ deployment status/URL ไม่ได้ยืนยันหน้า Preview ด้วย browser. PR #5 เป็น follow-up review-only; ตรวจ CI/Preview state ล่าสุดผ่าน [PR #5](https://github.com/Santipap250/KabKraBue/pull/5), ไม่บันทึก status แบบชั่วคราวใน source docs. Production evidence ของ main ปัจจุบันมาจาก GitHub deployment status และ public HTTP checks ที่ระบุข้างต้น; ไม่ได้ตรวจ Vercel Dashboard โดยตรงในรอบนี้.
+PR #4 preview deployment ที่รายงานผ่าน GitHub (`https://kab-kra-nx65g819c-obixconfig.vercel.app/`) ต้องเข้าสู่ Vercel login ในการเรียกแบบไม่ authenticated; จึงยืนยันได้แค่ deployment status/URL ไม่ได้ยืนยันหน้า Preview ด้วย browser. สำหรับ PR #5 head `986946c` ทั้ง push workflow `43128308229` และ PR workflow `43128315404` ผ่าน; PR workflow ผ่านหลัง rerun ครั้งเดียวเมื่อ Next.js `next/font/google` parse remote response ไม่ได้ โดยไม่เปลี่ยน source. Vercel Preview deployment `7724901892` รายงาน success แต่ HTTP requests ไป Home/Privacy/`sw.js`/manifest redirect ไป Vercel login, ดังนั้น page content ไม่ได้ browser-verified. GitHub แสดง check สถานะล่าสุดบน [PR #5](https://github.com/Santipap250/KabKraBue/pull/5). Production evidence ของ main ปัจจุบันมาจาก GitHub deployment status และ public HTTP checks ที่ระบุข้างต้น; ไม่ได้ตรวจ Vercel Dashboard โดยตรงในรอบนี้.
 
 PR #5 เปิดจาก `manus/kabkrabue-axe-contrast-followup` เข้า `main` แล้ว; ห้าม merge, push ไป `main`, promote deployment หรือแก้ Production ในขั้นตอน follow-up นี้.
 
@@ -67,6 +67,8 @@ PR #5 เปิดจาก `manus/kabkrabue-axe-contrast-followup` เข้า
 3. ทำ screen-reader/real-device review ก่อนอ้าง conformance.
 4. วางแผนอัปเกรด ESLint/Next.js tooling ร่วมกัน; ไม่ฝืน peer ranges. npm audit ปัจจุบัน 0 vulnerabilities.
 5. Lighthouse ไม่ได้ติดตั้งและไม่ได้รัน; browser metrics ด้านบนเป็นเพียง local snapshot.
+6. GitHub Actions แสดง non-failing warnings: `actions/checkout@v4`/`setup-node@v4` ถูกบังคับใช้ Node 24 หลัง Node 20 deprecation และ `ubuntu-latest` migration ไป Ubuntu 26; วางแผน toolchain update แยก.
+7. CI มี Google Fonts remote response failure แบบชั่วคราวหนึ่งครั้ง; rerun ผ่านโดยไม่แก้ source. หากเกิดซ้ำ ให้ตรวจแนวทางลด build-time network dependency ก่อนเปลี่ยน font assets.
 
 ## Historical security references
 
