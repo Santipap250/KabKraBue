@@ -1,5 +1,7 @@
 const CACHE_PREFIX = "kabkrabue-";
-const CACHE = "kabkrabue-v5";
+const CACHE = "kabkrabue-v6";
+const DYNAMIC_CACHE = `${CACHE}-dynamic`;
+const MAX_DYNAMIC_ENTRIES = 100;
 
 // Support both root-hosted deployments and a static-export basePath.
 const BASE_PATH = new URL(".", self.location.href).pathname.replace(/\/$/, "");
@@ -15,6 +17,9 @@ const APP_SHELL = [
   withBasePath("/icons/icon-192.png"),
   withBasePath("/icons/icon-512.png"),
 ];
+const APP_SHELL_URLS = new Set(
+  APP_SHELL.map((path) => new URL(path, self.location.origin).href),
+);
 
 const isVideoRequest = (url) =>
   [".mp4", ".webm", ".mov", ".m4v"].some((ext) =>
@@ -26,6 +31,17 @@ const shouldCacheResponse = (response) =>
   response.ok &&
   response.type === "basic" &&
   response.status === 200;
+
+async function cacheDynamicResponse(cache, request, response) {
+  await cache.put(request, response);
+  const requests = await cache.keys();
+  const overflow = requests.length - MAX_DYNAMIC_ENTRIES;
+  if (overflow <= 0) return;
+
+  // This cache contains only expendable runtime entries; the app shell is kept
+  // in a separate cache and can never be evicted by this bound.
+  await Promise.all(requests.slice(0, overflow).map((entry) => cache.delete(entry)));
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -43,7 +59,9 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE)
+            .filter((key) =>
+              key.startsWith(CACHE_PREFIX) && key !== CACHE && key !== DYNAMIC_CACHE,
+            )
             .map((key) => caches.delete(key)),
         ),
       )
@@ -66,41 +84,41 @@ self.addEventListener("fetch", (event) => {
   // Never intercept video delivery. Let the browser/CDN handle media and ranges.
   if (isVideoRequest(url)) return;
 
-  // HTML navigation is network-first, with scoped offline fallbacks.
+  // HTML navigation is network-first, with app-shell and bounded offline fallbacks.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
         .then(async (response) => {
-          if (shouldCacheResponse(response)) {
-            const cache = await caches.open(CACHE);
-            await cache.put(request, response.clone()).catch(() => undefined);
+          if (shouldCacheResponse(response) && !APP_SHELL_URLS.has(url.href)) {
+            const cache = await caches.open(DYNAMIC_CACHE);
+            await cacheDynamicResponse(cache, request, response.clone()).catch(() => undefined);
           }
           return response;
         })
         .catch(async () => {
-          const cache = await caches.open(CACHE);
-          const cached = await cache.match(request);
+          const dynamicCache = await caches.open(DYNAMIC_CACHE);
+          const cached = await dynamicCache.match(request);
           if (cached) return cached;
 
+          const shellCache = await caches.open(CACHE);
           if (url.pathname === PRIVACY_ROOT) {
-            const privacyPage = await cache.match(PRIVACY_ROOT);
+            const privacyPage = await shellCache.match(PRIVACY_ROOT);
             if (privacyPage) return privacyPage;
           }
 
-          return cache.match(APP_ROOT);
+          return shellCache.match(APP_ROOT);
         }),
     );
     return;
   }
 
-  // Mutable same-origin assets are stale-while-revalidate: use a cached copy
-  // immediately, while refreshing it for the next visit. Keep the worker alive
-  // until the background refresh has either completed or failed.
-  const cachePromise = caches.open(CACHE);
+  // Mutable same-origin assets are stale-while-revalidate. Dynamic entries are
+  // capped separately so cache growth cannot evict the offline app shell.
+  const cachePromise = caches.open(DYNAMIC_CACHE);
   const refresh = fetch(request).then(async (response) => {
-    if (shouldCacheResponse(response)) {
+    if (shouldCacheResponse(response) && !APP_SHELL_URLS.has(url.href)) {
       const cache = await cachePromise;
-      await cache.put(request, response.clone()).catch(() => undefined);
+      await cacheDynamicResponse(cache, request, response.clone()).catch(() => undefined);
     }
     return response;
   });

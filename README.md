@@ -61,7 +61,8 @@ npm run build
 ## PWA และ third-party content
 
 - Manifest สร้างแบบ static ที่ `src/app/manifest.ts`; service worker อยู่ใน `public/sw.js`
-- Worker ใช้ cache namespace `kabkrabue-*`, ลบเฉพาะ cache ของตัวเอง, จำกัด path scope, ใช้ stale-while-revalidate สำหรับ same-origin assets และไม่ intercept/cache วิดีโอ
+- Worker ใช้ cache namespace `kabkrabue-*`, ลบเฉพาะ cache ของตัวเอง, จำกัด path scope, ใช้ stale-while-revalidate สำหรับ same-origin assets และจำกัด dynamic cache ไว้ไม่เกิน 100 entries แยกจาก app shell
+- App shell สำหรับ Home/Privacy/manifest/icons ไม่ถูก eviction จากการจำกัด dynamic cache; worker ไม่ intercept/cache วิดีโอหรือ Range requests
 - App shell cache ครอบคลุม Home และ Privacy; navigation เป็น network-first พร้อม offline fallback
 - ปรับ shell/cache behavior แล้วให้เพิ่มค่า `CACHE` ใน `public/sw.js`
 - Shorts เป็น thumbnail-first; YouTube iframe ถูกสร้างหลังผู้ใช้กดเล่นเท่านั้น

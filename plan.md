@@ -2,17 +2,18 @@
 
 ## Scope and constraints
 
-Continue from the existing Next.js App Router project and its current content/assets. Work only on `manus/kabkrabue-final-polish`, based on the current `main`; do not merge into `main`, change Production, or invent village history, people, location data, coordinates, or video records. Keep `output: "export"`, Vercel compatibility, the original media, existing YouTube IDs, and the current public content. Validate any path/basePath behavior before claiming GitHub Pages support.
+Continue from the existing Next.js App Router project and current content/assets. Work only on a new feature branch based on the verified current `main` commit `72583c51e026becffe8525d17926d9939e738b06`; do not push to `main`, merge, promote or otherwise change Production. Keep `output: "export"`, Vercel compatibility, original media, existing YouTube IDs/social links/contact and public content. Do not redesign, change the palette, add sections, invent village facts, or remove original media. Validate root and `/KabKraBue/` behavior before claiming it works.
 
-Current starting point for this follow-up: `main` SHA `a92a60739ec325366aa0dea77f334636258e4b15`.
+Current starting point for this follow-up: `main` SHA `72583c51e026becffe8525d17926d9939e738b06` (PR #3 merge).
 
 ## Implementation approach
 
-1. Patch Next.js and aligned framework packages to the current secure maintenance release without a major-version upgrade. Resolve transitive audit findings where semver-compatible and verify with `npm ci`, `npm audit`, lint, TypeScript, build, and exported files.
-2. Preserve the current editorial site architecture. Improve its shared design tokens, typography rhythm, hero clock, media loading, mobile navigation, gallery filtering/lightbox, PWA cache boundaries, metadata, privacy disclosure, and documentation where audit evidence shows defects.
-3. Centralize internal static paths so root-hosted Vercel and a tested project `basePath` produce working assets, icons, manifest, service-worker scope, and privacy navigation. Preserve accurate canonical metadata for the production origin.
-4. Keep YouTube embeds click-to-load, videos outside service-worker caches, real video IDs/content intact, and optimized media as separate files so originals remain available. Reduce offscreen video work and prefer an efficient supported source.
-5. Commit the verified follow-up on this feature branch, push only this branch, and open a PR against `main`. Do not merge, promote, or deploy to Production; a Vercel Preview is separate from Production and must not be reported as page-tested unless actually verified.
+1. Correct only the verified Thai typo in `src/data/village.ts`; inspect nearby Thai/English copy and change no other wording unless a definite typo is found.
+2. Update `ScrollToTop` so activation uses `smooth` normally and `auto` when `prefers-reduced-motion: reduce`; preserve SSR-safe initial rendering, visibility, keyboard access and hidden-state behavior.
+3. Bound dynamic service-worker cache entries while retaining the app shell/offline Privacy route, deleting only obsolete KabKraBue caches, and never caching media/range requests. Verify cache version migration and root/basePath scope.
+4. Correct stale audit/TODO/README/plan status and label evidence with the date and source commit tested; preserve useful historical records and distinguish PR #3 source, current main, current Production evidence and remaining work.
+5. Inspect remaining accessibility and performance behavior using the available browser; run axe/Lighthouse only if already available without adding a large dependency. Run fresh security, lint, typecheck, root/basePath builds and targeted browser checks. Record limits honestly.
+6. Commit and push only the new feature branch, create a PR to `main`, and report its checks and Preview status. Do not merge, promote, or change Production.
 
 ## Project structure
 
@@ -40,6 +41,6 @@ Current starting point for this follow-up: `main` SHA `a92a60739ec325366aa0dea77
 
 Code changes and QA for PR #1 were completed on `manus/kabkrabue-premium-upgrade` and merged; their audit state is historical and recorded in `docs/PROJECT_AUDIT.md`.
 
-## Premium polish follow-up — 2026-11-12
+## PR #3 implementation — merged 2026-11-12
 
-The current work is isolated on `manus/kabkrabue-final-polish`, branched from `a92a607`. Scope: remove focusability from hidden controls, make nested dialog focus traps topmost-only, pause Hero media when offscreen or Data Saver/reduced motion applies, correct verified contrast/touch-target defects, use the existing story video frame variant, refresh mutable assets/offline Privacy in the service worker, remediate the minimatch advisory with a scoped override, and add read-only GitHub Actions quality checks. Run full audit/lint/typecheck/root+basePath builds and static-export browser smoke tests before opening a PR; do not merge or deploy.
+PR #3 (`manus/kabkrabue-final-polish`) merged into `main` as `72583c51e026becffe8525d17926d9939e738b06`. Its CI completed successfully for `56fc511ddf488c0664cce7bee034154c309d9510`. Current hardening work is on `manus/kabkrabue-final-hardening`, based directly on that merged SHA; do not merge or change Production as part of this task.
