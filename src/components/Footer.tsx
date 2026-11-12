@@ -32,7 +32,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="eyebrow text-mist/70">Navigate</h3>
+            <h3 className="eyebrow !text-mist/70">Navigate</h3>
             <ul className="mt-4 space-y-2">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -43,7 +43,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="eyebrow text-mist/70">Visit</h3>
+            <h3 className="eyebrow !text-mist/70">Visit</h3>
             {contactLines.length > 0 && (
               <ul className="mt-4 space-y-2 text-sm text-rice/70">
                 {contactLines.map((line) => <li key={line}>{line}</li>)}

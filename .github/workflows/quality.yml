@@ -3,9 +3,7 @@ name: Website quality
 on:
   pull_request:
     branches: [main]
-  push:
-    branches:
-      - "manus/**"
+  # Pull request events cover feature-branch updates; avoid duplicate full builds for open PRs.
 
 permissions:
   contents: read
