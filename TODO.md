@@ -38,7 +38,9 @@
 
 - [x] ปรับ `docs/PROJECT_AUDIT.md`, `TODO.md` และ `plan.md` ให้สะท้อน main `662d0e9`, owner-merged PR #4, Production evidence, exact source SHA และ test limitations.
 - [x] เปิด [PR #5](https://github.com/Santipap250/KabKraBue/pull/5) จาก `manus/kabkrabue-axe-contrast-followup` เข้า `main`; review-only, ห้าม merge/auto-promote จากการกระทำของ Manus.
-- [x] PR #5 checks บน full head `986946c`: push run `43128308229` ผ่าน; PR run `43128315404` ผ่านหลัง rerun หนึ่งครั้ง. Vercel deployment `7724901892` สำเร็จ; เนื้อหา Preview redirect ไป login จึงยังไม่ได้ browser-verify.
+- [x] บน head `35187b5`, PR run `43129011877` ผ่าน ส่วน push run `43129005714` ล้มที่ basePath `next/font/google`; PR/feature-push trigger ซ้ำกันทำให้เกิด duplicate full builds.
+- [x] ตัด push trigger `manus/**` ที่ซ้ำใน `.github/workflows/quality.yml`; การ update PR branch ยังถูกตรวจผ่าน `pull_request` event.
+- [ ] ตรวจ PR-only CI run หลัง trigger change. Vercel deployment `7724901892` สำเร็จสำหรับ head ก่อนหน้า; Preview content redirect ไป login จึงไม่ได้ browser-verify.
 - [x] ยืนยัน remote `main` ยังคง `662d0e95bf599228c851eb08422a0e26b34cf98f`; Manus ไม่ได้ push หรือ merge เข้า `main`.
 
 ## Historical record

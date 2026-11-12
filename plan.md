@@ -10,8 +10,9 @@ PR #4 was merged by repository account `Santipap250` at `2026-11-12T00:17:04Z` w
 
 1. Use already installed `axe-core` 4.13.0 to check Home and Privacy on the static export. Fix only the four confirmed low-contrast text nodes, using existing palette colors and changing no palette values.
 2. Keep the PR #4 content/PWA fixes unchanged. Review the axe `incomplete` items as open manual checks: gradient backgrounds and caption availability of Story videos. Do not create captions by guessing.
-3. Record exact branch/source SHA, local clean-install/security/lint/typecheck/root/basePath builds, static route results, axe counts, Chromium performance methodology, Production evidence, and limitations in `TODO.md` and `docs/PROJECT_AUDIT.md`.
-4. PR [#5](https://github.com/Santipap250/KabKraBue/pull/5) is open from `manus/kabkrabue-axe-contrast-followup` to `main`; report its current GitHub CI and Vercel Preview state. Do not merge or touch Production.
+3. Because an open PR caused both `push manus/**` and `pull_request` workflows to run the full builds concurrently, remove the redundant feature-branch push trigger; keep PR events as the check path and retain all build steps.
+4. Record exact source SHA, local clean-install/security/lint/typecheck/root/basePath builds, static route results, axe counts, Chromium performance methodology, Production evidence, CI trigger change and limitations in `TODO.md` and `docs/PROJECT_AUDIT.md`.
+5. PR [#5](https://github.com/Santipap250/KabKraBue/pull/5) is open from `manus/kabkrabue-axe-contrast-followup` to `main`; report its current GitHub CI and Vercel Preview state. Do not merge or touch Production.
 
 Current branch: `manus/kabkrabue-axe-contrast-followup`, based on `662d0e95bf599228c851eb08422a0e26b34cf98f`. Source commit: `929b008b1a6af390f95caf7199581e0f1338b164`. PR #5 is open and review-only; do not merge or promote it.
 
