@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { ArrowRight, ChevronDown, Eye, EyeOff, Images, Moon, Sun } from "lucide-react";
+import { ArrowRight, ChevronDown, Eye, EyeOff, Images } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { InstallAppButton } from "@/components/InstallAppButton";
@@ -15,29 +15,91 @@ const posterSrc = withBasePath("/images/village-hero-poster.jpg");
 const desktopPosterSrc = withBasePath("/images/places/viewpoint-01.jpg");
 
 const BANGKOK_TIME_ZONE = "Asia/Bangkok";
-const timeFormatter = new Intl.DateTimeFormat("en-GB", {
+const bangkokYearFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: BANGKOK_TIME_ZONE,
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
-  timeZone: BANGKOK_TIME_ZONE,
-  day: "2-digit",
-  month: "short",
-});
-const hourFormatter = new Intl.DateTimeFormat("en-GB", {
-  timeZone: BANGKOK_TIME_ZONE,
-  hour: "2-digit",
-  hour12: false,
+  year: "numeric",
 });
 
-function formatThailandClock(date: Date) {
-  return {
-    time: timeFormatter.format(date),
-    date: dateFormatter.format(date).toUpperCase(),
-    hour: Number.parseInt(hourFormatter.format(date), 10),
-  };
+function getNewYearCountdown(now: Date) {
+  const thailandYear = Number.parseInt(bangkokYearFormatter.format(now), 10);
+  // Bangkok observes UTC+7; midnight on January 1 is 17:00 UTC on December 31.
+  const nextNewYear = Date.UTC(thailandYear + 1, 0, 1) - 7 * 60 * 60 * 1000;
+  const remainingSeconds = Math.max(0, Math.floor((nextNewYear - now.getTime()) / 1000));
+  const days = Math.floor(remainingSeconds / 86_400);
+  const hours = Math.floor((remainingSeconds % 86_400) / 3_600);
+  const minutes = Math.floor((remainingSeconds % 3_600) / 60);
+  const seconds = remainingSeconds % 60;
+
+  return { year: thailandYear + 1, days, hours, minutes, seconds };
+}
+
+function NewYearCountdown() {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    let timer = 0;
+    const update = () => {
+      const current = new Date();
+      setNow(current);
+      timer = window.setTimeout(update, 1_000 - current.getMilliseconds());
+    };
+    const handleVisibilityChange = () => {
+      window.clearTimeout(timer);
+      if (!document.hidden) update();
+    };
+
+    update();
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      window.clearTimeout(timer);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, []);
+
+  const countdown = now ? getNewYearCountdown(now) : null;
+  const units = [
+    { label: "DAYS", value: countdown?.days },
+    { label: "HRS", value: countdown?.hours },
+    { label: "MIN", value: countdown?.minutes },
+    { label: "SEC", value: countdown?.seconds },
+  ];
+  const accessibleLabel = countdown
+    ? `นับถอยหลังถึงปีใหม่ ${countdown.year}: ${countdown.days} วัน ${countdown.hours} ชั่วโมง ${countdown.minutes} นาที ${countdown.seconds} วินาที. Countdown to New Year ${countdown.year}: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds.`
+    : "นับถอยหลังถึงปีใหม่ / Countdown to New Year";
+
+  return (
+    <div className="absolute left-1/2 top-[13%] z-10 -translate-x-1/2">
+      <div
+        role="timer"
+        aria-label={accessibleLabel}
+        aria-live="off"
+        className="flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/55 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2"
+      >
+        <span aria-hidden="true" className="font-mono text-[7px] uppercase tracking-[0.18em] text-rice/80">
+          <span className="text-gold">NEW YEAR</span>
+          <span className="mx-1 text-gold/70">·</span>
+          ปีใหม่{countdown ? ` ${countdown.year}` : ""}
+        </span>
+        <span aria-hidden="true" className="flex items-center gap-1 tabular-nums">
+          {units.map((unit, index) => (
+            <span key={unit.label} className="flex items-center gap-1">
+              <span className="flex min-w-[23px] flex-col items-center leading-none">
+                <span className="font-mono text-[12px] tracking-[0.04em] text-rice">
+                  {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
+                </span>
+                <span className="mt-0.5 font-mono text-[6px] tracking-[0.12em] text-rice/65">
+                  {unit.label}
+                </span>
+              </span>
+              {index < units.length - 1 && (
+                <span className="-mt-1 font-mono text-[10px] text-gold/70">:</span>
+              )}
+            </span>
+          ))}
+        </span>
+      </div>
+    </div>
+  );
 }
 
 export function Hero() {
@@ -46,7 +108,6 @@ export function Hero() {
   const [networkPreferenceKnown, setNetworkPreferenceKnown] = useState(false);
   const [dataSaverEnabled, setDataSaverEnabled] = useState(false);
   const [textHidden, setTextHidden] = useState(false);
-  const [now, setNow] = useState<Date | null>(null);
   const heroVideoRef = useRef<HTMLVideoElement>(null);
   const textContentRef = useCallback((element: HTMLDivElement | null) => {
     if (!element) return;
@@ -77,23 +138,6 @@ export function Hero() {
     return () => connection?.removeEventListener("change", update);
   }, []);
 
-  useEffect(() => {
-    let timer = 0;
-    const updateClock = () => {
-      const current = new Date();
-      setNow(current);
-      const millisecondsUntilNextMinute = 60_000 -
-        (current.getSeconds() * 1000 + current.getMilliseconds());
-      timer = window.setTimeout(updateClock, millisecondsUntilNextMinute);
-    };
-    updateClock();
-    return () => window.clearTimeout(timer);
-  }, []);
-
-  const clock = now
-    ? formatThailandClock(now)
-    : { time: "--:--", date: "--", hour: 12 };
-  const isDaytime = clock.hour >= 6 && clock.hour < 18;
   const motionEnabled = motionPreferenceKnown && !reduceMotion && networkPreferenceKnown && !dataSaverEnabled;
   useEffect(() => {
     if (!motionEnabled) return;
@@ -159,82 +203,7 @@ export function Hero() {
         <div className="grain-overlay absolute inset-0" />
       </div>
 
-      <div
-        className="absolute left-1/2 top-[13%] z-10 -translate-x-1/2"
-        role="img"
-        aria-label={`เวลาประเทศไทย ${clock.time} ${clock.date}`}
-        aria-live="off"
-      >
-        <div className="relative flex h-[112px] w-[112px] items-center justify-center sm:h-[132px] sm:w-[132px]">
-          {/* Soft ambient glow lifting the dial off the sky */}
-          <div
-            className="absolute inset-[-18%] rounded-full bg-gold/20 blur-2xl"
-            aria-hidden="true"
-          />
-
-          {/* Bezel ring with fine hairline hour ticks (static, like a real watch face) */}
-          <svg
-            viewBox="0 0 200 200"
-            className="absolute inset-0 h-full w-full drop-shadow-[0_6px_18px_rgba(0,0,0,0.28)]"
-            aria-hidden="true"
-          >
-            <defs>
-              <linearGradient id="kkbGoldSheen" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#F3DFA6" />
-                <stop offset="45%" stopColor="#C99A3E" />
-                <stop offset="100%" stopColor="#8A6423" />
-              </linearGradient>
-            </defs>
-
-            {/* faint outer halo ring */}
-            <circle cx="100" cy="100" r="98" fill="none" stroke="#F3DFA6" strokeOpacity="0.18" strokeWidth="1" />
-
-            {/* fine hour ticks — thin hairlines, slightly longer at 12/3/6/9 */}
-            {Array.from({ length: 12 }).map((_, i) => {
-              const angle = (i * 30 - 90) * (Math.PI / 180);
-              const isMajor = i % 3 === 0;
-              const rOuter = 94;
-              const rInner = isMajor ? 84 : 89;
-              const x1 = 100 + rOuter * Math.cos(angle);
-              const y1 = 100 + rOuter * Math.sin(angle);
-              const x2 = 100 + rInner * Math.cos(angle);
-              const y2 = 100 + rInner * Math.sin(angle);
-              return (
-                <line
-                  key={i}
-                  x1={x1}
-                  y1={y1}
-                  x2={x2}
-                  y2={y2}
-                  stroke="#F3DFA6"
-                  strokeOpacity={isMajor ? 0.85 : 0.4}
-                  strokeWidth={isMajor ? 1.25 : 0.75}
-                  strokeLinecap="butt"
-                />
-              );
-            })}
-
-            {/* main polished bezel */}
-            <circle cx="100" cy="100" r="72" fill="none" stroke="url(#kkbGoldSheen)" strokeWidth="2" />
-          </svg>
-
-          {/* Glass face */}
-          <div className="absolute inset-[13%] rounded-full bg-[radial-gradient(circle_at_32%_28%,rgba(255,255,255,0.14),rgba(20,22,18,0.22)_65%)] shadow-inner backdrop-blur-[2px]" />
-
-          <div className="absolute inset-0 flex flex-col items-center justify-center leading-none text-rice">
-            {isDaytime ? (
-              <Sun className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
-            ) : (
-              <Moon className="mb-1.5 h-3.5 w-3.5 text-gold/90" strokeWidth={1.35} aria-hidden="true" />
-            )}
-            <span className="font-display text-[26px] tracking-[0.08em] sm:text-[30px]">{clock.time}</span>
-            <span className="my-1.5 h-px w-6 bg-gradient-to-r from-transparent via-gold/70 to-transparent" aria-hidden="true" />
-            <span className="whitespace-nowrap font-mono text-[7px] tracking-[0.16em] text-rice/70 sm:text-[8px]">
-              THAILAND <span className="text-gold/85">· {clock.date}</span>
-            </span>
-          </div>
-        </div>
-      </div>
+      <NewYearCountdown />
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
         <div ref={textContentRef} aria-hidden={textHidden}>
