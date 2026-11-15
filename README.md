@@ -74,7 +74,7 @@ Tokens/typography อยู่ใน `tailwind.config.ts` และ `src/styles/
 
 ## Quality checks / ข้อควรทราบ
 
-ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run build` และ `GITHUB_PAGES=true npm run build`; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline และ mobile widths. GitHub Actions ทำ checks ชุดนี้สำหรับ PR/feature branch. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
+ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run build` และ `GITHUB_PAGES=true npm run build`; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline และ mobile widths. GitHub Actions รัน checks ชุดนี้บน PR ที่ target `main`; การอัปเดต feature branch ที่มี PR จะรันทดสอบผ่าน `pull_request` event โดยไม่เปิด push workflow ซ้ำ. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
 
 หลังเพิ่ม scoped override สำหรับ `minimatch` ใน TypeScript-ESLint tree, `npm ci` และ `npm run security` ผ่านโดยไม่พบ vulnerabilities. npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; การอัปเกรด ESLint/Next ควรวางแผนแยกโดยไม่ฝืน peer range ของ `eslint-config-next`.
 
