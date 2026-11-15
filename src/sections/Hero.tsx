@@ -33,7 +33,7 @@ function getNewYearCountdown(now: Date) {
   return { year: thailandYear + 1, days, hours, minutes, seconds };
 }
 
-function NewYearCountdown() {
+function NewYearCountdown({ motionEnabled }: { motionEnabled: boolean }) {
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
@@ -73,7 +73,7 @@ function NewYearCountdown() {
         role="timer"
         aria-label={accessibleLabel}
         aria-live="off"
-        className="flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/55 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2"
+        className={`countdown-capsule flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/55 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2 ${motionEnabled ? "countdown-capsule--motion" : ""}`}
       >
         <span aria-hidden="true" className="font-mono text-[7px] uppercase tracking-[0.18em] text-rice/80">
           <span className="text-gold">NEW YEAR</span>
@@ -84,7 +84,10 @@ function NewYearCountdown() {
           {units.map((unit, index) => (
             <span key={unit.label} className="flex items-center gap-1">
               <span className="flex min-w-[23px] flex-col items-center leading-none">
-                <span className="font-mono text-[12px] tracking-[0.04em] text-rice">
+                <span
+                  key={unit.value ?? "pending"}
+                  className={`font-mono text-[12px] tracking-[0.04em] text-rice ${motionEnabled && unit.value !== undefined ? "countdown-value-tick" : ""}`}
+                >
                   {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
                 </span>
                 <span className="mt-0.5 font-mono text-[6px] tracking-[0.12em] text-rice/65">
@@ -203,7 +206,7 @@ export function Hero() {
         <div className="grain-overlay absolute inset-0" />
       </div>
 
-      <NewYearCountdown />
+      <NewYearCountdown motionEnabled={motionEnabled} />
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
         <div ref={textContentRef} aria-hidden={textHidden}>
