@@ -9,7 +9,7 @@
 - PWA offline Home/Privacy, Bangkok time/ปี พ.ศ.-ค.ศ., countdown rollover, reduced motion, Data Saver และ keyboard/touch ผ่าน browser checks; install บนอุปกรณ์จริง, screen reader, Lighthouse และ field data ยังไม่ได้ตรวจ
 - axe: Home/Privacy 0 violations; Home ยังมี incomplete `color-contrast` 85 nodes, frame-tested 1, video-caption 5 (manual review; ไม่ถือเป็น pass/violation); Privacy incomplete 0
 - local unthrottled Chromium snapshot: LCP 324ms (text paragraph candidate), CLS 0.00872; ไม่ใช่ Lighthouse หรือ field measurement
-- ไฟล์ `src/data`, `public/images`, `public/videos` ไม่เปลี่ยน; Production ไม่ได้แตะ. PR/CI และ Vercel Preview ต้องอัปเดตตามสถานะจริงหลังเปิด PR
+- ไฟล์ `src/data`, `public/images`, `public/videos` ไม่เปลี่ยน; Production ไม่ได้แตะ. PR #12 เปิดแล้วจาก initial head `1cd914b`; GitHub quality, Vercel deploy และ Preview Comments ผ่านครบ 3/3. Vercel รายงาน Preview Ready ที่ [ลิงก์นี้](https://kab-kra-bue-git-manus-kabkrabue-celestial-signature-obixconfig.vercel.app/), แต่ unauthenticated request ได้ HTTP 302 ไป Vercel SSO จึงยังตรวจเนื้อหาบน hosted Preview โดยตรงไม่ได้. ตรวจสถานะล่าสุดบน PR หลัง push เพิ่มเติมก่อน review/merge
 
 ## Celestial Timepiece and identity — acceptance outcomes
 
@@ -36,7 +36,7 @@
 - [x] Run from a clean install: `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run test:clock`, `npm run build`, and `GITHUB_PAGES=true npm run build`; both `npm run verify:export` and `GITHUB_PAGES=true npm run verify:export` pass.
 - [x] Browser-test rendering at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900, plus 360×560 and 375×560; check overflow/overlap, hydration, year transition, reduced motion, Data Saver, touch/keyboard, Home/Privacy offline paths, console/page errors, axe and local performance. Record actual results only; no Lighthouse or device scores are claimed.
 - [x] Save comparable Before/After screenshots for mobile and desktop; see `docs/SCREENSHOTS.md`.
-- [ ] Open a review PR from the feature branch and record the actual CI and Vercel Preview deployment/check status and URL after the latest push. Keep the PR open; do not merge or deploy/promote Production.
+- [x] Open review PR [#12](https://github.com/Santipap250/KabKraBue/pull/12) from the feature branch. Vercel reported the initial Preview ready; preserve the URL and SSO access limitation above. Recheck GitHub CI/Vercel status for the latest head before review. Keep the PR open; do not merge or deploy/promote Production.
 
 ## 1. Accessibility และภาษา
 
