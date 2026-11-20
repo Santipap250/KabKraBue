@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { X } from "lucide-react";
 import { InstallAppButton } from "./InstallAppButton";
+import { BrandLogo } from "./BrandLogo";
 import { siteConfig } from "@/data/site";
 import { useLockBodyScroll } from "@/hooks/useLockBodyScroll";
 import { useDialogFocus } from "@/hooks/useDialogFocus";
@@ -27,7 +28,7 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
           initial={reduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? undefined : { opacity: 0 }}
           transition={{ duration: reduceMotion ? 0 : 0.25 }} className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-ink pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-rice lg:hidden">
           <div className="container-content flex h-20 shrink-0 items-center justify-between">
-            <span className="font-display text-xl font-semibold">{siteConfig.name}</span>
+            <BrandLogo className="h-11 w-auto max-w-[170px] rounded-md border border-gold/20 object-contain" />
             <button type="button" onClick={onClose} data-dialog-initial-focus className="flex h-11 w-11 items-center justify-center" aria-label="Close menu">
               <X strokeWidth={1.5} />
             </button>

@@ -7,6 +7,7 @@
 | File / folder | Used by |
 |---|---|
 | `og-cover.jpg` | Open Graph / social sharing preview |
+| `kabkrabue-logo.webp` | Header, mobile menu, and footer brand lockup |
 | `culture-01.webp` … `culture-16.webp` | Culture — Village Temple story set + selected Gallery culture collection |
 | `gallery/*` | Photo Gallery — see `src/data/gallery.ts` |
 | `places/*` | Retained image assets for existing visual content |
