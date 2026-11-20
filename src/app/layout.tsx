@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { siteConfig } from "@/data/site";
 import "@/styles/fonts.css";
 import "@/styles/globals.css";
+import { MotionProvider } from "@/components/MotionProvider";
 import { PwaBootstrap } from "@/components/PwaBootstrap";
 import { withBasePath } from "@/lib/paths";
 
@@ -55,7 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head />
       <body>
         <PwaBootstrap />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

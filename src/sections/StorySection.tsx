@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import {
   ChevronDown,
   ChevronLeft,
@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import type { StorySection as StorySectionData } from "@/data/village";
 import { MediaFrame } from "@/components/MediaFrame";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { cn } from "@/lib/cn";
 import { withBasePath } from "@/lib/paths";
@@ -101,6 +102,7 @@ function LazyStoryVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [failed, setFailed] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const [muted, setMuted] = useState(true);
   const reduceMotion = useReducedMotionPreference();
 
@@ -156,17 +158,25 @@ function LazyStoryVideo({
   const storyShape = variant === "story";
 
   const videoContent = (
-    <div className="relative h-full w-full">
+    <div className="relative h-full w-full bg-mist">
+      <ResponsiveImage
+        src={posterSrc ?? fallbackSrc}
+        alt=""
+        altLang={altLang}
+        sizes="(min-width: 1024px) 55vw, (min-width: 640px) 70vw, 100vw"
+        className={cn("object-cover transition-opacity duration-300", videoPlaying ? "opacity-0" : "opacity-100")}
+      />
       <video
         ref={videoRef}
-        className={cn("h-full w-full object-cover", className)}
+        className={cn("absolute inset-0 h-full w-full object-cover transition-opacity duration-300", videoPlaying ? "opacity-100" : "opacity-0", className)}
         muted={muted}
         loop
         playsInline
         preload="none"
-        poster={withBasePath(posterSrc ?? fallbackSrc)}
         aria-label={alt}
         lang={altLang}
+        onPlaying={() => setVideoPlaying(true)}
+        onPause={() => setVideoPlaying(false)}
         onError={() => setFailed(true)}
       >
         <source src={src} type="video/mp4" />

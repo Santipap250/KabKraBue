@@ -134,7 +134,7 @@ for (const [assetPath, purpose] of requiredIcons) {
     localFileForUrl(icon.src, "src");
   }
 }
-expect(serviceWorker.includes('const CACHE = "kabkrabue-v7"'), "Service worker must use the kabkrabue-v7 app-shell cache");
+expect(serviceWorker.includes('const CACHE = "kabkrabue-v8"'), "Service worker must use the kabkrabue-v8 app-shell cache");
 for (const assetPath of ["/brand/kabkrabue-app-icon.svg", "/brand/kabkrabue-celestial-mark.svg", "/icons/icon-192-maskable.png", "/icons/icon-512-maskable.png"]) {
   expect(serviceWorker.includes(`withBasePath("${assetPath}")`), `Service-worker app shell must include basePath-safe ${assetPath}`);
 }
