@@ -7,13 +7,13 @@
 ## โครงสร้าง
 
 - `src/app/` — หน้า Home/Privacy, metadata, manifest, sitemap และ robots
-- `src/components/` — navigation, Shorts, gallery/lightbox, media, PWA, map, footer และ UI
+- `src/components/` — navigation, Celestial Timepiece, text-based brand lockup, Shorts, gallery/lightbox, media, PWA, map, footer และ UI
 - `src/sections/` — Hero และ editorial story sections
 - `src/data/` — site config และเนื้อหา village, gallery, explore, shorts, videos และ events
-- `src/hooks/`, `src/lib/` — browser interaction hooks และ shared utilities
+- `src/hooks/`, `src/lib/` — browser interaction hooks, shared utilities และ explicit `Asia/Bangkok` clock calculations
 - `src/styles/`, `tailwind.config.ts` — design tokens, typography และ global styles
 - `public/images/`, `public/videos/`, `public/icons/`, `public/sw.js` — static media, icons และ service worker
-- `docs/` — audit/QA report และ Before/After screenshots
+- `docs/` — audit/QA report, [brand system](docs/brand/BRAND-SYSTEM.md) และ Before/After screenshots
 
 ## เริ่มต้นและตรวจสอบ
 
@@ -28,6 +28,7 @@ npm run dev
 npm run lint
 npm run typecheck
 npm run security
+npm run test:clock
 npm run build
 npm run verify:export
 GITHUB_PAGES=true npm run build
@@ -64,20 +65,21 @@ GITHUB_PAGES=true npm run verify:export
 ## PWA และ third-party content
 
 - Manifest สร้างแบบ static ที่ `src/app/manifest.ts`; service worker อยู่ใน `public/sw.js`
-- Worker ใช้ cache namespace `kabkrabue-*`, ลบเฉพาะ cache ของตัวเอง, จำกัด path scope, ใช้ stale-while-revalidate สำหรับ same-origin assets และจำกัด dynamic cache ไว้ไม่เกิน 100 entries แยกจาก app shell
+- Worker ใช้ cache namespace `kabkrabue-*` (current app shell `kabkrabue-v7`), ลบเฉพาะ cache ของตัวเอง, จำกัด path scope, ใช้ stale-while-revalidate สำหรับ same-origin assets และจำกัด dynamic cache ไว้ไม่เกิน 100 entries แยกจาก app shell
 - App shell สำหรับ Home/Privacy/manifest/icons ไม่ถูก eviction จากการจำกัด dynamic cache; worker ไม่ intercept/cache วิดีโอหรือ Range requests
 - App shell cache ครอบคลุม Home และ Privacy; navigation เป็น network-first พร้อม offline fallback
 - ปรับ shell/cache behavior แล้วให้เพิ่มค่า `CACHE` ใน `public/sw.js`
+- Celestial clock tests exercise Bangkok-time timezone independence, countdown/year-rollover boundaries and year progress without a new runtime dependency.
 - Shorts เป็น thumbnail-first; YouTube iframe ถูกสร้างหลังผู้ใช้กดเล่นเท่านั้น
 - Privacy page อธิบาย YouTube thumbnail/player, OpenStreetMap, external links และ PWA cache; อัปเดตเมื่อเพิ่มบริการ third-party
 
 ## Design system
 
-Tokens/typography อยู่ใน `tailwind.config.ts` และ `src/styles/globals.css`: rice, ink, paddy, clay, gold และ mist; Fraunces สำหรับ display, IBM Plex Sans Thai สำหรับเนื้อหา และ IBM Plex Mono สำหรับ metadata. Terrace divider/grain เป็น motif หลัก ใช้สีทองเป็น accent อย่างจำกัด รักษาความอ่านง่ายและ `prefers-reduced-motion` เมื่อเพิ่ม interaction
+Tokens/typography อยู่ใน `tailwind.config.ts` และ `src/styles/globals.css`: rice, ink, paddy, clay, gold และ mist; Fraunces สำหรับ display, IBM Plex Sans Thai สำหรับเนื้อหา และ IBM Plex Mono สำหรับ metadata. Terrace divider/grain เป็น motif หลัก ใช้สีทองเป็น accent อย่างจำกัด รักษาความอ่านง่ายและ `prefers-reduced-motion` เมื่อเพิ่ม interaction. โลโก้ celestial ใช้ SVG mark ที่ `public/brand/` คู่กับ wordmark HTML และมีรายละเอียดการนำไปใช้ใน [brand system](docs/brand/BRAND-SYSTEM.md)
 
 ## Quality checks / ข้อควรทราบ
 
-ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, root build+`npm run verify:export` และ `GITHUB_PAGES=true` build+verifier; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline และ short/mobile widths. GitHub Actions รัน checks ชุดนี้บน PR ที่ target `main`; การอัปเดต feature branch ที่มี PR จะรันทดสอบผ่าน `pull_request` event โดยไม่เปิด push workflow ซ้ำ. axe `incomplete` บน gradient/video ต้องอ่านว่าเป็น manual review ไม่ใช่ pass/violation. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
+ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build+`npm run verify:export` และ `GITHUB_PAGES=true` build+verifier; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline, celestial clock และ short/mobile widths. GitHub Actions รัน checks ชุดนี้บน PR ที่ target `main`; การอัปเดต feature branch ที่มี PR จะรันทดสอบผ่าน `pull_request` event โดยไม่เปิด push workflow ซ้ำ. axe `incomplete` บน gradient/video ต้องอ่านว่าเป็น manual review ไม่ใช่ pass/violation. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
 
 หลังเพิ่ม scoped override สำหรับ `minimatch` ใน TypeScript-ESLint tree, `npm ci` และ `npm run security` ผ่านโดยไม่พบ vulnerabilities. npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; การอัปเกรด ESLint/Next ควรวางแผนแยกโดยไม่ฝืน peer range ของ `eslint-config-next`.
 

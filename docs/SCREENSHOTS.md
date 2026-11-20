@@ -13,6 +13,15 @@ Before captures were taken from the supplied production URL `https://kab-kra-bue
 | Homepage — mobile (390×844 full page) | [Open](screenshots/before/homepage-mobile.jpg) | [Open](screenshots/after/homepage-mobile.jpg) |
 | Mobile navigation (390×844) | [Open](screenshots/before/mobile-navigation.jpg) | [Open](screenshots/after/mobile-navigation.jpg) |
 
+## Celestial Signature comparison
+
+For this round, Before captures use the supplied Production URL as the unchanged baseline; After captures use the final local GitHub Pages static export served under `/KabKraBue/`. Both sets use Playwright/Chromium at the listed viewport with reduced motion enabled. The After images are review artifacts, not evidence that Production has changed.
+
+| View | Before | After |
+|---|---|---|
+| Celestial Hero — desktop (1280×900) | [Open](screenshots/celestial/before-desktop.png) | [Open](screenshots/celestial/after-desktop.png) |
+| Celestial Hero — mobile (390×844) | [Open](screenshots/celestial/before-mobile.png) | [Open](screenshots/celestial/after-mobile.png) |
+
 ## Notable baseline/browser differences
 
 - The baseline production browser run logged React hydration error `#418` on desktop and mobile and failed the mobile-menu Escape-close check; the final local export produced no page errors and passed Escape/focus restoration.

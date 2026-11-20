@@ -73,6 +73,13 @@ textarea:focus-visible,
   @apply mx-auto w-full max-w-content px-6 sm:px-8 lg:px-12;
 }
 
+/* Keep the celestial card clear of the Hero headline on short phone screens. */
+@media (max-height: 680px) and (max-width: 767px) {
+  #top > .hero-copy {
+    padding-top: 15.5rem;
+  }
+}
+
 /* Signature element: the Terrace Line — layered contour motif echoing
    the rice terraces and buffalo-horn curves around the village. Used
    as section dividers instead of a plain hairline rule. */

@@ -10,7 +10,8 @@
     "verify:export": "node scripts/verify-static-export.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "security": "npm audit --audit-level=moderate"
+    "security": "npm audit --audit-level=moderate",
+    "test:clock": "node scripts/verify-celestial-clock.cjs"
   },
   "dependencies": {
     "framer-motion": "^11.11.17",

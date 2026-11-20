@@ -22,6 +22,18 @@ export default function manifest(): MetadataRoute.Manifest {
     dir: "ltr",
     icons: [
       {
+        src: withBasePath("/brand/kabkrabue-app-icon.svg"),
+        sizes: "any",
+        type: "image/svg+xml",
+        purpose: "any",
+      },
+      {
+        src: withBasePath("/icons/icon-180.png"),
+        sizes: "180x180",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
         src: withBasePath("/icons/icon-192.png"),
         sizes: "192x192",
         type: "image/png",
@@ -34,13 +46,13 @@ export default function manifest(): MetadataRoute.Manifest {
         purpose: "any",
       },
       {
-        src: withBasePath("/icons/icon-192.png"),
+        src: withBasePath("/icons/icon-192-maskable.png"),
         sizes: "192x192",
         type: "image/png",
         purpose: "maskable",
       },
       {
-        src: withBasePath("/icons/icon-512.png"),
+        src: withBasePath("/icons/icon-512-maskable.png"),
         sizes: "512x512",
         type: "image/png",
         purpose: "maskable",

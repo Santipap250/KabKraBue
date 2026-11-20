@@ -101,6 +101,8 @@ for (const relativePath of requiredFiles) readOutput(relativePath);
 const homeHtml = readOutput("index.html");
 const privacyHtml = readOutput("privacy/index.html");
 const notFoundHtml = readOutput("404.html");
+const exportedManifest = JSON.parse(readOutput("manifest.webmanifest"));
+const serviceWorker = readOutput("sw.js");
 const expectedHome = new URL("/", siteUrl).href;
 const expectedPrivacy = new URL("/privacy/", siteUrl).href;
 
@@ -114,6 +116,28 @@ expect(!findMeta(notFoundHtml, "property", "og:url"), "404 must not inherit a ho
 expect(homeHtml.includes("schema.org"), "Home must contain the Place JSON-LD structured data");
 expect(!privacyHtml.includes("schema.org"), "Privacy must not inherit Place JSON-LD structured data");
 expect(!notFoundHtml.includes("schema.org"), "404 must not inherit Place JSON-LD structured data");
+
+const manifestIcons = exportedManifest.icons ?? [];
+const requiredIcons = [
+  ["/brand/kabkrabue-app-icon.svg", "any"],
+  ["/icons/icon-180.png", "any"],
+  ["/icons/icon-192.png", "any"],
+  ["/icons/icon-512.png", "any"],
+  ["/icons/icon-192-maskable.png", "maskable"],
+  ["/icons/icon-512-maskable.png", "maskable"],
+];
+for (const [assetPath, purpose] of requiredIcons) {
+  const icon = manifestIcons.find((item) => item.src === `${basePath}${assetPath}`);
+  expect(Boolean(icon), `PWA manifest must include ${basePath}${assetPath}`);
+  if (icon) {
+    expect(icon.purpose?.split(/\s+/).includes(purpose), `${assetPath} must declare purpose ${purpose}`);
+    localFileForUrl(icon.src, "src");
+  }
+}
+expect(serviceWorker.includes('const CACHE = "kabkrabue-v7"'), "Service worker must use the kabkrabue-v7 app-shell cache");
+for (const assetPath of ["/brand/kabkrabue-app-icon.svg", "/brand/kabkrabue-celestial-mark.svg", "/icons/icon-192-maskable.png", "/icons/icon-512-maskable.png"]) {
+  expect(serviceWorker.includes(`withBasePath("${assetPath}")`), `Service-worker app shell must include basePath-safe ${assetPath}`);
+}
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
 expect(!Object.hasOwn(manifest, "/images/og-cover.jpg"), "Open Graph cover must remain an original-only social asset, not a UI responsive candidate");

@@ -8,7 +8,7 @@ import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { withBasePath } from "@/lib/paths";
-import { NewYearClock } from "@/components/NewYearClock";
+import { CelestialTimepiece } from "@/components/CelestialTimepiece";
 import { getResponsiveImageSrcSet } from "@/lib/responsive-images";
 
 const videoSrc = withBasePath("/videos/village-hero.webm");
@@ -135,9 +135,9 @@ export function Hero() {
         <div className="grain-overlay absolute inset-0" />
       </div>
 
-      <NewYearClock motionEnabled={motionEnabled} />
+      <CelestialTimepiece motionEnabled={motionEnabled} />
 
-      <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
+      <div className="hero-copy container-content relative z-10 pb-20 pt-40 sm:pb-28">
         <div ref={textContentRef} aria-hidden={textHidden}>
           <motion.div animate={{ x: textHidden ? "-130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
             <motion.div initial={motionEnabled ? { opacity: 0, scaleX: 0.4 } : false} animate={{ opacity: 1, scaleX: 1 }} transition={{ duration: motionEnabled ? 0.9 : 0, ease: [0.16, 1, 0.3, 1] }} className="w-24 origin-left">

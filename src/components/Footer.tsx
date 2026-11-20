@@ -28,7 +28,7 @@ export function Footer() {
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
             <h2 className="inline-flex">
-              <BrandLogo className="h-[58px] w-auto max-w-[220px] rounded-md border border-gold/20 object-contain" />
+              <BrandLogo tone="light" size="large" />
             </h2>
             <p className="mt-4 max-w-sm leading-relaxed text-rice/70">{siteConfig.shortDescriptionThai}</p>
           </div>
