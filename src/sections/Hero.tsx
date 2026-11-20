@@ -8,102 +8,12 @@ import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { withBasePath } from "@/lib/paths";
+import { NewYearClock } from "@/components/NewYearClock";
 
 const videoSrc = withBasePath("/videos/village-hero.webm");
 const fallbackVideoSrc = withBasePath("/videos/village-hero.mp4");
 const posterSrc = withBasePath("/images/village-hero-poster.jpg");
 const desktopPosterSrc = withBasePath("/images/places/viewpoint-01.jpg");
-
-const BANGKOK_TIME_ZONE = "Asia/Bangkok";
-const bangkokYearFormatter = new Intl.DateTimeFormat("en-US", {
-  timeZone: BANGKOK_TIME_ZONE,
-  year: "numeric",
-});
-
-function getNewYearCountdown(now: Date) {
-  const thailandYear = Number.parseInt(bangkokYearFormatter.format(now), 10);
-  // Bangkok observes UTC+7; midnight on January 1 is 17:00 UTC on December 31.
-  const nextNewYear = Date.UTC(thailandYear + 1, 0, 1) - 7 * 60 * 60 * 1000;
-  const remainingSeconds = Math.max(0, Math.floor((nextNewYear - now.getTime()) / 1000));
-  const days = Math.floor(remainingSeconds / 86_400);
-  const hours = Math.floor((remainingSeconds % 86_400) / 3_600);
-  const minutes = Math.floor((remainingSeconds % 3_600) / 60);
-  const seconds = remainingSeconds % 60;
-
-  return { year: thailandYear + 1, days, hours, minutes, seconds };
-}
-
-function NewYearCountdown({ motionEnabled }: { motionEnabled: boolean }) {
-  const [now, setNow] = useState<Date | null>(null);
-
-  useEffect(() => {
-    let timer = 0;
-    const update = () => {
-      const current = new Date();
-      setNow(current);
-      timer = window.setTimeout(update, 1_000 - current.getMilliseconds());
-    };
-    const handleVisibilityChange = () => {
-      window.clearTimeout(timer);
-      if (!document.hidden) update();
-    };
-
-    update();
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      window.clearTimeout(timer);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, []);
-
-  const countdown = now ? getNewYearCountdown(now) : null;
-  const units = [
-    { label: "DAYS", value: countdown?.days },
-    { label: "HRS", value: countdown?.hours },
-    { label: "MIN", value: countdown?.minutes },
-    { label: "SEC", value: countdown?.seconds },
-  ];
-  const accessibleLabel = countdown
-    ? `นับถอยหลังถึงปีใหม่ ${countdown.year}: ${countdown.days} วัน ${countdown.hours} ชั่วโมง ${countdown.minutes} นาที ${countdown.seconds} วินาที. Countdown to New Year ${countdown.year}: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, ${countdown.seconds} seconds.`
-    : "นับถอยหลังถึงปีใหม่ / Countdown to New Year";
-
-  return (
-    <div className="absolute left-1/2 top-[13%] z-10 -translate-x-1/2">
-      <div
-        role="timer"
-        aria-label={accessibleLabel}
-        aria-live="off"
-        className={`countdown-capsule flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/90 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2 ${motionEnabled ? "countdown-capsule--motion" : ""}`}
-      >
-        <span aria-hidden="true" className="font-mono text-[8px] uppercase tracking-[0.18em] text-rice/80">
-          <span className="text-gold">NEW YEAR</span>
-          <span className="mx-1 text-gold/70">·</span>
-          ปีใหม่{countdown ? ` ${countdown.year}` : ""}
-        </span>
-        <span aria-hidden="true" className="flex items-center gap-1 tabular-nums">
-          {units.map((unit, index) => (
-            <span key={unit.label} className="flex items-center gap-1">
-              <span className="flex min-w-[23px] flex-col items-center leading-none">
-                <span
-                  key={unit.value ?? "pending"}
-                  className={`font-mono text-[12px] tracking-[0.04em] text-rice ${motionEnabled && unit.value !== undefined ? "countdown-value-tick" : ""}`}
-                >
-                  {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
-                </span>
-                <span className="mt-0.5 font-mono text-[8px] tracking-[0.12em] text-rice/65">
-                  {unit.label}
-                </span>
-              </span>
-              {index < units.length - 1 && (
-                <span className="-mt-1 font-mono text-[10px] text-gold/70">:</span>
-              )}
-            </span>
-          ))}
-        </span>
-      </div>
-    </div>
-  );
-}
 
 export function Hero() {
   const [reduceMotion, setReduceMotion] = useState(false);
@@ -206,7 +116,7 @@ export function Hero() {
         <div className="grain-overlay absolute inset-0" />
       </div>
 
-      <NewYearCountdown motionEnabled={motionEnabled} />
+      <NewYearClock motionEnabled={motionEnabled} />
 
       <div className="container-content relative z-10 pb-20 pt-40 sm:pb-28">
         <div ref={textContentRef} aria-hidden={textHidden}>
