@@ -73,9 +73,9 @@ function NewYearCountdown({ motionEnabled }: { motionEnabled: boolean }) {
         role="timer"
         aria-label={accessibleLabel}
         aria-live="off"
-        className={`countdown-capsule flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/55 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2 ${motionEnabled ? "countdown-capsule--motion" : ""}`}
+        className={`countdown-capsule flex w-[164px] flex-col items-center gap-1 rounded-full border border-gold/40 bg-ink/90 px-3 py-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.18)] backdrop-blur-md sm:w-[176px] sm:py-2 ${motionEnabled ? "countdown-capsule--motion" : ""}`}
       >
-        <span aria-hidden="true" className="font-mono text-[7px] uppercase tracking-[0.18em] text-rice/80">
+        <span aria-hidden="true" className="font-mono text-[8px] uppercase tracking-[0.18em] text-rice/80">
           <span className="text-gold">NEW YEAR</span>
           <span className="mx-1 text-gold/70">·</span>
           ปีใหม่{countdown ? ` ${countdown.year}` : ""}
@@ -90,7 +90,7 @@ function NewYearCountdown({ motionEnabled }: { motionEnabled: boolean }) {
                 >
                   {unit.value === undefined ? "--" : String(unit.value).padStart(2, "0")}
                 </span>
-                <span className="mt-0.5 font-mono text-[6px] tracking-[0.12em] text-rice/65">
+                <span className="mt-0.5 font-mono text-[8px] tracking-[0.12em] text-rice/65">
                   {unit.label}
                 </span>
               </span>
