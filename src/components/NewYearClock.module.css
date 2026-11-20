@@ -1,0 +1,402 @@
+.position {
+  position: absolute;
+  z-index: 15;
+  top: clamp(106px, 13%, 190px);
+  left: 50%;
+  width: min(88vw, 368px);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.card {
+  --clock-gold: #d6b16b;
+  --clock-ivory: #f5f1e2;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  width: 100%;
+  padding: 11px 13px 10px;
+  border: 1px solid rgba(218, 183, 112, 0.42);
+  border-radius: 17px;
+  color: var(--clock-ivory);
+  background:
+    radial-gradient(ellipse at 92% 0%, rgba(201, 154, 62, 0.18), transparent 40%),
+    radial-gradient(ellipse at 4% 100%, rgba(63, 90, 61, 0.24), transparent 48%),
+    linear-gradient(145deg, rgba(12, 17, 20, 0.93), rgba(24, 29, 29, 0.88) 58%, rgba(12, 17, 19, 0.94));
+  box-shadow:
+    0 13px 42px rgba(0, 0, 0, 0.27),
+    0 0 0 1px rgba(255, 255, 255, 0.035),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(201, 154, 62, 0.13);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  pointer-events: auto;
+  transition: box-shadow 700ms ease, border-color 700ms ease;
+}
+
+.card::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(112deg, rgba(255, 255, 255, 0.10), transparent 30%, transparent 70%, rgba(201, 154, 62, 0.10));
+  content: "";
+  pointer-events: none;
+}
+
+.card::after {
+  position: absolute;
+  z-index: -1;
+  top: -58px;
+  right: -42px;
+  width: 132px;
+  height: 132px;
+  border: 1px solid rgba(214, 177, 107, 0.12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 11px rgba(214, 177, 107, 0.035), 0 0 0 24px rgba(214, 177, 107, 0.022);
+  content: "";
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.ambient {
+  position: absolute;
+  z-index: 0;
+  top: 18px;
+  right: 30px;
+  width: 100px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(201, 154, 62, 0.20);
+  filter: blur(27px);
+  pointer-events: none;
+}
+
+.lightSweep {
+  position: absolute;
+  z-index: 2;
+  top: -20%;
+  bottom: -20%;
+  left: -42%;
+  width: 24%;
+  background: linear-gradient(90deg, transparent, rgba(245, 241, 226, 0.10), rgba(214, 177, 107, 0.08), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+
+.topLine,
+.eyebrow,
+.targetDate,
+.bottomLine,
+.liveTime {
+  display: flex;
+  align-items: center;
+}
+
+.topLine,
+.bottomLine {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.eyebrow,
+.targetDate,
+.unitLabel,
+.dateLabel,
+.localLabel {
+  font-family: var(--font-mono), "IBM Plex Mono", monospace;
+  font-weight: 400;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.eyebrow {
+  gap: 7px;
+  color: rgba(245, 241, 226, 0.72);
+  font-size: 7px;
+  letter-spacing: 0.19em;
+}
+
+.liveDot,
+.localLabel::before {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  flex: 0 0 5px;
+  border-radius: 50%;
+  background: #d6b16b;
+  box-shadow: 0 0 8px rgba(214, 177, 107, 0.80);
+}
+
+.targetDate {
+  gap: 5px;
+  color: rgba(245, 241, 226, 0.54);
+  font-size: 7px;
+  letter-spacing: 0.12em;
+}
+
+.targetDate b {
+  color: var(--clock-gold);
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.middleLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 0 7px;
+}
+
+.countdownGrid {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.unit {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.unit + .unit::before {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(transparent, rgba(214, 177, 107, 0.27), transparent);
+  content: "";
+}
+
+.unitValue {
+  display: inline-block;
+  color: var(--clock-ivory);
+  font-family: var(--font-mono), "IBM Plex Mono", monospace;
+  font-size: clamp(18px, 5.3vw, 23px);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.035em;
+  line-height: 1;
+  text-shadow: 0 0 17px rgba(245, 241, 226, 0.13);
+}
+
+.unitLabel {
+  color: rgba(245, 241, 226, 0.48);
+  font-size: 6px;
+  letter-spacing: 0.17em;
+}
+
+.yearMeter {
+  position: relative;
+  display: flex;
+  width: 49px;
+  height: 49px;
+  flex: 0 0 49px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(214, 177, 107, 0.09), rgba(214, 177, 107, 0.015) 62%, transparent 70%);
+}
+
+.meterSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(-90deg);
+}
+
+.meterTrack,
+.meterProgress {
+  fill: none;
+  stroke-width: 1.9;
+}
+
+.meterTrack {
+  stroke: rgba(245, 241, 226, 0.17);
+}
+
+.meterProgress {
+  stroke: var(--clock-gold);
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(214, 177, 107, 0.58));
+  transition: stroke-dashoffset 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.meterValue {
+  color: var(--clock-ivory);
+  font-family: var(--font-mono), "IBM Plex Mono", monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.meterValue small {
+  margin-left: 1px;
+  color: var(--clock-gold);
+  font-size: 6px;
+}
+
+.orbit {
+  position: absolute;
+  inset: -3px;
+  border: 1px dashed rgba(214, 177, 107, 0.18);
+  border-radius: 50%;
+}
+
+.orbit i {
+  position: absolute;
+  top: 3px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f2d79b;
+  box-shadow: 0 0 8px 2px rgba(214, 177, 107, 0.50);
+  transform: translateX(-50%);
+}
+
+.bottomLine {
+  min-height: 15px;
+  border-top: 1px solid rgba(245, 241, 226, 0.10);
+  padding-top: 6px;
+}
+
+.dateLabel {
+  overflow: hidden;
+  color: rgba(245, 241, 226, 0.50);
+  font-size: 6px;
+  letter-spacing: 0.10em;
+  text-overflow: ellipsis;
+}
+
+.liveTime {
+  flex: 0 0 auto;
+  gap: 3px;
+  color: rgba(245, 241, 226, 0.84);
+  font-family: var(--font-mono), "IBM Plex Mono", monospace;
+  font-size: 9px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+}
+
+.liveTime i {
+  color: var(--clock-gold);
+  font-style: normal;
+  opacity: 0.78;
+}
+
+.seconds {
+  color: rgba(245, 241, 226, 0.58);
+}
+
+.localLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: 2px;
+  color: rgba(214, 177, 107, 0.82);
+  font-size: 6px;
+  letter-spacing: 0.09em;
+}
+
+.localLabel::before {
+  width: 4px;
+  height: 4px;
+  flex-basis: 4px;
+  content: "";
+}
+
+.digitTick {
+  animation: digit-arrive 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.card[data-motion="on"] .lightSweep {
+  animation: light-sweep 10s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.card[data-motion="on"] .liveDot {
+  animation: live-pulse 2.8s ease-in-out infinite;
+}
+
+.card[data-motion="on"] .orbit {
+  animation: orbit-spin 24s linear infinite;
+}
+
+.card[data-motion="on"] .ambient {
+  animation: ambient-breathe 7s ease-in-out infinite alternate;
+}
+
+.card[data-finale="true"] {
+  border-color: rgba(239, 205, 133, 0.68);
+  box-shadow: 0 13px 46px rgba(0, 0, 0, 0.3), 0 0 22px rgba(214, 177, 107, 0.19), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.card[data-finale="true"] .liveDot {
+  background: #fff0c5;
+  box-shadow: 0 0 12px 3px rgba(255, 220, 150, 0.62);
+}
+
+.card[data-motion="off"] *,
+.card[data-motion="off"] *::before,
+.card[data-motion="off"] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+@keyframes digit-arrive {
+  0% { opacity: 0.2; transform: translateY(5px) scale(0.96); filter: blur(2px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes light-sweep {
+  0%, 72% { left: -42%; opacity: 0; }
+  76% { opacity: 0.8; }
+  88%, 100% { left: 120%; opacity: 0; }
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 0.72; box-shadow: 0 0 5px rgba(214, 177, 107, 0.48); }
+  50% { opacity: 1; box-shadow: 0 0 11px 2px rgba(214, 177, 107, 0.80); }
+}
+
+@keyframes orbit-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ambient-breathe {
+  from { opacity: 0.5; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1.12); }
+}
+
+@media (max-width: 380px) {
+  .position { width: min(91vw, 340px); }
+  .card { padding: 10px 10px 9px; }
+  .middleLine { gap: 7px; }
+  .yearMeter { width: 45px; height: 45px; flex-basis: 45px; }
+  .unitValue { font-size: 18px; }
+  .dateLabel { font-size: 5.5px; letter-spacing: 0.07em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card *,
+  .card *::before,
+  .card *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
