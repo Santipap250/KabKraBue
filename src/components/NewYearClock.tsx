@@ -5,8 +5,8 @@ import styles from "./NewYearClock.module.css";
 
 const TIME_ZONE = "Asia/Bangkok";
 const BANGKOK_OFFSET_MS = 7 * 60 * 60 * 1000;
-const SECONDS_PER_DAY = 24 * 60 * 60;
-const RING_RADIUS = 22;
+const SECONDS_PER_DAY = 86_400;
+const RING_RADIUS = 23;
 const RING_CIRCUMFERENCE = 2 * Math.PI * RING_RADIUS;
 
 const timeFormatter = new Intl.DateTimeFormat("en-GB", {
@@ -18,7 +18,7 @@ const timeFormatter = new Intl.DateTimeFormat("en-GB", {
   calendar: "gregory",
 });
 
-const dateFormatter = new Intl.DateTimeFormat("en-GB", {
+const englishDateFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: TIME_ZONE,
   weekday: "short",
   day: "2-digit",
@@ -27,17 +27,17 @@ const dateFormatter = new Intl.DateTimeFormat("en-GB", {
   calendar: "gregory",
 });
 
-const yearFormatter = new Intl.DateTimeFormat("en-US", {
-  timeZone: TIME_ZONE,
-  year: "numeric",
-  calendar: "gregory",
-});
-
-const thaiDateFormatter = new Intl.DateTimeFormat("th-TH", {
+const thaiDateFormatter = new Intl.DateTimeFormat("th-TH-u-ca-buddhist", {
   timeZone: TIME_ZONE,
   weekday: "long",
   day: "numeric",
   month: "long",
+  year: "numeric",
+  era: "short",
+});
+
+const yearFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: TIME_ZONE,
   year: "numeric",
   calendar: "gregory",
 });
@@ -46,9 +46,10 @@ type ClockSnapshot = {
   hour: string;
   minute: string;
   second: string;
-  dateLabel: string;
-  spokenDate: string;
+  englishDate: string;
+  thaiDate: string;
   targetYear: number;
+  targetThaiYear: number;
   days: number;
   hours: number;
   minutes: number;
@@ -57,18 +58,18 @@ type ClockSnapshot = {
   yearProgress: number;
 };
 
-function part(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTypes): string {
+function getPart(parts: Intl.DateTimeFormatPart[], type: Intl.DateTimeFormatPartTypes): string {
   return parts.find((item) => item.type === type)?.value ?? "00";
 }
 
 function getClockSnapshot(now: Date): ClockSnapshot {
   const timeParts = timeFormatter.formatToParts(now);
-  const hour = part(timeParts, "hour");
-  const minute = part(timeParts, "minute");
-  const second = part(timeParts, "second");
+  const hour = getPart(timeParts, "hour");
+  const minute = getPart(timeParts, "minute");
+  const second = getPart(timeParts, "second");
   const currentYear = Number.parseInt(yearFormatter.format(now), 10);
 
-  // Thailand stays on UTC+7. New Year begins at 00:00 on 1 January Bangkok time.
+  // Bangkok is UTC+7. New Year begins at 00:00 on 1 January Bangkok time.
   const yearStart = Date.UTC(currentYear, 0, 1) - BANGKOK_OFFSET_MS;
   const nextYearStart = Date.UTC(currentYear + 1, 0, 1) - BANGKOK_OFFSET_MS;
   const remainingSeconds = Math.max(0, Math.floor((nextYearStart - now.getTime()) / 1000));
@@ -79,9 +80,10 @@ function getClockSnapshot(now: Date): ClockSnapshot {
     hour,
     minute,
     second,
-    dateLabel: dateFormatter.format(now).replace(",", " ·").toUpperCase(),
-    spokenDate: thaiDateFormatter.format(now),
+    englishDate: englishDateFormatter.format(now).replace(/,/g, " ·").toUpperCase(),
+    thaiDate: thaiDateFormatter.format(now),
     targetYear: currentYear + 1,
+    targetThaiYear: currentYear + 544,
     days: Math.floor(remainingSeconds / SECONDS_PER_DAY),
     hours: Math.floor((remainingSeconds % SECONDS_PER_DAY) / 3600),
     minutes: Math.floor((remainingSeconds % 3600) / 60),
@@ -95,12 +97,16 @@ function pad(value: number): string {
   return String(value).padStart(2, "0");
 }
 
+function padDays(value: number): string {
+  return String(value).padStart(3, "0");
+}
+
 export interface NewYearClockProps {
-  /** Reuses the Hero's reduced-motion and data-saver decision. */
+  /** Reuses Hero's reduced-motion and data-saver decision. */
   motionEnabled: boolean;
 }
 
-/** Compact Bangkok-local clock and New Year countdown for the KabKraBue Hero. */
+/** Compact bilingual Bangkok clock and New Year countdown for the KabKraBue Hero. */
 export function NewYearClock({ motionEnabled }: NewYearClockProps) {
   const [now, setNow] = useState<Date | null>(null);
 
@@ -112,7 +118,6 @@ export function NewYearClock({ motionEnabled }: NewYearClockProps) {
       if (disposed || document.hidden) return;
       const current = new Date();
       setNow(current);
-      // Align to the next second to prevent timer drift.
       timeoutId = window.setTimeout(tick, 1000 - current.getMilliseconds());
     };
 
@@ -136,14 +141,14 @@ export function NewYearClock({ motionEnabled }: NewYearClockProps) {
   const dashOffset = RING_CIRCUMFERENCE * (1 - progress);
   const yearPercent = Math.floor(progress * 100);
   const units = [
-    { key: "days", label: "DAYS", value: snapshot ? String(snapshot.days).padStart(2, "0") : "---" },
-    { key: "hours", label: "HRS", value: snapshot ? pad(snapshot.hours) : "--" },
-    { key: "minutes", label: "MIN", value: snapshot ? pad(snapshot.minutes) : "--" },
-    { key: "seconds", label: "SEC", value: snapshot ? pad(snapshot.seconds) : "--" },
+    { key: "days", thai: "วัน", english: "DAYS", value: snapshot ? padDays(snapshot.days) : "---" },
+    { key: "hours", thai: "ชั่วโมง", english: "HRS", value: snapshot ? pad(snapshot.hours) : "--" },
+    { key: "minutes", thai: "นาที", english: "MIN", value: snapshot ? pad(snapshot.minutes) : "--" },
+    { key: "seconds", thai: "วินาที", english: "SEC", value: snapshot ? pad(snapshot.seconds) : "--" },
   ];
   const accessibleLabel = snapshot
-    ? `เวลาประเทศไทย ${snapshot.hour} นาฬิกา ${snapshot.minute} นาที ${snapshot.second} วินาที ${snapshot.spokenDate} เหลือ ${snapshot.days} วัน ${snapshot.hours} ชั่วโมง ${snapshot.minutes} นาที ${snapshot.seconds} วินาที ถึงวันปีใหม่ พ.ศ. ${snapshot.targetYear + 543}`
-    : "นาฬิกาเวลาประเทศไทยและนับถอยหลังวันปีใหม่";
+    ? `นาฬิกาประเทศไทย ${snapshot.hour}:${snapshot.minute}:${snapshot.second} ${snapshot.thaiDate}. ${snapshot.englishDate}. เหลือ ${snapshot.days} วัน ${snapshot.hours} ชั่วโมง ${snapshot.minutes} นาที ${snapshot.seconds} วินาที ถึงวันปีใหม่ คริสต์ศักราช ${snapshot.targetYear} พุทธศักราช ${snapshot.targetThaiYear}`
+    : "นาฬิกาเวลาประเทศไทยและนับถอยหลังวันปีใหม่ / Bangkok clock and New Year countdown";
 
   return (
     <div className={styles.position}>
@@ -157,32 +162,52 @@ export function NewYearClock({ motionEnabled }: NewYearClockProps) {
       >
         <span className={styles.ambient} aria-hidden="true" />
         <span className={styles.lightSweep} aria-hidden="true" />
+        <span className={`${styles.sparkle} ${styles.sparkleOne}`} aria-hidden="true" />
+        <span className={`${styles.sparkle} ${styles.sparkleTwo}`} aria-hidden="true" />
+        <span className={`${styles.sparkle} ${styles.sparkleThree}`} aria-hidden="true" />
+
         <div className={styles.content} aria-hidden="true">
           <div className={styles.topLine}>
-            <div className={styles.eyebrow}>
+            <div className={styles.brandLine}>
               <span className={styles.liveDot} />
-              <span>NEW YEAR COUNTDOWN</span>
+              <span className={styles.titleStack}>
+                <span className={styles.titleThai}>ก้าวสู่ปีใหม่</span>
+                <span className={styles.titleEnglish}>THE MIDNIGHT EDITION</span>
+              </span>
             </div>
-            <span className={styles.targetDate}>01 JAN <b>{snapshot?.targetYear ?? "----"}</b></span>
+
+            <div className={styles.targetBadge}>
+              <span className={styles.targetCaption}>NEXT YEAR · 01 JAN</span>
+              <span className={styles.targetYears}>
+                <span>{snapshot?.targetYear ?? "----"}</span>
+                <i aria-hidden="true">/</i>
+                <b>พ.ศ. {snapshot?.targetThaiYear ?? "----"}</b>
+              </span>
+            </div>
           </div>
 
           <div className={styles.middleLine}>
             <div className={styles.countdownGrid}>
               {units.map((unit) => (
                 <div className={styles.unit} key={unit.key}>
-                  <span
-                    className={`${styles.unitValue} ${motionEnabled && snapshot ? styles.digitTick : ""}`}
-                    key={`${unit.key}-${unit.value}`}
-                  >
-                    {unit.value}
+                  <span className={styles.unitValueWrap}>
+                    <span
+                      className={`${styles.unitValue} ${motionEnabled && snapshot ? styles.digitTick : ""}`}
+                      key={`${unit.key}-${unit.value}`}
+                    >
+                      {unit.value}
+                    </span>
                   </span>
-                  <span className={styles.unitLabel}>{unit.label}</span>
+                  <span className={styles.unitLabelStack}>
+                    <span className={styles.unitThai}>{unit.thai}</span>
+                    <span className={styles.unitEnglish}>{unit.english}</span>
+                  </span>
                 </div>
               ))}
             </div>
 
             <div className={styles.yearMeter}>
-              <svg className={styles.meterSvg} viewBox="0 0 56 56">
+              <svg className={styles.meterSvg} viewBox="0 0 56 56" role="presentation">
                 <circle className={styles.meterTrack} cx="28" cy="28" r={RING_RADIUS} />
                 <circle
                   className={styles.meterProgress}
@@ -194,14 +219,17 @@ export function NewYearClock({ motionEnabled }: NewYearClockProps) {
                 />
               </svg>
               <span className={styles.meterValue}>{yearPercent}<small>%</small></span>
-              <span className={styles.orbit}>
+              <span className={styles.meterOrbit}>
                 <i />
               </span>
             </div>
           </div>
 
           <div className={styles.bottomLine}>
-            <span className={styles.dateLabel}>{snapshot?.dateLabel ?? "SYNCING BANGKOK TIME"}</span>
+            <div className={styles.dateStack}>
+              <span className={styles.thaiDate}>{snapshot?.thaiDate ?? "กำลังเชื่อมต่อเวลาไทย…"}</span>
+              <span className={styles.englishDate}>{snapshot?.englishDate ?? "SYNCING BANGKOK TIME"}</span>
+            </div>
             <time className={styles.liveTime} dateTime={now?.toISOString()}>
               <span className={styles.localLabel}>BKK</span>
               <span>{snapshot?.hour ?? "--"}</span>
@@ -210,6 +238,10 @@ export function NewYearClock({ motionEnabled }: NewYearClockProps) {
               <i>:</i>
               <span className={styles.seconds}>{snapshot?.second ?? "--"}</span>
             </time>
+          </div>
+
+          <div className={styles.progressTrack}>
+            <span className={styles.progressFill} style={{ transform: `scaleX(${progress})` }} />
           </div>
         </div>
       </section>
