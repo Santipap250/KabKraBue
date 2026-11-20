@@ -5,6 +5,7 @@ import { Menu } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { cn } from "@/lib/cn";
+import { BrandLogo } from "./BrandLogo";
 import { MobileMenu } from "./MobileMenu";
 
 const navItems = siteConfig.nav;
@@ -23,14 +24,11 @@ export function Header() {
           : "bg-gradient-to-b from-ink/70 to-transparent"
       )}>
         <div className="container-content flex h-20 items-center justify-between">
-          <a href="#top" lang="en" className={cn(
-            "font-display text-xl font-semibold tracking-tight transition-colors",
-            scrolled ? "text-ink" : "text-rice"
-          )}>
-            {siteConfig.name}
-            <span lang="th" className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-70">
-              {siteConfig.nameThai}
-            </span>
+          <a href="#top" className="inline-flex shrink-0 items-center rounded-md">
+            <BrandLogo
+              priority
+              className="h-10 w-auto max-w-[160px] rounded-md border border-gold/25 object-contain shadow-sm sm:h-12 sm:max-w-[190px] lg:h-14 lg:max-w-[210px]"
+            />
           </a>
 
           <nav aria-label="Primary" lang="en" className="hidden lg:block">

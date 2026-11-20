@@ -4,6 +4,7 @@ import { TerraceDivider } from "@/components/TerraceDivider";
 import { TikTokIcon } from "@/components/icons/TikTokIcon";
 import { hasContent } from "@/lib/content";
 import { withBasePath } from "@/lib/paths";
+import { BrandLogo } from "@/components/BrandLogo";
 
 const navItems = siteConfig.nav;
 
@@ -26,8 +27,9 @@ export function Footer() {
       <div className="container-content py-16 sm:py-20">
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <h2 lang="en" className="font-display text-3xl font-medium">{siteConfig.name}</h2>
-            <p className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-rice/50">{siteConfig.nameThai}</p>
+            <h2 className="inline-flex">
+              <BrandLogo className="h-[58px] w-auto max-w-[220px] rounded-md border border-gold/20 object-contain" />
+            </h2>
             <p className="mt-4 max-w-sm leading-relaxed text-rice/70">{siteConfig.shortDescriptionThai}</p>
           </div>
 
