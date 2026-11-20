@@ -1,15 +1,20 @@
 # KabKraBue — Audit and Remediation Report
 
-## Celestial Identity integration — current review (checked 2026-11-20)
+## Current status after merge and Production QA (checked 2026-11-20)
 
-- Latest integration base: `origin/main` SHA `4fd6bb489069b9fc766ad80d21d9aa595a5213f`; implementation is isolated on `manus/kabkrabue-celestial-signature`. No changes were made directly to `main`.
-- Replaced the compact New Year clock with an explicit `Asia/Bangkok` Celestial Timepiece, pure timezone-aware calculations, bilingual Thai Buddhist Era/English Gregorian dates, next-New-Year countdown/year progress, accessible interaction, and motion/data-saver handling. Applied the supplied SVG/brand assets to site and PWA identity and incremented the app-shell cache to `kabkrabue-v7`.
-- Clean-install checks passed: `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build/export verifier, and GitHub Pages build/export verifier. npm warns that ESLint 9.39.5 is deprecated/unsupported.
-- Chromium checks passed on root and `/KabKraBue/` at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, 1440×900, and short 360×560/375×560 layouts: no tested overflow/overlap, broken images, console errors, or page errors. Hero video remains present.
-- Preservation smoke checks: Gallery displays 14 images, Culture filters to 9, lightbox next/Escape works; Shorts has 3 cards and creates its YouTube iframe only after click. No changes to `src/data`, `public/images`, or `public/videos`.
-- PWA offline Home/Privacy and bilingual clock/date, year boundary, Reduced Motion, Data Saver, and keyboard/touch checks passed in browser. axe found 0 violations on Home and Privacy. Home still has incomplete checks: color-contrast 85 nodes, frame-tested 1, video-caption 5; these are manual review items, not passes or violations. Privacy has 0 incomplete checks.
-- Unthrottled local Chromium snapshot: LCP 324 ms (text paragraph candidate), CLS 0.00872. This is not Lighthouse, field data, or a real-device measurement. Screen-reader, physical-device, manual contrast/caption review, and Lighthouse/field checks remain unverified.
-- Mobile and desktop Before/After captures are indexed in `docs/SCREENSHOTS.md`. PR/CI and Vercel Preview must be reported from the actual latest PR state; no merge, Production deploy, or promotion is authorized or performed.
+- Current `origin/main` is `73eb58c62e7197fcced1eb563c6418bda1b9d10e`, the merge commit for PR #12; its feature head was `1cd914baffb121da35dde2e4927051a32cdea449`. GitHub records the merge under account `Santipap250` at 2026-11-20 12:59:13Z (19:59:13 +07). This audit/update did not issue a merge, deploy, or rollback.
+- Before merge, PR #12 had 3 successful checks: Website quality, Vercel (deployment), and Vercel Preview Comments. Vercel marked the Preview Ready; direct unauthenticated access returned HTTP 302 to Vercel SSO, so its hosted content was not independently inspected.
+- Vercel recorded Production deployment of merge SHA `73eb58c` as successful at 2026-11-20 12:59:55Z (19:59:55 +07), deployment URL [kab-kra-in0fi1psk-obixconfig.vercel.app](https://kab-kra-in0fi1psk-obixconfig.vercel.app). The public alias [kab-kra-bue.vercel.app](https://kab-kra-bue.vercel.app) was then checked read-only.
+- The delivered app replaces the compact New Year clock with a compact `Asia/Bangkok` Celestial Timepiece, Thai Buddhist Era/English Gregorian dates, next-New-Year countdown/year progress, accessible interaction, and Reduced Motion/Data Saver handling; the supplied SVG identity is used site-wide and in PWA assets, with app-shell cache `kabkrabue-v7`.
+- Clean-install checks passed on the feature source: `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build/export verifier, and GitHub Pages build/export verifier. npm warns that ESLint 9.39.5 is deprecated/unsupported.
+- Production HTTP smoke: Home, Privacy, manifest, service worker, sitemap, robots, favicon, Apple icon, and maskable icons tested returned HTTP 200. An unknown route returned 404 with `noindex` and no canonical/`og:url` inherited from Home.
+- Production Chromium at 360×560, 375×560, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900 showed no horizontal overflow, tested clock/headline overlap, or page errors; the primary CTA was inside the initial viewport at all tested sizes. At 360×560, the measured clock/headline gap was 10px. Console checks at 390×844 and 1280×900 reported no errors.
+- With browser timezone `Pacific/Honolulu`, Production displayed Bangkok time `20:09:51`, while simulated device-local time was `03:09:51`; Thai date was 20 November 2569 BE, English date 20 November 2026 CE, and New Year target 2570/2027. Reduced Motion rendered the poster; normal motion rendered the Hero video element. Hero WebM/MP4 and poster URLs returned HTTP 200 via HEAD requests.
+- Production Gallery showed 14 images; Culture filtering showed 9; lightbox next/Escape passed. Shorts showed 3 cards and created its YouTube iframe only after play click. The root-scoped service worker activated with cache `kabkrabue-v7`; Home and Privacy both loaded offline with HTTP 200. No `src/data`, `public/images`, or `public/videos` files changed.
+- In inspected Production HTML responses, HSTS was present; CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, and X-Frame-Options were not observed. This is a limited header observation, not a full security audit.
+- Local axe results: Home/Privacy had 0 violations; Home still had incomplete color-contrast (85 nodes), frame-tested (1), and video-caption (5); Privacy had 0 incomplete checks. These are manual review items, not passes or violations.
+- Unthrottled local Chromium snapshot: LCP 324 ms (text paragraph candidate), CLS 0.00872. This is not Lighthouse, field data, or a real-device measurement. Screen-reader, real-device, manual contrast/caption review, and Lighthouse/field checks remain unverified.
+- Mobile and desktop Before/After captures are indexed in `docs/SCREENSHOTS.md`. This follow-up PR changes documentation only; it does not modify app code or deployment configuration.
 
 ## Previous quality pass — historical status (checked 2026-11-20)
 
@@ -81,7 +86,7 @@ A focused axe rerun after the `NewYearClock` integration and short-screen fix co
 2. Listen to the two AAC-bearing Story clips and decide whether accurate captions/transcripts are required; do not infer from an empty automatic transcript alone.
 3. Test keyboard/screen-reader behavior and layout on real devices before making a conformance claim.
 4. Run Lighthouse and field-data checks in an appropriate authorized environment; local Chromium snapshots are only lab observations.
-5. Verify production security headers and the deployed build only after the repository owner has merged/deployed and the host is authorized for read-only inspection.
+5. Consider a separate reviewed Vercel header-policy change: the current read-only Production response showed HSTS but did not include CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, or X-Frame-Options. This observation is not a full security audit and no header change is included here.
 6. Obtain village representative confirmation before changing address or coordinates.
 7. Plan ESLint/Next.js and GitHub Actions runner/action lifecycle upgrades separately; no out-of-scope forced dependency upgrade was made here.
 

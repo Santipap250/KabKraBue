@@ -1,15 +1,17 @@
 # KabKraBue — Quality Pass Work Items
 
-## สถานะ Celestial Identity (ตรวจ 2026-11-20)
+## สถานะ Celestial Identity และ Production (ตรวจ 2026-11-20)
 
-- ฐานงานคือ `origin/main` SHA `4fd6bb489069b9fc766ad80d21d9aa595a5213f5`; ทำงานเฉพาะ branch `manus/kabkrabue-celestial-signature` โดยไม่แก้ `main`
-- `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build + `npm run verify:export`, และ `GITHUB_PAGES=true` build + verifier ผ่านบน source รอบนี้; ESLint แจ้งว่า `eslint@9.39.5` deprecated/unsupported
-- Chromium QA ครอบคลุม 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, 1440×900, 360×560 และ 375×560 ทั้ง root และ `/KabKraBue/`; ไม่พบ overflow, overlap ที่ตรวจ, รูปเสีย, console/page error; Hero video คงอยู่
-- Gallery smoke: All 14 ภาพ; Culture 9 ภาพ; lightbox next/ Escape ผ่าน. Shorts 3 cards, ไม่มี iframe ก่อนกด และ iframe ถูกสร้างหลัง click; ไม่พบ page error
-- PWA offline Home/Privacy, Bangkok time/ปี พ.ศ.-ค.ศ., countdown rollover, reduced motion, Data Saver และ keyboard/touch ผ่าน browser checks; install บนอุปกรณ์จริง, screen reader, Lighthouse และ field data ยังไม่ได้ตรวจ
-- axe: Home/Privacy 0 violations; Home ยังมี incomplete `color-contrast` 85 nodes, frame-tested 1, video-caption 5 (manual review; ไม่ถือเป็น pass/violation); Privacy incomplete 0
-- local unthrottled Chromium snapshot: LCP 324ms (text paragraph candidate), CLS 0.00872; ไม่ใช่ Lighthouse หรือ field measurement
-- ไฟล์ `src/data`, `public/images`, `public/videos` ไม่เปลี่ยน; Production ไม่ได้แตะ. PR/CI และ Vercel Preview ต้องอัปเดตตามสถานะจริงหลังเปิด PR
+- `origin/main` ล่าสุดคือ `73eb58c62e7197fcced1eb563c6418bda1b9d10e`, ซึ่ง merge PR #12 (feature head `1cd914baffb121da35dde2e4927051a32cdea449`). GitHub ระบุว่า merge โดยบัญชี `Santipap250` เวลา 2026-11-20 12:59:13Z (19:59:13 +07); Vercel บันทึก Production deployment ของ merge SHA นี้ว่า success เวลา 12:59:55Z (19:59:55 +07) ที่ https://kab-kra-in0fi1psk-obixconfig.vercel.app. งานตรวจนี้ไม่ได้สั่ง merge, deploy หรือ rollback
+- GitHub checks ของ PR #12 ก่อน merge ผ่านครบ 3/3: Website quality, Vercel deployment และ Vercel Preview Comments. Preview status เป็น Ready แต่ direct unauthenticated request ได้ HTTP 302 ไป Vercel SSO จึงไม่ได้ตรวจเนื้อหาบน Preview โดยตรง
+- `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build + verifier และ `GITHUB_PAGES=true` build + verifier ผ่านบน source ของ feature; npm เตือนว่า `eslint@9.39.5` deprecated/unsupported
+- Read-only production smoke ที่ https://kab-kra-bue.vercel.app: Home, Privacy, manifest, service worker, sitemap, robots และ favicon/PWA icons ที่ตรวจตอบ 200; route ที่ไม่มีอยู่ตอบ 404, มี `noindex` และไม่มี canonical/`og:url` ของ Home
+- Production Chromium QA ที่ 360×560, 375×560, 390×844, 430×932, 768×1024, 1280×800, 1280×900 และ 1440×900: ไม่พบ horizontal overflow, clock/headline overlap หรือ page error; primary CTA อยู่ใน viewport ทุกขนาดที่วัด (ช่องว่าง clock/headline 10px ที่ 360×560). Console ไม่พบ error ใน smoke ที่ 390×844/1280×900
+- Production clock ทดสอบด้วย browser timezone `Pacific/Honolulu`: แสดง Bangkok 20:09:51 เทียบกับ device-local 03:09:51, Thai date พ.ศ. 2569, English date ค.ศ. 2026 และ next-year target 2570/2027. Reduced Motion ใช้โปสเตอร์; normal motion มี Hero video; WebM/MP4 และ poster URLs ที่ตรวจตอบ 200
+- Production Gallery: 14 ภาพ, Culture 9 ภาพ, lightbox next/Escape ผ่าน; Shorts 3 รายการและสร้าง iframe หลัง click เท่านั้น. Service worker scope เป็น root, active cache `kabkrabue-v7`; Home/Privacy เปิด offline ได้ 200
+- Production HTML responses ที่ตรวจมี HSTS; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน response ที่ตรวจ (เป็น observation ไม่ใช่ full security audit)
+- axe บน local export: Home/Privacy 0 violations; Home มี incomplete color-contrast 85 nodes, frame-tested 1 และ video-caption 5; Privacy incomplete 0. Manual contrast/caption review, screen reader, อุปกรณ์จริง และ Lighthouse/field data ยังไม่ได้ทำ
+- local unthrottled Chromium snapshot: LCP 324ms (text paragraph candidate), CLS 0.00872; ไม่ใช่ Lighthouse หรือ field data. ไม่มีการเปลี่ยน `src/data`, `public/images` หรือ `public/videos`
 
 ## Celestial Timepiece and identity — acceptance outcomes
 
@@ -36,7 +38,8 @@
 - [x] Run from a clean install: `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run test:clock`, `npm run build`, and `GITHUB_PAGES=true npm run build`; both `npm run verify:export` and `GITHUB_PAGES=true npm run verify:export` pass.
 - [x] Browser-test rendering at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900, plus 360×560 and 375×560; check overflow/overlap, hydration, year transition, reduced motion, Data Saver, touch/keyboard, Home/Privacy offline paths, console/page errors, axe and local performance. Record actual results only; no Lighthouse or device scores are claimed.
 - [x] Save comparable Before/After screenshots for mobile and desktop; see `docs/SCREENSHOTS.md`.
-- [ ] Open a review PR from the feature branch and record the actual CI and Vercel Preview deployment/check status and URL after the latest push. Keep the PR open; do not merge or deploy/promote Production.
+- [x] เปิด PR #12 เพื่อ review feature; GitHub checks ผ่าน 3/3 และ Vercel รายงาน Preview Ready (แต่ Preview ถูกป้องกันด้วย SSO จึงตรวจ content โดยตรงไม่ได้)
+- [ ] คง PR #12 ไว้เปิดและไม่ merge/promote Production — GitHub บันทึกการ merge โดย `Santipap250` และ Production deployment สำเร็จตามสถานะด้านบน; การตรวจนี้ไม่ได้สั่ง merge/deploy และไม่ได้ rollback
 
 ## 1. Accessibility และภาษา
 
@@ -63,19 +66,19 @@
 - [x] จำกัด Place JSON-LD ไว้เฉพาะ Home; คง metadataBase และ social preview assets
 - [x] เพิ่ม deterministic static-export verifier สำหรับ Home, Privacy, 404, manifest, sitemap, robots, responsive assets และ base-path URLs
 - [x] Root และ `/KabKraBue/` builds/verification ผ่าน; browser smoke ตรวจ route metadata, local asset requests และ service-worker scope ทั้งสองโหมด
-- [ ] รอ GitHub Actions ของ PR ให้ผ่านก่อนขอ review/merge; การ merge/deploy ทำโดย repository owner ตาม workflow เดิม
+- [x] GitHub Actions ของ PR #12 ผ่านก่อน merge; Vercel deployment และ Preview Comments ก็ผ่าน. GitHub บันทึกว่า PR ถูก merge ภายหลัง; รายละเอียดและข้อจำกัดอยู่ในสถานะด้านบน
 
 ## 4. PWA, security และข้อมูลที่ต้องยืนยัน
 
 - [x] ตรวจ first-visit และ offline Home/Privacy ใน Chromium profile ใหม่ทั้ง root และ `/KabKraBue/`; service worker ควบคุมหน้าและใช้ app-shell cache ได้โดยไม่เปลี่ยน worker semantics
-- [ ] ตรวจ security response headers บน staging/host ที่เจ้าของอนุมัติเท่านั้น; static-export source ไม่ยืนยัน headers ของ host จริง
+- [x] ตรวจ security response headers แบบ read-only บน Production หลัง merge: HSTS มีอยู่; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน Home/Privacy/404 responses ที่สุ่มตรวจ. นี่ไม่ใช่ full security audit; static-export source เองยืนยัน headers ของ host จริงไม่ได้
 - [ ] ก่อนเปลี่ยนพิกัด/ที่อยู่ ให้ผู้แทนหมู่บ้านยืนยันข้อมูลจริง; รอบนี้ไม่เปลี่ยนข้อมูลดังกล่าว
 - [ ] ทำ manual contrast sampling บน gradients: axe ทำเครื่องหมาย `color-contrast` เป็น incomplete บน Home 68 nodes ใน root/Pages, nested install dialog 69/69 และ gallery lightbox 95/97 (root/Pages); จำนวนขึ้นกับ state/DOM และไม่ใช่ violations หรือผล pass
 - [ ] ตรวจ captions ของ Story video ทั้ง 5 รายการ: พบ AAC audio track ใน 2 คลิป (`story-02.mp4`, `people-section.mp4`) และอีก 3 คลิปไม่มี audio track; STT ไม่พบ speech segments แต่ต้องฟังโดยมนุษย์ก่อนสรุปและไม่สร้าง transcript อัตโนมัติ
 - [ ] ทำ screen-reader/real-device testing และ Lighthouse/field measurement ในสภาพแวดล้อมที่เหมาะสม; local Chromium metrics ไม่ใช่ Lighthouse หรือ field data
-- [ ] ตรวจ Production status/headers แบบ read-only หลัง repository owner merge/deploy หากได้รับอนุญาต; รอบนี้ไม่ได้แตะ Production
+- [x] ตรวจ Production status/headers แบบ read-only หลัง merge ที่ `https://kab-kra-bue.vercel.app`; deployment `73eb58c` รายงาน success และ smoke checks/limitations บันทึกไว้ในสถานะด้านบน. ไม่มีการเปลี่ยน Production โดยการตรวจนี้
 
-## 5. หลักฐานรอบนี้และประวัติ
+## 5. หลักฐาน quality pass ก่อนหน้าและประวัติ
 
 - Root และ GitHub Pages builds ผ่าน; `npm run security` รายงาน 0 vulnerabilities; `npm run verify:export` ตรวจ 7 route/PWA files และ 56 responsive candidates
 - Chromium 156 ตรวจ 390×844, 767×900, 768×1024, 1280×720, 1440×900 และ 375×560; ไม่พบ horizontal overflow, broken images, local HTTP errors หรือ runtime errors; axe ไม่มี violations บน Home, Privacy, install dialog และ lightbox
