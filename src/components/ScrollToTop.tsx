@@ -16,6 +16,7 @@ export function ScrollToTop() {
         window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
       }}
       aria-label="Scroll back to top"
+      lang="en"
       aria-hidden={!scrolled}
       disabled={!scrolled}
       className={cn(

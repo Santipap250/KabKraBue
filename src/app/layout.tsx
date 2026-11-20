@@ -17,7 +17,6 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: siteConfig.locale,
-    url: siteConfig.url,
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.shortDescription,
@@ -34,9 +33,6 @@ export const metadata: Metadata = {
     apple: withBasePath("/favicon/apple-touch-icon.png"),
   },
   manifest: withBasePath("/manifest.webmanifest"),
-  alternates: {
-    canonical: siteConfig.url,
-  },
   appleWebApp: {
     capable: true,
     title: "KabKraBue",
@@ -50,29 +46,11 @@ export const viewport = {
   initialScale: 1,
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Place",
-  name: siteConfig.name,
-  alternateName: siteConfig.nameThai,
-  description: siteConfig.shortDescription,
-  url: siteConfig.url,
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: 14.52646,
-    longitude: 103.36005,
-  },
-};
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th">
       <head />
       <body>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
         <PwaBootstrap />
         {children}
       </body>

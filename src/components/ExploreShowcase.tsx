@@ -1,10 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { exploreScenes } from "@/data/explore";
-import { withBasePath } from "@/lib/paths";
+import { ResponsiveImage } from "@/components/ResponsiveImage";
 import { useReducedMotionPreference } from "@/hooks/useReducedMotionPreference";
 
 const sizeClass = {
@@ -34,14 +33,12 @@ export function ExploreShowcase() {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: reduceMotion ? 0 : 0.55, delay: reduceMotion ? 0 : (index % 4) * 0.06 }}
             className={`group relative overflow-hidden bg-ink ${sizeClass[scene.size]}`}
-            aria-label={`ดูเรื่องราว ${scene.title}`}
           >
             <div className={`relative w-full ${imageClass[scene.size]}`}>
-              <Image
-                src={withBasePath(scene.image)}
+              <ResponsiveImage
+                src={scene.image}
                 alt={scene.alt}
-                fill
-                unoptimized
+                altLang="th"
                 sizes={
                   scene.size === "hero"
                     ? "(min-width: 1024px) 50vw, 100vw"
@@ -52,7 +49,7 @@ export function ExploreShowcase() {
               <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
                 <div className="flex items-center justify-between gap-4">
-                  <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold">
+                  <span lang="en" className="font-mono text-[9px] uppercase tracking-[0.2em] text-gold">
                     {scene.number} · {scene.label}
                   </span>
                   <ArrowUpRight
@@ -60,7 +57,7 @@ export function ExploreShowcase() {
                     strokeWidth={1.4}
                   />
                 </div>
-                <h3 className="mt-2 font-display text-2xl leading-tight text-rice sm:text-3xl">
+                <h3 lang="en" className="mt-2 font-display text-2xl leading-tight text-rice sm:text-3xl">
                   {scene.title}
                 </h3>
                 <p className="mt-1 font-body text-sm text-rice/65">{scene.titleThai}</p>

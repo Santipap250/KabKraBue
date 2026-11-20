@@ -39,7 +39,7 @@ function LazyShortCard({
                 type="button"
                 onClick={() => setLoaded(true)}
                 className="group/short relative block h-full w-full overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-inset"
-                aria-label={`เล่น ${short.title}`}
+                aria-label={`Play ${short.title}`}
               >
                 <Image
                   src={thumbnailUrl}
@@ -90,6 +90,7 @@ export function FeaturedShort() {
       id="short"
       className="relative overflow-hidden border-t border-border bg-ink text-rice"
       aria-labelledby="featured-short-heading"
+      lang="en"
     >
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-paddy/20 blur-3xl" />
@@ -105,9 +106,9 @@ export function FeaturedShort() {
               The Village Diaries
             </h2>
 
-            <p className="mt-2 font-body text-lg text-gold/85 sm:text-xl">บันทึกเรื่องราวผ่านเลนส์</p>
+            <p lang="th" className="mt-2 font-body text-lg text-gold/85 sm:text-xl">บันทึกเรื่องราวผ่านเลนส์</p>
 
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
+            <p lang="th" className="mt-6 max-w-2xl text-base leading-relaxed text-rice/72 sm:text-lg lg:text-xl">
               ชมบรรยากาศของหมู่บ้านกาบกระบือผ่านวิดีโอสั้น
               แล้วเลื่อนชมบันทึกเรื่องราวจากอีกช่วงเวลาหนึ่งไปเรื่อย ๆ
             </p>
@@ -118,6 +119,7 @@ export function FeaturedShort() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="เปิดโปรไฟล์ TikTok ของ TuizFPV"
+                lang="th"
                 className="inline-flex items-center gap-2 bg-rice px-5 py-3.5 font-mono text-[11px] uppercase tracking-[0.18em] text-ink transition-colors hover:bg-gold"
               >
                 <Music2 className="h-4 w-4" strokeWidth={1.6} />

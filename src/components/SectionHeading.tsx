@@ -14,13 +14,13 @@ export function SectionHeading({ index, eyebrow, title, titleThai, align = "left
         className={`flex items-baseline gap-3 ${align === "center" ? "justify-center" : ""}`}
       >
         {index && <span className={`font-mono text-xs ${indexClassName}`}>{index}</span>}
-        <span className="eyebrow">{eyebrow}</span>
+        <span lang="en" className="eyebrow">{eyebrow}</span>
       </div>
-      <h2 className="heading-display mt-3 text-4xl text-ink sm:text-5xl lg:text-6xl">
+      <h2 lang="en" className="heading-display mt-3 text-4xl text-ink sm:text-5xl lg:text-6xl">
         {title}
       </h2>
       {titleThai && (
-        <p className="mt-2 font-body text-lg text-ink/70">{titleThai}</p>
+        <p lang="th" className="mt-2 font-body text-lg text-ink/70">{titleThai}</p>
       )}
     </div>
   );

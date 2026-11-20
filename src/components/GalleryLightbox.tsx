@@ -51,6 +51,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
           role="dialog"
           aria-modal="true"
           aria-label={image.alt}
+          lang="en"
           tabIndex={-1}
           initial={reduceMotion ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -70,7 +71,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
         >
           <div className="flex items-center justify-between px-5 py-4 sm:px-8">
             <div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-rice/70">KabKraBue Gallery</span>
+              <span lang="en" className="font-mono text-[10px] uppercase tracking-[0.22em] text-rice/70">KabKraBue Gallery</span>
               <span className="ml-3 font-mono text-xs uppercase tracking-[0.2em] text-rice/75">
                 {String(activeIndex + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
               </span>
@@ -80,17 +81,23 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
               onClick={onClose}
               data-dialog-initial-focus
               aria-label="Close gallery"
+              lang="en"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/15 text-rice transition-colors hover:border-rice/40 hover:bg-rice/10"
             >
               <X strokeWidth={1.35} />
             </button>
           </div>
 
+          <p className="sr-only" role="status" aria-live="polite" aria-atomic="true" lang="en">
+            Image {activeIndex + 1} of {images.length}: {image.alt}
+          </p>
+
           <div className="relative flex min-h-0 flex-1 items-center justify-center px-4 pb-5 sm:px-16">
             <button
               type="button"
               onClick={() => goTo(-1)}
               aria-label="Previous image"
+              lang="en"
               className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-rice/10 bg-ink/15 text-rice/70 backdrop-blur-sm transition hover:border-rice/30 hover:text-rice sm:flex"
             >
               <ChevronLeft className="h-6 w-6" strokeWidth={1.2} />
@@ -106,12 +113,13 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
               <MediaFrame
                 src={image.src}
                 alt={image.alt}
+                altLang="en"
                 aspect="aspect-auto"
                 fit="contain"
                 className="h-[74vh] w-[92vw] max-w-5xl sm:h-[78vh] sm:w-[82vw]"
                 sizes="90vw"
               />
-              <figcaption className="mt-4 max-w-2xl text-center font-body text-sm leading-relaxed text-rice/65 sm:text-base">
+              <figcaption lang={image.caption ? "th" : "en"} className="mt-4 max-w-2xl text-center font-body text-sm leading-relaxed text-rice/65 sm:text-base">
                 {image.caption ?? image.alt}
               </figcaption>
             </motion.figure>
@@ -120,6 +128,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
               type="button"
               onClick={() => goTo(1)}
               aria-label="Next image"
+              lang="en"
               className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-rice/10 bg-ink/15 text-rice/70 backdrop-blur-sm transition hover:border-rice/30 hover:text-rice sm:flex"
             >
               <ChevronRight className="h-6 w-6" strokeWidth={1.2} />
@@ -131,6 +140,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
               type="button"
               onClick={() => goTo(-1)}
               aria-label="Previous image"
+              lang="en"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/10 text-rice/80"
             >
               <ChevronLeft strokeWidth={1.4} />
@@ -139,6 +149,7 @@ export function GalleryLightbox({ images, activeIndex, onClose, onNavigate }: Ga
               type="button"
               onClick={() => goTo(1)}
               aria-label="Next image"
+              lang="en"
               className="flex h-11 w-11 items-center justify-center rounded-full border border-rice/10 text-rice/80"
             >
               <ChevronRight strokeWidth={1.4} />

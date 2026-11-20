@@ -2,6 +2,7 @@
 export interface StoryGalleryImage {
   imageId: string;
   imageAlt: string;
+  imageAltLang?: "th" | "en";
 }
 
 export interface StorySection {
@@ -12,6 +13,7 @@ export interface StorySection {
   titleThai: string;
   body: string;
   imageAlt: string;
+  imageAltLang?: "th" | "en";
   imageId: string;
   videoId?: string;
   // Optional poster used while the video loads; kept separate from the semantic/fallback image.
@@ -163,7 +165,8 @@ export const storySections: StorySection[] = [
 
 บางทีเสน่ห์ของกาบกระบือจึงไม่ได้อยู่ที่การมีอะไรให้มากที่สุด แต่อยู่ที่การมีพื้นที่ให้ผู้คนได้ใช้ชีวิตอย่างมีความหมายในแบบของตัวเอง`,
     imageAlt: "Everyday lifestyle and rural life in KabKraBue",
-  imageId: "culture-01.webp",
+    imageAltLang: "en",
+    imageId: "culture-01.webp",
     videoId: "lifestyle-section.mp4",
     posterId: "culture-01.webp",
 },

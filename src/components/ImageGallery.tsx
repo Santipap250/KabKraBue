@@ -51,13 +51,13 @@ export function ImageGallery() {
         <div>
           <div className="eyebrow flex items-center gap-2">
             <Images className="h-3.5 w-3.5" strokeWidth={1.4} />
-            <span>{filtered.length} photographs</span>
+            <span lang="en">{filtered.length} photographs</span>
           </div>
           <p className="mt-2 max-w-xl font-body text-sm leading-relaxed text-ink/70">
             ภาพของกาบกระบือจากมุมสูง ผืนนา สายน้ำ และชีวิตรอบบ้าน — แตะภาพเพื่อเปิดดูแบบเต็มจอ
           </p>
         </div>
-        <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-ink/70 sm:block">
+        <span lang="en" className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink/70">
           Tap / Swipe / Explore
         </span>
       </div>
@@ -66,12 +66,14 @@ export function ImageGallery() {
         className="flex gap-2 overflow-x-auto pb-2"
         role="group"
         aria-label="Filter gallery by category"
+        lang="en"
         style={{ scrollbarWidth: "none" }}
       >
         {categories.map((cat) => (
           <button
             key={cat.id}
             type="button"
+            lang="en"
             aria-pressed={filter === cat.id}
             onClick={() => setFilter(cat.id)}
             className={cn(
@@ -119,11 +121,13 @@ export function ImageGallery() {
                     layout,
                     isFeatured && "sm:col-span-2"
                   )}
-                  aria-label={`เปิดภาพ ${i + 1}: ${img.alt}`}
+                  lang="en"
+                  aria-label={`Open image ${i + 1}: ${img.alt}`}
                 >
                   <MediaFrame
                     src={img.src}
                     alt={img.alt}
+                    altLang="en"
                     aspect="aspect-auto"
                     sizes="(min-width: 1024px) 55vw, (min-width: 640px) 50vw, 100vw"
                     className="h-full min-h-[190px]"
@@ -140,7 +144,7 @@ export function ImageGallery() {
 
                   <div className="absolute inset-x-4 bottom-4 flex items-end justify-between gap-4">
                     <div className="max-w-[78%]">
-                      <p className="font-body text-sm leading-relaxed text-rice sm:text-[15px]">
+                      <p lang="th" className="font-body text-sm leading-relaxed text-rice sm:text-[15px]">
                         {img.caption ?? img.alt}
                       </p>
                     </div>
@@ -150,7 +154,7 @@ export function ImageGallery() {
                   </div>
 
                   <span className="absolute right-4 top-4 translate-y-2 rounded-full bg-rice px-3 py-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-ink opacity-0 shadow-lg transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-                    Open <ArrowUpRight className="ml-1 inline h-3 w-3" strokeWidth={1.5} />
+                    <span lang="en">Open</span> <ArrowUpRight className="ml-1 inline h-3 w-3" strokeWidth={1.5} />
                   </span>
                 </motion.button>
               );
