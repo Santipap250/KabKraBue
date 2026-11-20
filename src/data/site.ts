@@ -1,12 +1,18 @@
 // Central site configuration. Edit this file to change the village name,
 // navigation, social links, and default SEO metadata across the whole site.
 
+const heroSubtitleThaiLines = [
+  "หมู่บ้านริมทุ่งข้าว ที่ยังมีเรื่องราว",
+  "ให้ค้นพบในทุกย่างก้าว",
+] as const;
+
 export const siteConfig = {
   name: "KabKraBue",
   nameThai: "หมู่บ้านกาบกระบือ",
-  tagline: "Discover KabKraBue",
+  tagline: "หมู่บ้านกาบกระบือ",
   taglineThai: "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
-  heroSubtitleThai: "หมู่บ้านริมทุ่งข้าว ที่ยังมีเรื่องราวให้ค้นพบในทุกย่างก้าว",
+  heroSubtitleThai: heroSubtitleThaiLines.join(" "),
+  heroSubtitleThaiLines,
   shortDescription:
     "A village of rice terraces, river mist, and generations of stories — KabKraBue, told through its people, nature, and culture.",
   shortDescriptionThai:

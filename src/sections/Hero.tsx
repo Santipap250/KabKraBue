@@ -143,14 +143,16 @@ export function Hero() {
             <motion.div initial={motionEnabled ? { opacity: 0, scaleX: 0.4 } : false} animate={{ opacity: 1, scaleX: 1 }} transition={{ duration: motionEnabled ? 0.9 : 0, ease: [0.16, 1, 0.3, 1] }} className="w-24 origin-left">
               <TerraceDivider tone="rice" className="opacity-80" />
             </motion.div>
-            <motion.h1 initial={motionEnabled ? { opacity: 0, y: 24 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.9 : 0, delay: motionEnabled ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }} className="heading-display -mt-2 max-w-3xl text-rice">
-              <span lang="en" className="block text-3xl font-normal text-rice/80 sm:text-4xl lg:text-5xl">Discover</span>
-              <span lang="en" className="block bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl text-transparent sm:text-7xl lg:text-8xl">{siteConfig.name}</span>
+            <motion.h1 initial={motionEnabled ? { opacity: 0, y: 24 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.9 : 0, delay: motionEnabled ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }} className="heading-display mt-1 max-w-3xl text-rice">
+              <span lang="en" className="inline-block max-w-full bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl font-medium leading-[0.95] tracking-[-0.035em] text-transparent drop-shadow-[0_2px_14px_rgba(28,27,23,0.4)] sm:text-7xl lg:text-8xl">{siteConfig.name}</span>
             </motion.h1>
           </motion.div>
 
           <motion.div animate={{ x: textHidden ? "130%" : "0%", opacity: textHidden ? 0 : 1 }} transition={slideTransition}>
-            <motion.p initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.4 : 0 }} className="mt-6 max-w-xl text-lg leading-relaxed text-rice/85">{siteConfig.heroSubtitleThai}</motion.p>
+            <motion.p initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.4 : 0 }} className="mt-5 max-w-xl text-pretty text-lg leading-[1.85] tracking-[0.01em] text-rice/90 sm:mt-6 sm:text-xl">
+              <span className="block sm:inline">{siteConfig.heroSubtitleThaiLines[0]}</span>{" "}
+              <span className="block sm:inline">{siteConfig.heroSubtitleThaiLines[1]}</span>
+            </motion.p>
             <motion.div initial={motionEnabled ? { opacity: 0, y: 16 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.8 : 0, delay: motionEnabled ? 0.55 : 0 }} className="mt-9 flex flex-wrap items-center gap-4">
               <motion.a lang="en" href="#village" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/40 bg-rice px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-ink shadow-lg shadow-ink/20 transition-colors hover:border-gold hover:bg-gold">Enter the village<ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" strokeWidth={1.75} /></motion.a>
               <motion.a lang="en" href="#gallery" whileHover={motionEnabled ? { scale: 1.02 } : undefined} whileTap={motionEnabled ? { scale: 0.98 } : undefined} transition={{ duration: motionEnabled ? 0.2 : 0 }} className="group inline-flex items-center gap-2.5 border border-rice/30 px-7 py-3.5 font-mono text-xs uppercase tracking-[0.2em] text-rice backdrop-blur-sm transition-colors hover:border-rice hover:bg-rice/10"><Images className="h-3.5 w-3.5" strokeWidth={1.75} />View gallery</motion.a>
