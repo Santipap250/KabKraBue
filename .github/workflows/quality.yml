@@ -41,5 +41,11 @@ jobs:
       - name: Build root-hosted export
         run: npm run build
 
+      - name: Verify root-hosted export
+        run: npm run verify:export
+
       - name: Build GitHub Pages basePath export
         run: GITHUB_PAGES=true npm run build
+
+      - name: Verify GitHub Pages basePath export
+        run: GITHUB_PAGES=true npm run verify:export

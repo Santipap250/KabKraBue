@@ -15,7 +15,7 @@ export function Header() {
 
   return (
     <>
-      <a href="#main" className="skip-link">Skip to content</a>
+      <a href="#main" lang="en" className="skip-link">Skip to content</a>
       <header className={cn(
         "fixed inset-x-0 top-0 z-40 transition-all duration-500",
         scrolled
@@ -23,17 +23,17 @@ export function Header() {
           : "bg-gradient-to-b from-ink/70 to-transparent"
       )}>
         <div className="container-content flex h-20 items-center justify-between">
-          <a href="#top" className={cn(
+          <a href="#top" lang="en" className={cn(
             "font-display text-xl font-semibold tracking-tight transition-colors",
             scrolled ? "text-ink" : "text-rice"
           )}>
             {siteConfig.name}
-            <span className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-70">
+            <span lang="th" className="ml-2 font-mono text-[10px] font-normal uppercase tracking-[0.2em] opacity-70">
               {siteConfig.nameThai}
             </span>
           </a>
 
-          <nav aria-label="Primary" className="hidden lg:block">
+          <nav aria-label="Primary" lang="en" className="hidden lg:block">
             <ul className="flex items-center gap-8">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -54,6 +54,7 @@ export function Header() {
               scrolled ? "text-ink" : "text-rice"
             )}
             aria-label="Open menu"
+            lang="en"
             aria-expanded={menuOpen}
             aria-controls={menuOpen ? "mobile-menu" : undefined}
           >

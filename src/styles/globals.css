@@ -39,10 +39,13 @@ body {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 textarea:focus-visible,
+[contenteditable="true"]:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid theme("colors.paddy.DEFAULT");
-  outline-offset: 3px;
+  outline: 2px solid theme("colors.ink") !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 5px theme("colors.rice") !important;
   border-radius: 2px;
 }
 

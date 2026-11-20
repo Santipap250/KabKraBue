@@ -1,0 +1,394 @@
+{
+  "/images/culture-01.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-01-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-01-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-02.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-02-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-02-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-03.webp": {
+    "width": 1200,
+    "height": 675,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-03-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-03-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-04.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-04-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-04-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-05.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-05-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-05-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-06.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-06-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-06-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-07.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-07-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-07-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-08.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-08-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-08-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-09.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-09-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-09-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-10.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-10-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-10-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-11.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-11-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-11-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-12.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-12-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-12-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-13.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-13-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-13-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-14.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-14-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-14-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-15.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-15-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-15-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/culture-16.webp": {
+    "width": 1200,
+    "height": 900,
+    "sources": [
+      {
+        "src": "/images/responsive/culture-16-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/culture-16-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/gallery/gallery-01.webp": {
+    "width": 788,
+    "height": 1400,
+    "sources": [
+      {
+        "src": "/images/responsive/gallery/gallery-01-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/gallery/gallery-01-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/gallery/gallery-02.webp": {
+    "width": 788,
+    "height": 1400,
+    "sources": [
+      {
+        "src": "/images/responsive/gallery/gallery-02-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/gallery/gallery-02-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/gallery/gallery-03.webp": {
+    "width": 788,
+    "height": 1400,
+    "sources": [
+      {
+        "src": "/images/responsive/gallery/gallery-03-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/gallery/gallery-03-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/gallery/gallery-04.webp": {
+    "width": 788,
+    "height": 1400,
+    "sources": [
+      {
+        "src": "/images/responsive/gallery/gallery-04-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/gallery/gallery-04-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/gallery/gallery-05.webp": {
+    "width": 864,
+    "height": 1536,
+    "sources": [
+      {
+        "src": "/images/responsive/gallery/gallery-05-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/gallery/gallery-05-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/places/temple-01.jpg": {
+    "width": 1024,
+    "height": 768,
+    "sources": [
+      {
+        "src": "/images/responsive/places/temple-01-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/places/temple-01-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/places/viewpoint-01.jpg": {
+    "width": 1024,
+    "height": 768,
+    "sources": [
+      {
+        "src": "/images/responsive/places/viewpoint-01-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/places/viewpoint-01-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/story-02-poster.jpg": {
+    "width": 576,
+    "height": 1024,
+    "sources": [
+      {
+        "src": "/images/responsive/story-02-poster-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/story-02-poster-576.webp",
+        "width": 576
+      }
+    ]
+  },
+  "/images/village-hero-poster.jpg": {
+    "width": 720,
+    "height": 1280,
+    "sources": [
+      {
+        "src": "/images/responsive/village-hero-poster-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/village-hero-poster-720.webp",
+        "width": 720
+      }
+    ]
+  },
+  "/images/village-story-01.jpg": {
+    "width": 864,
+    "height": 1536,
+    "sources": [
+      {
+        "src": "/images/responsive/village-story-01-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/village-story-01-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/village-story-02.webp": {
+    "width": 1200,
+    "height": 2133,
+    "sources": [
+      {
+        "src": "/images/responsive/village-story-02-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/village-story-02-768.webp",
+        "width": 768
+      }
+    ]
+  },
+  "/images/village-story-03.webp": {
+    "width": 1200,
+    "height": 2133,
+    "sources": [
+      {
+        "src": "/images/responsive/village-story-03-480.webp",
+        "width": 480
+      },
+      {
+        "src": "/images/responsive/village-story-03-768.webp",
+        "width": 768
+      }
+    ]
+  }
+}

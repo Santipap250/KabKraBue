@@ -31,7 +31,7 @@ export function VideoShowcase() {
   if (playableVideos.length === 0) return null;
 
   return (
-    <div>
+    <div lang="en">
       <div className="grid gap-6 sm:grid-cols-2">
         {playableVideos.map((video) => (
           <button
@@ -40,8 +40,9 @@ export function VideoShowcase() {
             onClick={() => setActive(video)}
             className="group relative block overflow-hidden text-left"
             aria-label={`Play video: ${video.title}`}
+            lang="en"
           >
-            <MediaFrame src={video.thumbnail} alt={video.title} aspect="aspect-video" />
+            <MediaFrame src={video.thumbnail} alt={video.title} altLang="en" aspect="aspect-video" />
             <div className="absolute inset-0 flex items-center justify-center bg-ink/25 transition-colors group-hover:bg-ink/40">
               <span className="flex h-16 w-16 items-center justify-center rounded-full bg-rice/90 text-ink transition-transform group-hover:scale-110">
                 <Play className="ml-1 h-6 w-6" fill="currentColor" strokeWidth={0} />
@@ -60,7 +61,8 @@ export function VideoShowcase() {
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label={active.title}
+              aria-label={active.title}
+              lang="en"
             tabIndex={-1}
             initial={reduceMotion ? false : { opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -76,8 +78,9 @@ export function VideoShowcase() {
                 type="button"
                 onClick={closeDialog}
                 aria-label="Close video"
+                lang="en"
                 data-dialog-initial-focus
-                className="absolute -top-12 right-0 flex h-10 w-10 items-center justify-center text-rice/80 hover:text-rice"
+                className="absolute -top-12 right-0 flex h-11 w-11 items-center justify-center text-rice/80 hover:text-rice"
               >
                 <X strokeWidth={1.5} />
               </button>
@@ -86,14 +89,15 @@ export function VideoShowcase() {
                   src={embedSrc(active)}
                   controls
                   autoPlay
+                  lang="en"
                   className="h-full w-full bg-black"
                 >
-                  <track kind="captions" />
                 </video>
               ) : (
                 <iframe
                   src={embedSrc(active)}
                   title={active.title}
+                  lang="en"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   className="h-full w-full"

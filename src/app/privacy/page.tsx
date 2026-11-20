@@ -32,17 +32,17 @@ export default function PrivacyPage() {
   return (
     <main className="min-h-screen bg-rice text-ink">
       <div className="container-content py-12 sm:py-16">
-        <Link href="/" className="font-mono text-xs uppercase tracking-[0.18em] text-paddy hover:text-clay">
+        <Link href="/" lang="en" className="inline-flex min-h-11 items-center font-mono text-xs uppercase tracking-[0.18em] text-paddy hover:text-clay">
           ← Back to KabKraBue
         </Link>
 
         <div className="mt-12 max-w-3xl">
           <div className="flex items-baseline gap-3">
-            <span className="font-mono text-xs text-clay">PRIVACY</span>
-            <span className="eyebrow">KabKraBue</span>
+            <span lang="en" className="font-mono text-xs text-clay">PRIVACY</span>
+            <span lang="en" className="eyebrow">KabKraBue</span>
           </div>
 
-          <h1 className="heading-display mt-3 text-5xl sm:text-6xl">Privacy</h1>
+          <h1 lang="en" className="heading-display mt-3 text-5xl sm:text-6xl">Privacy</h1>
           <p className="mt-3 font-body text-lg text-ink/70">ข้อมูลความเป็นส่วนตัว</p>
 
           <div className="mt-10"><TerraceDivider className="opacity-70" /></div>
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
             </section>
           </div>
 
-          <p className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/70">
+          <p lang="en" className="mt-12 border-t border-ink/10 pt-6 font-mono text-[10px] uppercase tracking-[0.16em] text-ink/70">
             {siteConfig.name} · {process.env.NEXT_PUBLIC_BUILD_YEAR ?? "2026"}
           </p>
         </div>

@@ -29,6 +29,9 @@ npm run lint
 npm run typecheck
 npm run security
 npm run build
+npm run verify:export
+GITHUB_PAGES=true npm run build
+GITHUB_PAGES=true npm run verify:export
 ```
 
 ไฟล์ static จะอยู่ใน `out/`. สำหรับดู export ในเครื่องให้ใช้ static server เช่น `npx --yes serve out` แทน `next start` ซึ่งไม่ใช่คำสั่ง deploy สำหรับ static export
@@ -50,7 +53,7 @@ npm run build
 
 ### เพิ่มภาพ
 
-เก็บไฟล์ไว้ใน `public/images/` หรือโฟลเดอร์ย่อยที่เหมาะสม ใช้ภาพขนาดพอดีกับตำแหน่ง, WebP/JPEG ตามความเหมาะสม, ระบุ alt ที่บอกเนื้อหาจริง และเพิ่ม caption/category ใน data layer ที่เกี่ยวข้อง ตรวจ path และ preview ทั้ง desktop/mobile ก่อน commit
+เก็บไฟล์ไว้ใน `public/images/` หรือโฟลเดอร์ย่อยที่เหมาะสม ใช้ภาพขนาดพอดีกับตำแหน่ง, WebP/JPEG ตามความเหมาะสม, ระบุ alt ที่บอกเนื้อหาจริง และเพิ่ม caption/category ใน data layer ที่เกี่ยวข้อง ภาพใน `MediaFrame`/`ResponsiveImage` ใช้ WebP candidates ที่ target 480/768px (หรือ native width เมื่อภาพต้นฉบับเล็กกว่า) เฉพาะ viewport ไม่เกิน 767px; tablet/desktop ใช้ไฟล์ต้นฉบับเต็มความละเอียด ดู [image README](public/images/README.md) สำหรับ Pillow แบบ optional และคำสั่ง `npm run images:generate` ตรวจ path และ preview ทั้ง desktop/mobile ก่อน commit
 
 ### เพิ่มวิดีโอ
 
@@ -74,7 +77,7 @@ Tokens/typography อยู่ใน `tailwind.config.ts` และ `src/styles/
 
 ## Quality checks / ข้อควรทราบ
 
-ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run build` และ `GITHUB_PAGES=true npm run build`; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline และ mobile widths. GitHub Actions รัน checks ชุดนี้บน PR ที่ target `main`; การอัปเดต feature branch ที่มี PR จะรันทดสอบผ่าน `pull_request` event โดยไม่เปิด push workflow ซ้ำ. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
+ก่อน merge/deploy ให้รัน `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, root build+`npm run verify:export` และ `GITHUB_PAGES=true` build+verifier; ทดสอบ `/`, `/privacy/`, custom `404.html`, basePath, media, gallery/lightbox, navigation, PWA/offline และ short/mobile widths. GitHub Actions รัน checks ชุดนี้บน PR ที่ target `main`; การอัปเดต feature branch ที่มี PR จะรันทดสอบผ่าน `pull_request` event โดยไม่เปิด push workflow ซ้ำ. axe `incomplete` บน gradient/video ต้องอ่านว่าเป็น manual review ไม่ใช่ pass/violation. ดูผลจริงใน [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md); ดูภาพ Before/After ใน [`docs/SCREENSHOTS.md`](docs/SCREENSHOTS.md).
 
 หลังเพิ่ม scoped override สำหรับ `minimatch` ใน TypeScript-ESLint tree, `npm ci` และ `npm run security` ผ่านโดยไม่พบ vulnerabilities. npm ยังเตือนว่า `eslint@9.39.5` ไม่ได้รับการ support แล้ว; การอัปเกรด ESLint/Next ควรวางแผนแยกโดยไม่ฝืน peer range ของ `eslint-config-next`.
 

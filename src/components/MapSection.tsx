@@ -8,6 +8,7 @@ export function MapSection() {
     <div className="relative overflow-hidden rounded-2xl border border-border shadow-xl shadow-ink/5 sm:rounded-3xl">
       <iframe
         title="Map of KabKraBue village"
+        lang="en"
         src={getEmbedUrl(villageCoordinates)}
         className="h-[420px] w-full grayscale-[15%] sm:h-[480px]"
         loading="lazy"
@@ -17,6 +18,7 @@ export function MapSection() {
         href={getDirectionsUrl(villageCoordinates)}
         target="_blank"
         rel="noopener noreferrer"
+        lang="en"
         className="absolute bottom-5 left-5 inline-flex min-h-11 items-center gap-2 bg-ink px-5 py-3 font-mono text-xs uppercase tracking-[0.15em] text-rice transition-colors hover:bg-paddy"
       >
         <Navigation className="h-3.5 w-3.5" strokeWidth={1.5} />

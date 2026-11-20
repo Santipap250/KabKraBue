@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "images:generate": "python3 scripts/generate-responsive-images.py",
+    "verify:export": "node scripts/verify-static-export.mjs",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "security": "npm audit --audit-level=moderate"

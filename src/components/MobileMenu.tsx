@@ -23,17 +23,17 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div ref={dialogRef} id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation" tabIndex={-1}
+        <motion.div ref={dialogRef} id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site navigation" lang="en" tabIndex={-1}
           initial={reduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={reduceMotion ? undefined : { opacity: 0 }}
-          transition={{ duration: reduceMotion ? 0 : 0.25 }} className="fixed inset-0 z-50 flex flex-col bg-ink text-rice lg:hidden">
-          <div className="container-content flex h-20 items-center justify-between">
+          transition={{ duration: reduceMotion ? 0 : 0.25 }} className="fixed inset-0 z-50 flex flex-col overflow-y-auto overscroll-contain bg-ink pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)] text-rice lg:hidden">
+          <div className="container-content flex h-20 shrink-0 items-center justify-between">
             <span className="font-display text-xl font-semibold">{siteConfig.name}</span>
             <button type="button" onClick={onClose} data-dialog-initial-focus className="flex h-11 w-11 items-center justify-center" aria-label="Close menu">
               <X strokeWidth={1.5} />
             </button>
           </div>
 
-          <nav aria-label="Primary" className="container-content mt-6 flex-1">
+          <nav aria-label="Primary" lang="en" className="container-content mt-6 flex-1">
             <ul className="flex flex-col gap-1">
               {navItems.map((item, i) => (
                 <motion.li key={item.href} initial={reduceMotion ? false : { opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
@@ -44,9 +44,9 @@ export function MobileMenu({ open, onClose }: MobileMenuProps) {
             </ul>
           </nav>
 
-          <div className="container-content mb-10 space-y-5">
+          <div className="container-content mb-6 shrink-0 space-y-5">
             <InstallAppButton className="w-full justify-center border-rice/20 bg-rice/5" />
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-rice/50">
+            <p lang="th" className="font-mono text-xs uppercase tracking-[0.2em] text-rice/50">
               {siteConfig.nameThai} — {siteConfig.taglineThai}
             </p>
           </div>

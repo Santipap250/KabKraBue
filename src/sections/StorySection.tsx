@@ -31,10 +31,12 @@ function VideoFrameShell({
   variant,
   children,
   alt,
+  altLang,
 }: {
   variant: VideoVariant;
   children: React.ReactNode;
   alt: string;
+  altLang: "th" | "en";
 }) {
   const shell =
     variant === "nature"
@@ -44,7 +46,7 @@ function VideoFrameShell({
         : "relative overflow-hidden rounded-[2.25rem] border border-ink/10 bg-rice/80 p-3 shadow-[0_30px_80px_-35px_rgba(31,33,27,0.45)] sm:p-4";
 
   if (variant === "nature") {
-    return <div className={shell} role="group" aria-label={`${alt} — cinematic frame`}>{children}</div>;
+    return <div className={shell} role="group" aria-label={alt} lang={altLang}>{children}</div>;
   }
 
   const label =
@@ -62,18 +64,18 @@ function VideoFrameShell({
         : ["A place we remember", "ถนน ผืนนา ท้องฟ้า และภาพที่ยังอยู่ในความทรงจำ"];
 
   return (
-    <div className={shell} role="group" aria-label={`${alt} — cinematic frame`}>
+    <div className={shell} role="group" aria-label={alt} lang={altLang}>
       <div className={`pointer-events-none absolute inset-2 rounded-[1.8rem] border sm:inset-3 ${accent}`} aria-hidden="true" />
       <div className="relative overflow-hidden rounded-[1.65rem] bg-ink shadow-[0_20px_45px_-25px_rgba(31,33,27,0.55)] sm:rounded-[1.8rem]">
         {children}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink/55 via-transparent to-ink/75" aria-hidden="true" />
         <div className="pointer-events-none absolute inset-x-5 top-5 flex items-center justify-between text-rice/85 sm:inset-x-6 sm:top-6">
-          <span className="font-mono text-[9px] uppercase tracking-[0.24em]">{label}</span>
+          <span lang="en" className="font-mono text-[9px] uppercase tracking-[0.24em]">{label}</span>
           <span className="h-px w-10 bg-rice/45 sm:w-14" aria-hidden="true" />
         </div>
         <div className="pointer-events-none absolute inset-x-5 bottom-5 sm:inset-x-6 sm:bottom-6">
-          <p className="font-mono text-[8px] uppercase tracking-[0.22em] text-rice/80">{caption[0]}</p>
-          <p className="mt-1 font-body text-sm text-rice/95">{caption[1]}</p>
+          <p lang="en" className="font-mono text-[8px] uppercase tracking-[0.22em] text-rice/80">{caption[0]}</p>
+          <p lang="th" className="mt-1 font-body text-sm text-rice/95">{caption[1]}</p>
         </div>
       </div>
     </div>
@@ -83,6 +85,7 @@ function VideoFrameShell({
 function LazyStoryVideo({
   src,
   alt,
+  altLang,
   fallbackSrc,
   posterSrc,
   variant = "default",
@@ -90,6 +93,7 @@ function LazyStoryVideo({
 }: {
   src: string;
   alt: string;
+  altLang: "th" | "en";
   fallbackSrc: string;
   posterSrc?: string;
   className?: string;
@@ -134,6 +138,7 @@ function LazyStoryVideo({
       <MediaFrame
         src={fallbackSrc}
         alt={alt}
+        altLang={altLang}
         aspect={variant === "nature" ? "aspect-[40/17]" : "aspect-[4/5]"}
       />
     );
@@ -161,6 +166,7 @@ function LazyStoryVideo({
         preload="none"
         poster={withBasePath(posterSrc ?? fallbackSrc)}
         aria-label={alt}
+        lang={altLang}
         onError={() => setFailed(true)}
       >
         <source src={src} type="video/mp4" />
@@ -177,7 +183,7 @@ function LazyStoryVideo({
         {muted ? <VolumeX className="h-4 w-4" strokeWidth={1.7} /> : <Volume2 className="h-4 w-4" strokeWidth={1.7} />}
       </button>
 
-      <span className="absolute bottom-4 left-4 z-20 rounded-full border border-rice/20 bg-ink/75 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.18em] text-rice/75 backdrop-blur-md">
+      <span lang="en" className="absolute bottom-4 left-4 z-20 rounded-full border border-rice/20 bg-ink/75 px-3 py-1 font-mono text-[8px] uppercase tracking-[0.18em] text-rice/75 backdrop-blur-md">
         {muted ? "Muted · Tap sound" : "Sound on"}
       </span>
     </div>
@@ -185,7 +191,7 @@ function LazyStoryVideo({
 
   if (variant !== "default") {
     return (
-      <VideoFrameShell variant={variant} alt={alt}>
+      <VideoFrameShell variant={variant} alt={alt} altLang={altLang}>
         <div
           className={cn(
             "relative overflow-hidden",
@@ -206,7 +212,7 @@ function LazyStoryVideo({
 }
 
 function StoryCarousel({ data }: { data: StorySectionData }) {
-  const slides = [{ imageId: data.imageId, imageAlt: data.imageAlt }, ...(data.gallery ?? [])];
+  const slides = [{ imageId: data.imageId, imageAlt: data.imageAlt, imageAltLang: data.imageAltLang }, ...(data.gallery ?? [])];
   const [index, setIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -222,8 +228,9 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
     <div
       className="group/carousel relative aspect-[4/5] overflow-hidden bg-mist"
       role="region"
-      aria-roledescription="carousel"
-      aria-label={`${data.eyebrow} — ${slides.length} ภาพ`}
+      aria-roledescription="ภาพสไลด์"
+      aria-label={`ภาพประกอบ: ${data.titleThai}`}
+      lang="th"
       onTouchStart={(e) => { touchStartX.current = e.touches[0].clientX; }}
       onTouchEnd={(e) => {
         if (touchStartX.current === null) return;
@@ -242,7 +249,7 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
           transition={{ duration: reduceMotion ? 0 : 0.22, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0"
         >
-          <MediaFrame src={`/images/${slides[index].imageId}`} alt={slides[index].imageAlt} aspect="aspect-auto" className="h-full" />
+          <MediaFrame src={`/images/${slides[index].imageId}`} alt={slides[index].imageAlt} altLang={slides[index].imageAltLang ?? "th"} aspect="aspect-auto" className="h-full" />
         </motion.div>
       </AnimatePresence>
 
@@ -259,9 +266,10 @@ function StoryCarousel({ data }: { data: StorySectionData }) {
             className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-rice/20 bg-ink/75 px-2.5 py-1 font-mono text-[9px] tracking-[0.18em] text-rice/90 backdrop-blur-md sm:right-5 sm:top-5"
             role="status"
             aria-live="polite"
-            aria-label={`ภาพที่ ${index + 1} จาก ${slides.length}`}
+            lang="th"
           >
-            {index + 1} / {slides.length}
+            <span aria-hidden="true">{index + 1} / {slides.length}</span>
+            <span className="sr-only">ภาพที่ {index + 1} จาก {slides.length}: {slides[index].imageAlt}</span>
           </div>
 
           <div className="absolute inset-x-0 bottom-1 z-10 flex justify-center gap-0.5">
@@ -286,6 +294,7 @@ const VIDEO_FALLBACKS: Record<string, string> = {
 
 function StoryMedia({ data }: { data: StorySectionData }) {
   const reduceMotion = useReducedMotionPreference();
+  const altLang = data.imageAltLang ?? "th";
   const fallbackSrc = VIDEO_FALLBACKS[data.id] ?? "/images/og-cover.jpg";
   const posterSrc = data.posterId ? `/images/${data.posterId}` : fallbackSrc;
 
@@ -301,6 +310,7 @@ function StoryMedia({ data }: { data: StorySectionData }) {
         <LazyStoryVideo
           src={withBasePath(`/videos/${data.videoId}`)}
           alt={data.imageAlt}
+          altLang={altLang}
           fallbackSrc={fallbackSrc}
           variant={variant}
         />
@@ -317,11 +327,11 @@ function StoryMedia({ data }: { data: StorySectionData }) {
       data.id === "story" ? "story" :
       data.id === "people" ? "people" :
       data.id === "nature" ? "nature" : "default";
-    return <LazyStoryVideo src={withBasePath(`/videos/${data.videoId}`)} alt={data.imageAlt} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
+    return <LazyStoryVideo src={withBasePath(`/videos/${data.videoId}`)} alt={data.imageAlt} altLang={altLang} fallbackSrc={fallbackSrc} posterSrc={posterSrc} variant={variant} />;
   }
 
   if (data.gallery?.length) return <StoryCarousel data={data} />;
-  return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} aspect="aspect-[4/5]" />;
+  return <MediaFrame src={`/images/${data.imageId}`} alt={data.imageAlt} altLang={altLang} aspect="aspect-[4/5]" />;
 }
 
 function StoryBody({ id, body }: { id: string; body: string }) {
@@ -380,9 +390,9 @@ export function StorySection({ data, reverse = false }: StorySectionProps) {
           >
             <div className="flex items-baseline gap-3">
               <span className="font-mono text-xs text-clay">{data.index}</span>
-              <span className="eyebrow">{data.eyebrow}</span>
+              <span lang="en" className="eyebrow">{data.eyebrow}</span>
             </div>
-            <h2 className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">{data.title}</h2>
+            <h2 lang="en" className="heading-display mt-3 max-w-2xl text-4xl text-ink sm:text-5xl">{data.title}</h2>
             <p className="story-title-thai mt-3 max-w-xl font-body">{data.titleThai}</p>
             {isNature && <div className="mt-6 h-px w-20 bg-clay/60" aria-hidden="true" />}
             <StoryBody id={data.id} body={data.body} />

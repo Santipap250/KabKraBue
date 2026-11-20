@@ -1,36 +1,47 @@
-# KabKraBue — Post-merge Status Documentation Plan
+# KabKraBue — Comprehensive Quality Pass Plan
 
-## Scope and constraints
+## Current scope and constraints
 
-Current `main` is `b0a2ade1fa5d04c03253eb55fc72fb707137e36e`, the owner-merged PR #5 commit. This branch, `manus/kabkrabue-postmerge-status`, starts from that exact SHA and changes documentation only. Preserve the application's static export, Vercel compatibility, root/`/KabKraBue/` support, established design/palette, village content and original media. Do not make application changes, push directly to `main`, merge a PR, promote a deployment or alter Production.
+- Integration base: `origin/main` at `bfdcfa7a51f3c8f0d23772d467b7ff9eb7b4d787`; main was updated after this pass was first committed, so the unpushed feature branch was rebased and its Hero reconciliation preserves the latest `NewYearClock` component/design.
+- Working branch: `manus/kabkrabue-full-quality-pass`. Deliver through a feature branch and pull request only; do not push directly to `main`, merge, promote, or modify Production.
+- Goal: resolve source-confirmed accessibility, image-delivery, and not-found metadata defects; reduce responsive edge-case risk; strengthen static-export checks; record remaining items that require owner, hosting, device, or screen-reader evidence.
+- Preserve the actual village text, contact and location data, social links, all original image/video files, route/anchor IDs, Thai/English copy, current page structure, PWA scope, and existing accessibility wins.
+- No production deployment or live-host verification is included in this pass. Unverified real-world values and hosting behavior must not be guessed.
 
-PR #5 was merged by repository owner `Santipap250` at `2026-11-12T10:34:41Z`; GitHub records Production deployment `7734790604` as successful. That merge/deployment was not initiated by Manus. Current public alias endpoint checks were read-only and returned HTTP 200 for Home, Privacy, `sw.js`, and the manifest.
+## Design read and decisions
 
-## Current implementation approach
+- **Artifact/audience:** bilingual editorial village website for visitors on mobile and desktop, including keyboard and assistive-technology users.
+- **Visual language/mode:** Quiet Luxury × Cinematic Editorial × Thai Village Heritage; Redesign · Preserve.
+- **Five dials:** visual variance 1/10; motion intensity 3/10; information density 3/10; asset dependence 9/10; brand fidelity 10/10.
+- **Positioning:** Hero is the cinematic entry; most visits are mobile at close viewing distance; visual temperature remains warm, grounded, and unhurried; layouts must expand rather than clip on short screens.
+- **Design system:** retain rice/ink/paddy/clay/gold/mist tokens; Fraunces display, IBM Plex Sans Thai body, and IBM Plex Mono metadata; retain current spacing, radii, shadows, terrace-line motif, media crops, countdown, and restrained motion. Add no new hue, decorative content, or fabricated village claim.
+- **Interaction:** preserve navigation, gallery/filter/lightbox, story carousel, install help, map, privacy, and service-worker behavior. Improve language metadata and focus visibility without changing the visible copy.
 
-1. Reconcile `TODO.md`, `docs/PROJECT_AUDIT.md`, and this plan with current `main`, PR #5's merge, the final PR-only CI run, and current Production evidence.
-2. Update the README's CI note to specify that pull requests targeting `main` run the checks and branch updates on an open PR use the PR workflow; the redundant feature-branch push trigger was removed.
-3. Preserve distinction between completed automated checks and remaining manual work: gradient contrast sampling, Story-video audio/caption review, screen-reader/real-device checks, Lighthouse/field data, and toolchain lifecycle follow-ups.
-4. Commit and deliver these documentation-only corrections through a separate review-only PR. Keep `main` and Production untouched; do not merge or promote.
+## Implementation approach
+
+1. Add `lang` attributes to existing English UI/content segments while keeping Thai as the document language and preserving every visible phrase.
+2. Replace the one-color global focus outline with a high-contrast dual-color indicator that remains visible on both light and dark surfaces.
+3. Keep canonical and Open Graph URLs route-specific; ensure the static not-found document does not identify itself as the home page and is not indexable.
+4. Add static-host-compatible responsive WebP image candidates for local editorial photos. Preserve every original, never crop or upscale, keep a full-resolution fallback, and ensure URLs work at root and `/KabKraBue/`.
+5. Repair only evidenced short-viewport layout risks (Hero and mobile menu) with flow/scroll behavior that leaves all primary controls reachable; add a subtle mobile gallery-filter affordance if it remains consistent with the current system.
+6. Add deterministic post-build assertions for required static-export routes and local asset/basePath references in both CI build modes.
+7. Update README, TODO, and audit records to distinguish source-confirmed fixes from items requiring owner or live-device evidence.
 
 ## Project structure
 
-- `src/app/`: static App Router pages, metadata, robots and sitemap.
-- `src/components/`: navigation, Gallery/lightbox, media, PWA, map, shared UI and Footer.
-- `src/sections/`: Hero and editorial village content.
-- `src/data/`: site configuration and village/gallery/explore/short/video data.
-- `src/hooks/`, `src/lib/`: interaction hooks and shared utilities.
-- `src/styles/`: global design tokens and styles.
-- `public/images/`, `public/videos/`, `public/icons/`, `public/sw.js`: static media and PWA worker.
-- `docs/`: audit, QA and supporting documentation.
+- `src/app/`: Home/Privacy/not-found pages, metadata, manifest, sitemap, and robots.
+- `src/components/`: navigation, gallery/lightbox, media, PWA/install, map, and shared UI.
+- `src/sections/`: Hero and editorial village sections.
+- `src/data/`: site, village, gallery, explore, shorts, videos, and event content.
+- `src/hooks/`, `src/lib/`: interaction hooks, path helpers, and shared logic.
+- `src/styles/`: local fonts, design tokens, and global styles.
+- `public/images/`, `public/videos/`, `public/icons/`, `public/sw.js`: original visual media, icons, and service worker.
+- `.github/workflows/`, `scripts/`, and `docs/`: CI, deterministic image/export utilities, and audit/QA records.
 
-## Design direction (preserve existing)
+## Boundaries requiring external confirmation
 
-**Quiet Luxury × Cinematic Editorial × Thai Village Heritage.** Preserve the rice/ink/paddy/clay palette and terrace-line motif, with gold used sparingly. Retain the editorial, image-led composition, responsive spacing, restrained motion, legible Thai body text, and bilingual hierarchy. Display typography uses Fraunces; Thai body text uses IBM Plex Sans Thai; metadata uses IBM Plex Mono. Keep the village voice specific, warm and grounded; add no fabricated history, culture or location claim.
-
-## Historical baselines
-
-- PR #1 started from `5a7c5058d7535327585f5420d9000a35bee05418` and delivered the initial application upgrade.
-- PR #3 merged as `72583c51e026becffe8525d17926d9939e738b06`; its accessibility/PWA/CI polish and targeted browser checks passed.
-- PR #4 merged as `662d0e95bf599228c851eb08422a0e26b34cf98f`; it bounded dynamic Service Worker cache, corrected ScrollToTop reduced-motion behavior, and fixed a verified Thai typo.
-- PR #5 merged as `b0a2ade1fa5d04c03253eb55fc72fb707137e36e`; it fixed four axe-confirmed contrast nodes and removed duplicate feature-push CI runs. Its final PR-only quality run passed.
+- Do not alter village coordinates or address until a village representative confirms them.
+- Do not remove/archive `public/videos/nature-section.mp4` until direct-URL and external-consumer use is ruled out; preserve both original and optimized clips.
+- Do not claim or change deployed security headers without confirming the serving host and its policy.
+- Do not broaden the promised offline experience or change worker precache semantics without browser/profile testing and an agreed support target.
+- Source inspection does not establish screen-reader, physical-device, visual-contrast-on-gradients, Lighthouse, field-data, or production results.
