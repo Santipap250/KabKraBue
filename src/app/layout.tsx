@@ -29,8 +29,11 @@ export const metadata: Metadata = {
     images: ["/images/og-cover.jpg"],
   },
   icons: {
-    icon: withBasePath("/favicon/favicon.svg"),
-    apple: withBasePath("/favicon/apple-touch-icon.png"),
+    icon: [
+      { url: withBasePath("/favicon/kabkrabue-celestial.svg"), type: "image/svg+xml" },
+      { url: withBasePath("/icons/icon-192.png"), type: "image/png", sizes: "192x192" },
+    ],
+    apple: [{ url: withBasePath("/icons/icon-180.png"), type: "image/png", sizes: "180x180" }],
   },
   manifest: withBasePath("/manifest.webmanifest"),
   appleWebApp: {

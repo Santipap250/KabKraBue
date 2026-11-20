@@ -27,7 +27,9 @@ export function Header() {
           <a href="#top" className="inline-flex shrink-0 items-center rounded-md">
             <BrandLogo
               priority
-              className="h-10 w-auto max-w-[160px] rounded-md border border-gold/25 object-contain shadow-sm sm:h-12 sm:max-w-[190px] lg:h-14 lg:max-w-[210px]"
+              tone={scrolled ? "dark" : "light"}
+              size="header"
+              className="max-w-[188px] sm:max-w-[205px]"
             />
           </a>
 

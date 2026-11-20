@@ -1,17 +1,27 @@
 # KabKraBue — Audit and Remediation Report
 
-## Current status (checked 2026-11-20)
+## Celestial Identity integration — current review (checked 2026-11-20)
 
-- Base branch at integration: `origin/main` at `bfdcfa7a51f3c8f0d23772d467b7ff9eb7b4d787`, updated after this pass was first committed. The latest main changes split the countdown into `NewYearClock`; this branch was rebased and preserves that component/design while restoring the reviewed responsive Hero poster and accessibility changes.
-- This quality pass is isolated on feature branch `manus/kabkrabue-full-quality-pass`. Delivery follows feature branch → review PR; no direct push to `main`, merge, deployment, or Production changes are authorized or performed.
-- The work was locally typechecked, linted, security-audited, built in root and GitHub Pages modes, and exercised in local Chromium. GitHub Actions is still the required PR gate; local evidence does not substitute for it.
-- Production status and live hosting response headers were not checked during this pass. No claims about current live Production state are made here.
+- Latest integration base: `origin/main` SHA `4fd6bb489069b9fc766ad80d21d9aa595a5213f`; implementation is isolated on `manus/kabkrabue-celestial-signature`. No changes were made directly to `main`.
+- Replaced the compact New Year clock with an explicit `Asia/Bangkok` Celestial Timepiece, pure timezone-aware calculations, bilingual Thai Buddhist Era/English Gregorian dates, next-New-Year countdown/year progress, accessible interaction, and motion/data-saver handling. Applied the supplied SVG/brand assets to site and PWA identity and incremented the app-shell cache to `kabkrabue-v7`.
+- Clean-install checks passed: `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build/export verifier, and GitHub Pages build/export verifier. npm warns that ESLint 9.39.5 is deprecated/unsupported.
+- Chromium checks passed on root and `/KabKraBue/` at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, 1440×900, and short 360×560/375×560 layouts: no tested overflow/overlap, broken images, console errors, or page errors. Hero video remains present.
+- Preservation smoke checks: Gallery displays 14 images, Culture filters to 9, lightbox next/Escape works; Shorts has 3 cards and creates its YouTube iframe only after click. No changes to `src/data`, `public/images`, or `public/videos`.
+- PWA offline Home/Privacy and bilingual clock/date, year boundary, Reduced Motion, Data Saver, and keyboard/touch checks passed in browser. axe found 0 violations on Home and Privacy. Home still has incomplete checks: color-contrast 85 nodes, frame-tested 1, video-caption 5; these are manual review items, not passes or violations. Privacy has 0 incomplete checks.
+- Unthrottled local Chromium snapshot: LCP 324 ms (text paragraph candidate), CLS 0.00872. This is not Lighthouse, field data, or a real-device measurement. Screen-reader, physical-device, manual contrast/caption review, and Lighthouse/field checks remain unverified.
+- Mobile and desktop Before/After captures are indexed in `docs/SCREENSHOTS.md`. PR/CI and Vercel Preview must be reported from the actual latest PR state; no merge, Production deploy, or promotion is authorized or performed.
 
-## Scope and preservation contract
+## Previous quality pass — historical status (checked 2026-11-20)
+
+- Its integration base was `origin/main` at `bfdcfa7a51f3c8f0d23772d467b7ff9eb7b4d787`; that pass used feature branch `manus/kabkrabue-full-quality-pass` and preserved the then-current `NewYearClock` while restoring responsive Hero poster and accessibility changes.
+- Its local checks and screenshots below are historical evidence for that earlier branch, not substitutes for the current Celestial branch checks or PR gates.
+- Production status and live hosting response headers were not checked in that earlier pass.
+
+## Prior-pass scope and preservation contract
 
 The pass addresses source-confirmed accessibility/language, focus visibility, responsive media delivery, short-viewport reachability, route metadata, and static-export verification. It preserves the existing quiet-luxury/cinematic editorial direction; village wording, contact/location data, routes/anchors, social links, original images/videos, service-worker semantics, countdown, and current section order. No new runtime dependency was added. Original image binaries and `public/videos/nature-section.mp4` remain unchanged.
 
-## Findings and remediation
+## Prior-pass findings and remediation
 
 ### Accessibility and bilingual content
 
@@ -34,7 +44,7 @@ The pass addresses source-confirmed accessibility/language, focus visibility, re
 - Place JSON-LD is scoped to the Home route.
 - Added a deterministic verifier for Home/Privacy/404, manifest, sitemap, robots, local responsive media, and base-path references. Both root and `/KabKraBue/` exports passed with seven route/PWA outputs and 56 responsive candidates.
 
-## Validation evidence
+## Prior-pass validation evidence
 
 | Check | Result |
 |---|---|

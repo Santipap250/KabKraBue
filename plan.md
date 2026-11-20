@@ -45,3 +45,36 @@
 - Do not claim or change deployed security headers without confirming the serving host and its policy.
 - Do not broaden the promised offline experience or change worker precache semantics without browser/profile testing and an agreed support target.
 - Source inspection does not establish screen-reader, physical-device, visual-contrast-on-gradients, Lighthouse, field-data, or production results.
+
+
+## Follow-on task — Celestial Timepiece and signature identity (2026-11-20)
+
+### Current base and constraints
+
+- The latest inspected `origin/main` is `4fd6bb489069b9fc766ad80d21d9aa595a5213f5` (merge of PR #11, which already includes the preceding logo refresh). The supplied ZIP is older than this live repository and is used as source material, not as a full-project replacement.
+- Work is isolated on `manus/kabkrabue-celestial-signature`, based on that SHA. Do not commit to `main`, merge, change domains, or promote/replace Production.
+- The current `Hero.tsx`, its responsive poster/video fallback, reduced-motion/data-saver gating, site configuration, editorial content, routes, PWA/offline worker behavior, and accessibility improvements are protected. Reconcile only the bounded clock/brand surfaces.
+- Do not change community copy, address, coordinates, contact details, social links, story/gallery/shorts data, source photos/videos, site palette, SEO intent, static export, Vercel root hosting, or `/KabKraBue/` basePath.
+
+### Design and implementation decisions
+
+- Mode: **Extension + Redesign · Preserve**. The supplied celestial identity defines the requested look; the existing Quiet Luxury × Cinematic Editorial × Thai Village Heritage system remains the site-wide language. Keep the clock visually compact and subordinate to the village Hero.
+- Retain the local Fraunces, IBM Plex Sans Thai, and IBM Plex Mono fonts. Use the supplied SVG mark as an actual image asset and keep both wordmark lines as selectable HTML text. Do not add a network font request or runtime dependency.
+- Add a client `CelestialTimepiece` with deterministic decorative geometry and pure calculation/formatting helpers in `src/lib/celestial-time.ts`. Time uses explicit `Asia/Bangkok`; server and first-client output are stable placeholders until hydration. Align one timer to second boundaries, suspend it when the page is hidden/offscreen, and resynchronize on visibility/entry.
+- Render the time readout independently from a small native activation button. The readout remains available when motion is disabled; reduced motion and the existing Hero data-saver decision gate every decorative animation and pointer response. No disabled/dead activation control is rendered.
+- Add layered SVG/CSS orbits, deterministic starfield, infrequent shooting-star and glass-sweep effects, restrained nebula, and a short touch/mouse/keyboard-triggerable light wave. Highlight the final 60 seconds and a short New Year midnight interval without delaying next-year retargeting.
+- Replace only the shared brand component's source/markup and its Header, MobileMenu, and Footer sizing/tone props. Update icon metadata, true PWA maskable assets, manifest URLs, app-shell precache and worker cache namespace to `kabkrabue-v7`; all local paths use `withBasePath()` where runtime/build paths require it.
+- Add boundary tests without a new package, wire them into the existing PR quality workflow, and extend the existing export verifier rather than replacing the build system.
+
+### Project structure for this follow-on
+
+- `src/components/CelestialTimepiece.tsx` and `.module.css`: compact Hero timepiece, accessible live time readout, action, and motion styling.
+- `src/lib/celestial-time.ts`: pure explicit-time-zone date, year-boundary, countdown, and progress calculations.
+- `src/components/BrandLogo.tsx` and `.module.css`: reusable real SVG asset + text wordmark for header/mobile/footer.
+- `src/app/layout.tsx`, `src/app/manifest.ts`, `public/icons/`, `public/favicon/`, and `public/sw.js`: icon metadata, PWA resources, and versioned app-shell caching.
+- `scripts/verify-celestial-clock.cjs` and `.github/workflows/quality.yml`: dependency-free calculation tests included in PR CI.
+- `README.md`, `TODO.md`, `docs/PROJECT_AUDIT.md`, and `docs/brand/BRAND-SYSTEM.md`: architecture, verified evidence, limitations, and visual identity.
+
+### Delivery boundary
+
+- Deliver on the feature branch through a review PR only. A Vercel Preview counts as available only after GitHub/Vercel reports an actual deployment URL and status. If Preview cannot be created or checked, state the blocker. Do not merge or promote Production.

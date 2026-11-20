@@ -1,12 +1,42 @@
 # KabKraBue — Quality Pass Work Items
 
-## สถานะปัจจุบัน (ตรวจ 2026-11-20)
+## สถานะ Celestial Identity (ตรวจ 2026-11-20)
 
-- ฐาน integration ปัจจุบันคือ `origin/main` SHA `bfdcfa7a51f3c8f0d23772d467b7ff9eb7b4d787`; หลัง main เพิ่ม `NewYearClock` branch นี้ถูก rebase และคง component/การออกแบบล่าสุดไว้ พร้อมรวม quality fixes รอบนี้
-- งานอยู่บน feature branch `manus/kabkrabue-full-quality-pass`; ห้าม push ตรงเข้า `main`, merge, promote หรือเปลี่ยน Production. PR จะใช้สำหรับ review/CI เท่านั้น
-- Local typecheck, lint, security audit, root และ GitHub Pages export verification ผ่าน; Chromium browser acceptance ผ่านทั้ง root และ `/KabKraBue/` preview
-- รอบนี้ไม่ได้ตรวจ live Production หรือ hosting response headers; ห้ามอนุมานผล Production จาก local/CI
-- Read-only audit 8 ด้านระบุและแก้ source-confirmed issues พร้อมคงข้อมูลและสื่อเดิม; manual review ที่ต้องใช้อุปกรณ์/ผู้รู้ยังเปิดอยู่ตามด้านล่าง
+- ฐานงานคือ `origin/main` SHA `4fd6bb489069b9fc766ad80d21d9aa595a5213f5`; ทำงานเฉพาะ branch `manus/kabkrabue-celestial-signature` โดยไม่แก้ `main`
+- `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build + `npm run verify:export`, และ `GITHUB_PAGES=true` build + verifier ผ่านบน source รอบนี้; ESLint แจ้งว่า `eslint@9.39.5` deprecated/unsupported
+- Chromium QA ครอบคลุม 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, 1440×900, 360×560 และ 375×560 ทั้ง root และ `/KabKraBue/`; ไม่พบ overflow, overlap ที่ตรวจ, รูปเสีย, console/page error; Hero video คงอยู่
+- Gallery smoke: All 14 ภาพ; Culture 9 ภาพ; lightbox next/ Escape ผ่าน. Shorts 3 cards, ไม่มี iframe ก่อนกด และ iframe ถูกสร้างหลัง click; ไม่พบ page error
+- PWA offline Home/Privacy, Bangkok time/ปี พ.ศ.-ค.ศ., countdown rollover, reduced motion, Data Saver และ keyboard/touch ผ่าน browser checks; install บนอุปกรณ์จริง, screen reader, Lighthouse และ field data ยังไม่ได้ตรวจ
+- axe: Home/Privacy 0 violations; Home ยังมี incomplete `color-contrast` 85 nodes, frame-tested 1, video-caption 5 (manual review; ไม่ถือเป็น pass/violation); Privacy incomplete 0
+- local unthrottled Chromium snapshot: LCP 324ms (text paragraph candidate), CLS 0.00872; ไม่ใช่ Lighthouse หรือ field measurement
+- ไฟล์ `src/data`, `public/images`, `public/videos` ไม่เปลี่ยน; Production ไม่ได้แตะ. PR/CI และ Vercel Preview ต้องอัปเดตตามสถานะจริงหลังเปิด PR
+
+## Celestial Timepiece and identity — acceptance outcomes
+
+### 1. Bangkok Celestial Timepiece
+
+- [x] Show real hours, minutes, and seconds in explicit `Asia/Bangkok`, independent of the visitor's device timezone; show the complete Thai date in Buddhist Era (พ.ศ.) and English date in Gregorian/Common Era (ค.ศ.); show days, hours, minutes, and seconds until the *next* Thailand-local January 1; update target year automatically at rollover; calculate progress from Bangkok-local year boundaries.
+- [x] Handle December 31 at 23:59:58, 23:59:59, and January 1 at 00:00:00; handle browser timezone differences, delayed timers, hidden tabs, offscreen state and visibility resynchronization; keep SSR and first-client markup identical until hydration; use a single source of truth for pure, testable clock calculations.
+- [x] Keep the clock compact and subordinate to the village Hero without covering the top navigation/brand, Hero headline, primary CTA, or village footage at the tested viewports. Include layered orbits, a deterministic fine star field, rare shooting star, restrained nebula, occasional golden glass sweep, and a short midnight New Year finale.
+- [x] Make the final 60 seconds more luminous without reducing readability. Provide touch/mouse/keyboard activation for a brief light-wave/orbit response with a native keyboard-operable control and visible focus. Give the clock a clear Thai/English accessible name; do not announce every second; do not convey state by color alone.
+- [x] Honor `prefers-reduced-motion` and the existing Hero reduced-motion/data-saver decision: retain readable time information while disabling orbit rotation, star twinkle, shooting stars, sweeps, pointer movement, and interaction bursts; do not expose a dead/disabled activation affordance.
+
+### 2. KabKraBue — บ้านกาบกระบือ identity
+
+- [x] Use the supplied SVG mark and supplied brand assets rather than a hand-drawn substitute; keep “KabKraBue” and “บ้านกาบกระบือ” as real selectable HTML text using the existing self-hosted Fraunces and IBM Plex Sans Thai fonts.
+- [x] Apply the new identity consistently to the desktop/scrolled Header variants, Mobile Menu, Footer, favicon, Apple touch icon, and PWA manifest. Use safe-area maskable icons, correct icon sizes and `withBasePath()` for local metadata/manifest/runtime URLs. Add no external font request or new runtime dependency.
+
+### 3. Preserve current product, PWA, and deployment contracts
+
+- [x] Preserve existing Gallery, Shorts, navigation destinations, Hero video/poster behavior, village stories, community data, location coordinates, contact/social links, SEO metadata intent, static export, Vercel root hosting, GitHub Pages `/KabKraBue/` base path, PWA offline behavior, privacy fallback, video exclusions, and Range-request behavior. Browser-smoked Gallery filter/lightbox and Shorts click-to-load; no `src/data`, `public/images`, or `public/videos` changes were made.
+- [x] Treat updated PWA icon resources as app-shell assets; bump the service-worker namespace to `kabkrabue-v7`, delete only this application's obsolete cache namespace, and continue to avoid caching large videos or Range requests.
+
+### 4. Verification, evidence, and review delivery
+
+- [x] Run from a clean install: `npm ci`, `npm run security`, `npm run lint`, `npm run typecheck`, `npm run test:clock`, `npm run build`, and `GITHUB_PAGES=true npm run build`; both `npm run verify:export` and `GITHUB_PAGES=true npm run verify:export` pass.
+- [x] Browser-test rendering at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900, plus 360×560 and 375×560; check overflow/overlap, hydration, year transition, reduced motion, Data Saver, touch/keyboard, Home/Privacy offline paths, console/page errors, axe and local performance. Record actual results only; no Lighthouse or device scores are claimed.
+- [x] Save comparable Before/After screenshots for mobile and desktop; see `docs/SCREENSHOTS.md`.
+- [ ] Open a review PR from the feature branch and record the actual CI and Vercel Preview deployment/check status and URL after the latest push. Keep the PR open; do not merge or deploy/promote Production.
 
 ## 1. Accessibility และภาษา
 

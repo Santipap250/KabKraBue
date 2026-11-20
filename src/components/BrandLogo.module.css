@@ -1,0 +1,66 @@
+.brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  color: #f8efd8;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.mark {
+  display: block;
+  width: 42px;
+  height: 38px;
+  flex: 0 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(220, 172, 91, 0.2));
+}
+
+.wordmark {
+  display: inline-flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.name {
+  color: currentColor;
+  font-family: var(--font-display), Georgia, serif;
+  font-size: 21px;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 0.98;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.13);
+}
+
+.thai {
+  color: currentColor;
+  font-family: var(--font-body), "IBM Plex Sans Thai", sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  line-height: 1.35;
+  opacity: 0.82;
+}
+
+.light { color: #f8efd8; }
+.dark { color: #292a22; }
+
+.header { gap: 9px; }
+.compact { gap: 7px; }
+.compact .mark { width: 36px; height: 33px; }
+.compact .name { font-size: 18px; }
+.compact .thai { font-size: 8px; }
+
+.large { gap: 12px; }
+.large .mark { width: 62px; height: 56px; }
+.large .name { font-size: 31px; }
+.large .thai { font-size: 11px; }
+
+@media (max-width: 390px) {
+  .header .mark { width: 38px; height: 35px; }
+  .header .name { font-size: 19px; }
+  .header .thai { font-size: 8px; }
+}
