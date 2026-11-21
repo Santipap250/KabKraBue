@@ -1,20 +1,27 @@
 # KabKraBue — Audit and Remediation Report
 
-## Current status after merge and Production QA (checked 2026-11-20)
+## Current main and Production status (checked 2026-11-21)
 
-- Current `origin/main` is `73eb58c62e7197fcced1eb563c6418bda1b9d10e`, the merge commit for PR #12; its feature head was `1cd914baffb121da35dde2e4927051a32cdea449`. GitHub records the merge under account `Santipap250` at 2026-11-20 12:59:13Z (19:59:13 +07). This audit/update did not issue a merge, deploy, or rollback.
+- Current `origin/main` is `8d6f99a69bc6bdef8975dab56ee0b1df8f4d348c`, the merge commit for PR #17 (`feat(hero): add looping butterfly wordmark`), recorded at 2026-11-21 11:11:41Z (18:11:41 +07).
+- Vercel's latest Production deployment is `dpl_6y6nvSpn9K7xyxysH98NjzZVn6LE`, state `READY`, built from the same SHA. Vercel recorded it ready at 2026-11-21 11:12:26Z; deployment URL [kab-kra-89xn7k6v8-obixconfig.vercel.app](https://kab-kra-89xn7k6v8-obixconfig.vercel.app), with public alias [kab-kra-bue.vercel.app](https://kab-kra-bue.vercel.app).
+- Read-only GET smoke against the public alias returned HTTP 200 for `/`, `/privacy/`, `/manifest.webmanifest`, `/sw.js`, `/sitemap.xml`, and `/robots.txt`. Direct unauthenticated requests to the immutable deployment URL returned HTTP 302 to Vercel SSO, so the public alias is the basis for these HTTP checks.
+- Both `origin/main:public/sw.js` and the Production `/sw.js` response use cache namespace `kabkrabue-v8`.
+- PR #17's looping Butterfly Wordmark is present in the current `main` and Production deployment. This status refresh is documentation-only; it makes no application/configuration/OG-image changes and did not trigger a merge, deploy, or rollback.
+- This verification round checked deployment state and HTTP responses only; it did not repeat browser, visual, accessibility, offline, Lighthouse, or field-data testing. The detailed Celestial feature QA below is a historical snapshot from Production SHA `73eb58c` on 2026-11-20, not a claim about a fresh full QA run on current Production.
+
+## Historical Celestial Production QA snapshot — PR #12 / SHA `73eb58c` (checked 2026-11-20)
+
 - Before merge, PR #12 had 3 successful checks: Website quality, Vercel (deployment), and Vercel Preview Comments. Vercel marked the Preview Ready; direct unauthenticated access returned HTTP 302 to Vercel SSO, so its hosted content was not independently inspected.
-- Vercel recorded Production deployment of merge SHA `73eb58c` as successful at 2026-11-20 12:59:55Z (19:59:55 +07), deployment URL [kab-kra-in0fi1psk-obixconfig.vercel.app](https://kab-kra-in0fi1psk-obixconfig.vercel.app). The public alias [kab-kra-bue.vercel.app](https://kab-kra-bue.vercel.app) was then checked read-only.
-- The delivered app replaces the compact New Year clock with a compact `Asia/Bangkok` Celestial Timepiece, Thai Buddhist Era/English Gregorian dates, next-New-Year countdown/year progress, accessible interaction, and Reduced Motion/Data Saver handling; the supplied SVG identity is used site-wide and in PWA assets, with app-shell cache `kabkrabue-v7`.
-- Clean-install checks passed on the feature source: `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build/export verifier, and GitHub Pages build/export verifier. npm warns that ESLint 9.39.5 is deprecated/unsupported.
-- Production HTTP smoke: Home, Privacy, manifest, service worker, sitemap, robots, favicon, Apple icon, and maskable icons tested returned HTTP 200. An unknown route returned 404 with `noindex` and no canonical/`og:url` inherited from Home.
+- The app replaced the compact New Year clock with a compact `Asia/Bangkok` Celestial Timepiece, Thai Buddhist Era/English Gregorian dates, next-New-Year countdown/year progress, accessible interaction, and Reduced Motion/Data Saver handling; the supplied SVG identity was used site-wide and in PWA assets, with app-shell cache `kabkrabue-v7` at that release.
+- Clean-install checks passed on the feature source: `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build/export verifier, and GitHub Pages build/export verifier. npm warned that ESLint 9.39.5 is deprecated/unsupported.
+- Production HTTP smoke at that time: Home, Privacy, manifest, service worker, sitemap, robots, favicon, Apple icon, and maskable icons tested returned HTTP 200. An unknown route returned 404 with `noindex` and no canonical/`og:url` inherited from Home.
 - Production Chromium at 360×560, 375×560, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900 showed no horizontal overflow, tested clock/headline overlap, or page errors; the primary CTA was inside the initial viewport at all tested sizes. At 360×560, the measured clock/headline gap was 10px. Console checks at 390×844 and 1280×900 reported no errors.
-- With browser timezone `Pacific/Honolulu`, Production displayed Bangkok time `20:09:51`, while simulated device-local time was `03:09:51`; Thai date was 20 November 2569 BE, English date 20 November 2026 CE, and New Year target 2570/2027. Reduced Motion rendered the poster; normal motion rendered the Hero video element. Hero WebM/MP4 and poster URLs returned HTTP 200 via HEAD requests.
+- With browser timezone `Pacific/Honolulu`, that Production build displayed Bangkok time `20:09:51`, while simulated device-local time was `03:09:51`; Thai date was 20 November 2569 BE, English date 20 November 2026 CE, and New Year target 2570/2027. Reduced Motion rendered the poster; normal motion rendered the Hero video element. Hero WebM/MP4 and poster URLs returned HTTP 200 via HEAD requests.
 - Production Gallery showed 14 images; Culture filtering showed 9; lightbox next/Escape passed. Shorts showed 3 cards and created its YouTube iframe only after play click. The root-scoped service worker activated with cache `kabkrabue-v7`; Home and Privacy both loaded offline with HTTP 200. No `src/data`, `public/images`, or `public/videos` files changed.
-- In inspected Production HTML responses, HSTS was present; CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, and X-Frame-Options were not observed. This is a limited header observation, not a full security audit.
+- In the Production HTML responses inspected on that round, HSTS was present; CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, and X-Frame-Options were not observed. This is a limited historical header observation, not a full security audit or a current-header check.
 - Local axe results: Home/Privacy had 0 violations; Home still had incomplete color-contrast (85 nodes), frame-tested (1), and video-caption (5); Privacy had 0 incomplete checks. These are manual review items, not passes or violations.
 - Unthrottled local Chromium snapshot: LCP 324 ms (text paragraph candidate), CLS 0.00872. This is not Lighthouse, field data, or a real-device measurement. Screen-reader, real-device, manual contrast/caption review, and Lighthouse/field checks remain unverified.
-- Mobile and desktop Before/After captures are indexed in `docs/SCREENSHOTS.md`. This follow-up PR changes documentation only; it does not modify app code or deployment configuration.
+- Mobile and desktop Before/After captures from that feature round are indexed in `docs/SCREENSHOTS.md`; they are historical captures, not screenshots from this status refresh.
 
 ## Previous quality pass — historical status (checked 2026-11-20)
 
@@ -86,7 +93,7 @@ A focused axe rerun after the `NewYearClock` integration and short-screen fix co
 2. Listen to the two AAC-bearing Story clips and decide whether accurate captions/transcripts are required; do not infer from an empty automatic transcript alone.
 3. Test keyboard/screen-reader behavior and layout on real devices before making a conformance claim.
 4. Run Lighthouse and field-data checks in an appropriate authorized environment; local Chromium snapshots are only lab observations.
-5. Consider a separate reviewed Vercel header-policy change: the current read-only Production response showed HSTS but did not include CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, or X-Frame-Options. This observation is not a full security audit and no header change is included here.
+5. Consider a separate reviewed Vercel header-policy change: a historical read-only Production response checked after PR #12 on 2026-11-20 showed HSTS but did not include CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, or X-Frame-Options. This observation is not a full security audit, has not been revalidated on current Production, and no header change is included here.
 6. Obtain village representative confirmation before changing address or coordinates.
 7. Plan ESLint/Next.js and GitHub Actions runner/action lifecycle upgrades separately; no out-of-scope forced dependency upgrade was made here.
 
