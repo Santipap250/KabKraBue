@@ -17,14 +17,20 @@ export const metadata = {
     locale: siteConfig.locale,
     title: "Privacy — KabKraBue",
     description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
-    images: ["/images/og-cover.jpg"],
+    images: [{
+      url: siteConfig.socialPreviewImage.path,
+      width: siteConfig.socialPreviewImage.width,
+      height: siteConfig.socialPreviewImage.height,
+      alt: siteConfig.socialPreviewImage.alt,
+      type: "image/jpeg",
+    }],
   },
 
   twitter: {
     card: "summary_large_image",
     title: "Privacy — KabKraBue",
     description: "ข้อมูลความเป็นส่วนตัวของเว็บไซต์ KabKraBue",
-    images: ["/images/og-cover.jpg"],
+    images: [{ url: siteConfig.socialPreviewImage.path, alt: siteConfig.socialPreviewImage.alt }],
   },
 };
 

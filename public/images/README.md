@@ -6,7 +6,8 @@
 
 | File / folder | Used by |
 |---|---|
-| `og-cover.jpg` | Open Graph / social sharing preview |
+| `kabkrabue-facebook-share-v2.jpg` | Current Facebook/Open Graph/Twitter preview; 1200×630 crop from the project's `places/viewpoint-01.jpg` |
+| `og-cover.jpg` | Retained legacy preview asset for existing cached shares; do not remove |
 | `kabkrabue-logo.webp` | Header, mobile menu, and footer brand lockup |
 | `culture-01.webp` … `culture-16.webp` | Culture — Village Temple story set + selected Gallery culture collection |
 | `gallery/*` | Photo Gallery — see `src/data/gallery.ts` |
@@ -21,7 +22,7 @@ uploading original camera files.
 
 ## Responsive WebP candidates
 
-`public/images/responsive/` contains generated WebP candidates for phone viewports; it is not a replacement for the original files. The manifest at `src/data/responsive-image-manifest.json` maps original paths to non-upscaled candidates targeting 480px/768px, or native width when a source is smaller. `ResponsiveImage` selects those candidates only up to 767 CSS pixels; tablets and desktop retain the original full-resolution source. The Hero poster follows the same mobile-only WebP policy and uses its full-resolution desktop poster at wider sizes. The Open Graph cover is intentionally excluded and remains the original social-preview asset.
+`public/images/responsive/` contains generated WebP candidates for phone viewports; it is not a replacement for the original files. The manifest at `src/data/responsive-image-manifest.json` maps original paths to non-upscaled candidates targeting 480px/768px, or native width when a source is smaller. `ResponsiveImage` selects those candidates only up to 767 CSS pixels; tablets and desktop retain the original full-resolution source. The Hero poster follows the same mobile-only WebP policy and uses its full-resolution desktop poster at wider sizes. Social-preview assets are intentionally excluded from this responsive manifest and app-shell image set.
 
 Regenerate candidates after adding, replacing, or removing an image:
 

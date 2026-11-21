@@ -27,7 +27,13 @@ export const metadata: Metadata = {
     siteName: siteConfig.name,
     title: `${siteConfig.name} — ${siteConfig.tagline}`,
     description: siteConfig.shortDescription,
-    images: [{ url: "/images/og-cover.jpg", width: 1200, height: 630, alt: siteConfig.name }],
+    images: [{
+      url: siteConfig.socialPreviewImage.path,
+      width: siteConfig.socialPreviewImage.width,
+      height: siteConfig.socialPreviewImage.height,
+      alt: siteConfig.socialPreviewImage.alt,
+      type: "image/jpeg",
+    }],
   },
 };
 

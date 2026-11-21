@@ -18,6 +18,12 @@ export const siteConfig = {
   shortDescriptionThai:
     "หมู่บ้านแห่งท้องนา เสียงจากผู้คน และเรื่องราวที่เดินทางข้ามรุ่น",
   url: "https://kab-kra-bue.vercel.app",
+  socialPreviewImage: {
+    path: "/images/kabkrabue-facebook-share-v2.jpg",
+    width: 1200,
+    height: 630,
+    alt: "ทิวทัศน์ทุ่งนาและผืนน้ำของหมู่บ้านกาบกระบือในแสงยามเย็น",
+  },
   github: "https://github.com/Santipap250/KabKraBue",
   locale: "th-TH",
   themeColor: "#3F5A3D",
