@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import { ArrowUpRight, Images, Maximize2 } from "lucide-react";
 import { galleryImages, type GalleryImage } from "@/data/gallery";
 import { MediaFrame } from "@/components/MediaFrame";

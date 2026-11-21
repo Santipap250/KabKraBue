@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { m as motion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight, ChevronDown, Eye, EyeOff, Images } from "lucide-react";
 import { siteConfig } from "@/data/site";

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import { X } from "lucide-react";
 import { InstallAppButton } from "./InstallAppButton";
 import { BrandLogo } from "./BrandLogo";

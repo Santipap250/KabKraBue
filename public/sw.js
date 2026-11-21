@@ -1,5 +1,5 @@
 const CACHE_PREFIX = "kabkrabue-";
-const CACHE = "kabkrabue-v7";
+const CACHE = "kabkrabue-v8";
 const DYNAMIC_CACHE = `${CACHE}-dynamic`;
 const MAX_DYNAMIC_ENTRIES = 100;
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import { Play, X } from "lucide-react";
 import { videos, type VillageVideo } from "@/data/videos";
 import { MediaFrame } from "@/components/MediaFrame";
