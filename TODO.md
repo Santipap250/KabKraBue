@@ -1,15 +1,22 @@
 # KabKraBue — Quality Pass Work Items
 
-## สถานะ Celestial Identity และ Production (ตรวจ 2026-11-20)
+## สถานะ main และ Production ล่าสุด (ตรวจ 2026-11-21)
 
-- `origin/main` ล่าสุดคือ `73eb58c62e7197fcced1eb563c6418bda1b9d10e`, ซึ่ง merge PR #12 (feature head `1cd914baffb121da35dde2e4927051a32cdea449`). GitHub ระบุว่า merge โดยบัญชี `Santipap250` เวลา 2026-11-20 12:59:13Z (19:59:13 +07); Vercel บันทึก Production deployment ของ merge SHA นี้ว่า success เวลา 12:59:55Z (19:59:55 +07) ที่ https://kab-kra-in0fi1psk-obixconfig.vercel.app. งานตรวจนี้ไม่ได้สั่ง merge, deploy หรือ rollback
-- GitHub checks ของ PR #12 ก่อน merge ผ่านครบ 3/3: Website quality, Vercel deployment และ Vercel Preview Comments. Preview status เป็น Ready แต่ direct unauthenticated request ได้ HTTP 302 ไป Vercel SSO จึงไม่ได้ตรวจเนื้อหาบน Preview โดยตรง
+- `origin/main` ล่าสุดคือ `8d6f99a69bc6bdef8975dab56ee0b1df8f4d348c`, merge PR #17 (`feat(hero): add looping butterfly wordmark`), commit เวลา 2026-11-21 18:11:41 +07.
+- Vercel Production deployment ล่าสุดคือ `dpl_6y6nvSpn9K7xyxysH98NjzZVn6LE`, สถานะ `READY`, ใช้ SHA เดียวกับ `main`; พร้อมเวลา 2026-11-21 11:12:26Z. Public alias คือ https://kab-kra-bue.vercel.app.
+- Read-only GET smoke ที่ public alias เมื่อ 2026-11-21: `/`, `/privacy/`, `/manifest.webmanifest`, `/sw.js`, `/sitemap.xml` และ `/robots.txt` ตอบ HTTP 200 ทั้งหมด. Immutable deployment URL ตอบ 302 ไป Vercel SSO เมื่อเรียกโดยไม่ยืนยันตัวตน จึงใช้ public alias เป็นหลักฐานการเข้าถึงสาธารณะ.
+- `public/sw.js` บน `origin/main` และ `/sw.js` บน Production ใช้ cache namespace `kabkrabue-v8`.
+- PR #17 รวมเอฟเฟกต์ Butterfly Wordmark ไว้ใน `main` และ deployment Production ปัจจุบันแล้ว. การอัปเดตเอกสารรอบนี้ไม่แก้ source/configuration, ไม่เปลี่ยน OG image, และไม่ได้ merge หรือ deploy Production.
+
+### หลักฐาน QA ก่อนหน้า — Celestial release (PR #12 / Production SHA `73eb58c`; ตรวจ 2026-11-20)
+
+- GitHub checks ของ PR #12 ก่อน merge ผ่าน 3/3: Website quality, Vercel deployment และ Vercel Preview Comments. Preview status เป็น Ready แต่ direct unauthenticated request ได้ HTTP 302 ไป Vercel SSO จึงไม่ได้ตรวจเนื้อหาบน Preview โดยตรง
 - `npm ci`, `npm run security` (0 vulnerabilities), `npm run lint`, `npm run typecheck`, `npm run test:clock`, root build + verifier และ `GITHUB_PAGES=true` build + verifier ผ่านบน source ของ feature; npm เตือนว่า `eslint@9.39.5` deprecated/unsupported
-- Read-only production smoke ที่ https://kab-kra-bue.vercel.app: Home, Privacy, manifest, service worker, sitemap, robots และ favicon/PWA icons ที่ตรวจตอบ 200; route ที่ไม่มีอยู่ตอบ 404, มี `noindex` และไม่มี canonical/`og:url` ของ Home
+- Production smoke รอบนั้น: Home, Privacy, manifest, service worker, sitemap, robots และ favicon/PWA icons ที่ตรวจตอบ 200; route ที่ไม่มีอยู่ตอบ 404, มี `noindex` และไม่มี canonical/`og:url` ของ Home
 - Production Chromium QA ที่ 360×560, 375×560, 390×844, 430×932, 768×1024, 1280×800, 1280×900 และ 1440×900: ไม่พบ horizontal overflow, clock/headline overlap หรือ page error; primary CTA อยู่ใน viewport ทุกขนาดที่วัด (ช่องว่าง clock/headline 10px ที่ 360×560). Console ไม่พบ error ใน smoke ที่ 390×844/1280×900
 - Production clock ทดสอบด้วย browser timezone `Pacific/Honolulu`: แสดง Bangkok 20:09:51 เทียบกับ device-local 03:09:51, Thai date พ.ศ. 2569, English date ค.ศ. 2026 และ next-year target 2570/2027. Reduced Motion ใช้โปสเตอร์; normal motion มี Hero video; WebM/MP4 และ poster URLs ที่ตรวจตอบ 200
-- Production Gallery: 14 ภาพ, Culture 9 ภาพ, lightbox next/Escape ผ่าน; Shorts 3 รายการและสร้าง iframe หลัง click เท่านั้น. Service worker scope เป็น root, active cache `kabkrabue-v7`; Home/Privacy เปิด offline ได้ 200
-- Production HTML responses ที่ตรวจมี HSTS; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน response ที่ตรวจ (เป็น observation ไม่ใช่ full security audit)
+- Production Gallery: 14 ภาพ, Culture 9 ภาพ, lightbox next/Escape ผ่าน; Shorts 3 รายการและสร้าง iframe หลัง click เท่านั้น. Service worker scope เป็น root, cache ณ เวลานั้นคือ `kabkrabue-v7`; Home/Privacy เปิด offline ได้ 200
+- Production HTML responses ที่ตรวจมี HSTS; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน response ที่ตรวจ (เป็น observation ณ รอบนั้น ไม่ใช่ full security audit)
 - axe บน local export: Home/Privacy 0 violations; Home มี incomplete color-contrast 85 nodes, frame-tested 1 และ video-caption 5; Privacy incomplete 0. Manual contrast/caption review, screen reader, อุปกรณ์จริง และ Lighthouse/field data ยังไม่ได้ทำ
 - local unthrottled Chromium snapshot: LCP 324ms (text paragraph candidate), CLS 0.00872; ไม่ใช่ Lighthouse หรือ field data. ไม่มีการเปลี่ยน `src/data`, `public/images` หรือ `public/videos`
 
@@ -31,7 +38,7 @@
 ### 3. Preserve current product, PWA, and deployment contracts
 
 - [x] Preserve existing Gallery, Shorts, navigation destinations, Hero video/poster behavior, village stories, community data, location coordinates, contact/social links, SEO metadata intent, static export, Vercel root hosting, GitHub Pages `/KabKraBue/` base path, PWA offline behavior, privacy fallback, video exclusions, and Range-request behavior. Browser-smoked Gallery filter/lightbox and Shorts click-to-load; no `src/data`, `public/images`, or `public/videos` changes were made.
-- [x] Treat updated PWA icon resources as app-shell assets; bump the service-worker namespace to `kabkrabue-v7`, delete only this application's obsolete cache namespace, and continue to avoid caching large videos or Range requests.
+- [x] Treat updated PWA icon resources as app-shell assets; at the Celestial release, the service-worker namespace was bumped to `kabkrabue-v7`, obsolete caches in this application's namespace alone were removed, and large videos/Range requests remained excluded. A later app-shell update superseded that cache name; current main and Production use `kabkrabue-v8` (verified above).
 
 ### 4. Verification, evidence, and review delivery
 
@@ -39,7 +46,7 @@
 - [x] Browser-test rendering at 360×800, 390×844, 430×932, 768×1024, 1280×800, 1280×900, and 1440×900, plus 360×560 and 375×560; check overflow/overlap, hydration, year transition, reduced motion, Data Saver, touch/keyboard, Home/Privacy offline paths, console/page errors, axe and local performance. Record actual results only; no Lighthouse or device scores are claimed.
 - [x] Save comparable Before/After screenshots for mobile and desktop; see `docs/SCREENSHOTS.md`.
 - [x] เปิด PR #12 เพื่อ review feature; GitHub checks ผ่าน 3/3 และ Vercel รายงาน Preview Ready (แต่ Preview ถูกป้องกันด้วย SSO จึงตรวจ content โดยตรงไม่ได้)
-- [ ] คง PR #12 ไว้เปิดและไม่ merge/promote Production — GitHub บันทึกการ merge โดย `Santipap250` และ Production deployment สำเร็จตามสถานะด้านบน; การตรวจนี้ไม่ได้สั่ง merge/deploy และไม่ได้ rollback
+- [x] PR #12 ถูก merge เข้า `main` และมี Production deployment ตามหลักฐาน historical ด้านบน; การอัปเดตเอกสารรอบนี้ไม่ได้สั่ง merge, deploy หรือ rollback
 
 ## 1. Accessibility และภาษา
 
@@ -71,12 +78,12 @@
 ## 4. PWA, security และข้อมูลที่ต้องยืนยัน
 
 - [x] ตรวจ first-visit และ offline Home/Privacy ใน Chromium profile ใหม่ทั้ง root และ `/KabKraBue/`; service worker ควบคุมหน้าและใช้ app-shell cache ได้โดยไม่เปลี่ยน worker semantics
-- [x] ตรวจ security response headers แบบ read-only บน Production หลัง merge: HSTS มีอยู่; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน Home/Privacy/404 responses ที่สุ่มตรวจ. นี่ไม่ใช่ full security audit; static-export source เองยืนยัน headers ของ host จริงไม่ได้
+- [x] ตรวจ security response headers แบบ read-only บน Production หลัง merge PR #12 (2026-11-20): HSTS มีอยู่; ไม่พบ CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy หรือ X-Frame-Options ใน Home/Privacy/404 responses ที่สุ่มตรวจ. เป็น observation ของรอบนั้น ไม่ใช่ full security audit หรือการตรวจ headers ของ Production SHA ล่าสุด
 - [ ] ก่อนเปลี่ยนพิกัด/ที่อยู่ ให้ผู้แทนหมู่บ้านยืนยันข้อมูลจริง; รอบนี้ไม่เปลี่ยนข้อมูลดังกล่าว
 - [ ] ทำ manual contrast sampling บน gradients: axe ทำเครื่องหมาย `color-contrast` เป็น incomplete บน Home 68 nodes ใน root/Pages, nested install dialog 69/69 และ gallery lightbox 95/97 (root/Pages); จำนวนขึ้นกับ state/DOM และไม่ใช่ violations หรือผล pass
 - [ ] ตรวจ captions ของ Story video ทั้ง 5 รายการ: พบ AAC audio track ใน 2 คลิป (`story-02.mp4`, `people-section.mp4`) และอีก 3 คลิปไม่มี audio track; STT ไม่พบ speech segments แต่ต้องฟังโดยมนุษย์ก่อนสรุปและไม่สร้าง transcript อัตโนมัติ
 - [ ] ทำ screen-reader/real-device testing และ Lighthouse/field measurement ในสภาพแวดล้อมที่เหมาะสม; local Chromium metrics ไม่ใช่ Lighthouse หรือ field data
-- [x] ตรวจ Production status/headers แบบ read-only หลัง merge ที่ `https://kab-kra-bue.vercel.app`; deployment `73eb58c` รายงาน success และ smoke checks/limitations บันทึกไว้ในสถานะด้านบน. ไม่มีการเปลี่ยน Production โดยการตรวจนี้
+- [x] ตรวจ Production ล่าสุดแบบ read-only เมื่อ 2026-11-21: Vercel รายงาน `READY` บน SHA `8d6f99a`; GET smoke ของ Home, Privacy, manifest, service worker, sitemap และ robots ผ่าน HTTP 200; `sw.js` ใช้ cache `kabkrabue-v8`. รายละเอียดอยู่ในสถานะ main/Production ด้านบน; ไม่ได้เปลี่ยน Production
 
 ## 5. หลักฐาน quality pass ก่อนหน้าและประวัติ
 
@@ -93,6 +100,6 @@
 
 - [x] เพิ่มผีเสื้อ SVG สองตัวเคลื่อนไหวเป็นวงรอบข้อความ `KabKraBue` บนหน้าแรก โดยคงข้อความและฟอนต์เดิม อ่านได้ชัด ไม่บดบังตัวอักษร และกลมกลืนกับโทนหรูอบอุ่นของ Hero
 - [x] ทำเอฟเฟกต์ให้เบาและ responsive: ใช้ CSS transform/opacity, ไม่มี dependency หรือ network asset ใหม่, ไม่ทำให้หน้าจอมือถือกว้างล้น; ใช้ Hero motion gate เดิม และหยุดเป็นภาพนิ่งเมื่อเปิด Reduce Motion หรือ Data Saver
-- [x] คง semantics/accessibility ของ heading, Hero video/poster, static export/basePath, navigation และ Service Worker; ไม่มีการเปลี่ยนหรือ deploy Production จาก branch นี้
+- [x] คง semantics/accessibility ของ heading, Hero video/poster, static export/basePath, navigation และ Service Worker; PR #17 ถูก merge เป็น `8d6f99a` และ Vercel Production deployment บน SHA นี้เป็น `READY` ตามหลักฐานปัจจุบันด้านบน
 - [x] รัน lint, typecheck, test:clock, security, root build/verify และ GitHub Pages build/verify บน feature branch
 - หลักฐาน browser (2026-11-21): Chromium/CDP ตรวจครบ 41 ตำแหน่งในแต่ละรอบบินที่ 360×560 และ 375×560 โดยไม่ชน wordmark/คำบรรยาย; 390×844 และ 1440×900 ไม่พบการชนข้อความหรือ horizontal overflow. Reduce Motion และจำลอง Data Saver ที่ 360×560/375×560 คงผีเสื้อสองตัวเป็นภาพนิ่ง; browser/page errors = 0.
