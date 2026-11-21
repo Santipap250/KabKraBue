@@ -6,6 +6,7 @@ import Image from "next/image";
 import { ArrowRight, ChevronDown, Eye, EyeOff, Images } from "lucide-react";
 import { siteConfig } from "@/data/site";
 import { TerraceDivider } from "@/components/TerraceDivider";
+import { ButterflyWordmark } from "@/components/ButterflyWordmark";
 import { InstallAppButton } from "@/components/InstallAppButton";
 import { withBasePath } from "@/lib/paths";
 import { CelestialTimepiece } from "@/components/CelestialTimepiece";
@@ -144,7 +145,12 @@ export function Hero() {
               <TerraceDivider tone="rice" className="opacity-80" />
             </motion.div>
             <motion.h1 initial={motionEnabled ? { opacity: 0, y: 24 } : false} animate={{ opacity: 1, y: 0 }} transition={{ duration: motionEnabled ? 0.9 : 0, delay: motionEnabled ? 0.15 : 0, ease: [0.16, 1, 0.3, 1] }} className="heading-display mt-1 max-w-3xl text-rice">
-              <span lang="en" className="inline-block max-w-full bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl font-medium leading-[0.95] tracking-[-0.035em] text-transparent drop-shadow-[0_2px_14px_rgba(28,27,23,0.4)] sm:text-7xl lg:text-8xl">{siteConfig.name}</span>
+              <ButterflyWordmark
+                motionEnabled={motionEnabled}
+                className="inline-block max-w-full bg-gradient-to-r from-rice via-rice to-gold bg-clip-text text-6xl font-medium leading-[0.95] tracking-[-0.035em] text-transparent drop-shadow-[0_2px_14px_rgba(28,27,23,0.4)] sm:text-7xl lg:text-8xl"
+              >
+                {siteConfig.name}
+              </ButterflyWordmark>
             </motion.h1>
           </motion.div>
 

@@ -87,3 +87,12 @@
 - PWA offline smoke ผ่านทั้ง Home และ Privacy; local unthrottled LCP event อยู่ที่ประมาณ 168ms (root) / 188ms (`/KabKraBue/`) โดย candidate เป็นข้อความ `<p>`, CLS 0; ไม่ใช่ Lighthouse/field result
 - PR #5 แก้ axe-detected contrast issues และ CI trigger; PR #9 นำ compact New Year countdown label/opacity เข้า `main`. สถานะ PR อื่นและ Production ให้ยึด GitHub/Vercel ปัจจุบัน ไม่ใช้ข้อมูลเก่าแทน
 - ห้ามอ้าง WCAG 2.2 AA, Lighthouse score, field data หรือ Production success หากยังไม่มีหลักฐานรอบปัจจุบัน
+
+
+## Follow-on — Hero Butterfly Wordmark (approved 2026-11-21)
+
+- [x] เพิ่มผีเสื้อ SVG สองตัวเคลื่อนไหวเป็นวงรอบข้อความ `KabKraBue` บนหน้าแรก โดยคงข้อความและฟอนต์เดิม อ่านได้ชัด ไม่บดบังตัวอักษร และกลมกลืนกับโทนหรูอบอุ่นของ Hero
+- [x] ทำเอฟเฟกต์ให้เบาและ responsive: ใช้ CSS transform/opacity, ไม่มี dependency หรือ network asset ใหม่, ไม่ทำให้หน้าจอมือถือกว้างล้น; ใช้ Hero motion gate เดิม และหยุดเป็นภาพนิ่งเมื่อเปิด Reduce Motion หรือ Data Saver
+- [x] คง semantics/accessibility ของ heading, Hero video/poster, static export/basePath, navigation และ Service Worker; ไม่มีการเปลี่ยนหรือ deploy Production จาก branch นี้
+- [x] รัน lint, typecheck, test:clock, security, root build/verify และ GitHub Pages build/verify บน feature branch
+- หลักฐาน browser (2026-11-21): Chromium/CDP ตรวจครบ 41 ตำแหน่งในแต่ละรอบบินที่ 360×560 และ 375×560 โดยไม่ชน wordmark/คำบรรยาย; 390×844 และ 1440×900 ไม่พบการชนข้อความหรือ horizontal overflow. Reduce Motion และจำลอง Data Saver ที่ 360×560/375×560 คงผีเสื้อสองตัวเป็นภาพนิ่ง; browser/page errors = 0.

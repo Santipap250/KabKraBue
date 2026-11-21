@@ -1,0 +1,288 @@
+.container {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  isolation: isolate;
+  vertical-align: baseline;
+}
+
+.flightLayer {
+  position: absolute;
+  inset: -0.46em -0.04em -0.12em;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.butterfly {
+  position: absolute;
+  display: block;
+  width: 0.32em;
+  aspect-ratio: 60 / 52;
+  font-size: inherit;
+  line-height: 0;
+  filter: drop-shadow(0 0 0.07em rgb(201 154 62 / 45%));
+  transform-origin: center;
+}
+
+.glyph {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.upperWing {
+  fill: #f5f1e2;
+  fill-opacity: 0.92;
+  stroke: #c99a3e;
+  stroke-width: 1.15;
+  stroke-linejoin: round;
+}
+
+.lowerWing {
+  fill: #c99a3e;
+  fill-opacity: 0.82;
+  stroke: #f5f1e2;
+  stroke-opacity: 0.72;
+  stroke-width: 0.7;
+}
+
+.second .upperWing {
+  fill: #dce3d1;
+}
+
+.second .lowerWing {
+  fill: #c97c4f;
+}
+
+.body {
+  fill: #c99a3e;
+  stroke: #f5f1e2;
+  stroke-width: 0.55;
+}
+
+.antennae {
+  fill: none;
+  stroke: #f5f1e2;
+  stroke-linecap: round;
+  stroke-width: 1;
+}
+
+.animated .first {
+  top: 0.04em;
+  left: 0;
+  animation: flight-forward 14s cubic-bezier(0.42, 0, 0.58, 1) -5s infinite;
+}
+
+.animated .second {
+  top: 0.04em;
+  left: 78%;
+  animation: flight-return 17s cubic-bezier(0.42, 0, 0.58, 1) -9s infinite;
+}
+
+.animated .leftWing {
+  transform-box: view-box;
+  transform-origin: 29px 27px;
+  animation: wing-flap 0.62s ease-in-out infinite alternate;
+}
+
+.animated .rightWing {
+  transform-box: view-box;
+  transform-origin: 31px 27px;
+  animation: wing-flap 0.62s ease-in-out -0.31s infinite alternate;
+}
+
+.still .first {
+  top: -0.28em;
+  left: 11%;
+  opacity: 0.9;
+  transform: rotate(-13deg) scale(0.82);
+}
+
+.still .second {
+  top: -0.25em;
+  right: 11%;
+  opacity: 0.88;
+  transform: rotate(13deg) scale(0.72);
+}
+
+@keyframes flight-forward {
+  0% {
+    opacity: 0;
+    transform: translate3d(-0.16em, -0.06em, 0) rotate(-17deg) scale(0.72);
+  }
+  9% {
+    opacity: 0.94;
+  }
+  27% {
+    transform: translate3d(0.78em, -0.2em, 0) rotate(12deg) scale(0.96);
+  }
+  51% {
+    transform: translate3d(1.92em, -0.28em, 0) rotate(-9deg) scale(1);
+  }
+  76% {
+    transform: translate3d(3.02em, -0.16em, 0) rotate(12deg) scale(0.9);
+  }
+  91% {
+    opacity: 0.92;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(4.02em, -0.04em, 0) rotate(-14deg) scale(0.7);
+  }
+}
+
+@keyframes flight-return {
+  0% {
+    opacity: 0;
+    transform: translate3d(0.18em, -0.04em, 0) rotate(18deg) scale(0.68);
+  }
+  10% {
+    opacity: 0.9;
+  }
+  29% {
+    transform: translate3d(-0.85em, -0.23em, 0) rotate(-12deg) scale(0.9);
+  }
+  54% {
+    transform: translate3d(-2em, -0.3em, 0) rotate(10deg) scale(0.98);
+  }
+  78% {
+    transform: translate3d(-3.08em, -0.16em, 0) rotate(-12deg) scale(0.84);
+  }
+  91% {
+    opacity: 0.86;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-3.92em, -0.05em, 0) rotate(15deg) scale(0.66);
+  }
+}
+
+@keyframes wing-flap {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0.62);
+  }
+}
+
+@media (max-width: 380px) {
+  .butterfly {
+    width: 0.27em;
+  }
+
+  .animated .first {
+    left: 1%;
+  }
+
+  .animated .second {
+    left: 75%;
+  }
+}
+
+@media (max-width: 430px) and (max-height: 600px) {
+  .butterfly {
+    width: 0.18em;
+  }
+
+  .animated .first {
+    top: 1.62em;
+    left: 12%;
+    animation-name: compact-flight-forward;
+  }
+
+  .animated .second {
+    top: 1.62em;
+    left: 76%;
+    right: auto;
+    animation-name: compact-flight-return;
+  }
+
+  .still .first {
+    top: 1.5em;
+    left: 12%;
+  }
+
+  .still .second {
+    top: 1.5em;
+    left: 76%;
+    right: auto;
+  }
+
+  @keyframes compact-flight-forward {
+    0% {
+      opacity: 0;
+      transform: translate3d(-0.16em, -0.07em, 0) rotate(-17deg) scale(0.72);
+    }
+    9% {
+      opacity: 0.94;
+    }
+    27% {
+      transform: translate3d(0.78em, -0.14em, 0) rotate(12deg) scale(0.96);
+    }
+    51% {
+      transform: translate3d(1.92em, -0.17em, 0) rotate(-9deg) scale(1);
+    }
+    76% {
+      transform: translate3d(3.02em, -0.1em, 0) rotate(12deg) scale(0.9);
+    }
+    91% {
+      opacity: 0.92;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(4.02em, -0.05em, 0) rotate(-14deg) scale(0.7);
+    }
+  }
+
+  @keyframes compact-flight-return {
+    0% {
+      opacity: 0;
+      transform: translate3d(0.18em, -0.05em, 0) rotate(18deg) scale(0.68);
+    }
+    10% {
+      opacity: 0.9;
+    }
+    29% {
+      transform: translate3d(-0.85em, -0.13em, 0) rotate(-12deg) scale(0.9);
+    }
+    54% {
+      transform: translate3d(-2em, -0.17em, 0) rotate(10deg) scale(0.98);
+    }
+    78% {
+      transform: translate3d(-3.08em, -0.1em, 0) rotate(-12deg) scale(0.84);
+    }
+    91% {
+      opacity: 0.86;
+    }
+    100% {
+      opacity: 0;
+      transform: translate3d(-3.92em, -0.05em, 0) rotate(15deg) scale(0.66);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated .butterfly,
+  .animated .leftWing,
+  .animated .rightWing {
+    animation: none;
+  }
+
+  .animated .first {
+    top: -0.28em;
+    left: 11%;
+    opacity: 0.9;
+    transform: rotate(-13deg) scale(0.82);
+  }
+
+  .animated .second {
+    top: -0.25em;
+    left: auto;
+    right: 11%;
+    opacity: 0.88;
+    transform: rotate(13deg) scale(0.72);
+  }
+}
