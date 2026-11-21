@@ -78,3 +78,12 @@
 ### Delivery boundary
 
 - Deliver on the feature branch through a review PR only. A Vercel Preview counts as available only after GitHub/Vercel reports an actual deployment URL and status. If Preview cannot be created or checked, state the blocker. Do not merge or promote Production.
+
+
+## Follow-on — Hero Butterfly Wordmark (approved 2026-11-21)
+
+- **Base and delivery:** `origin/main` at `a51bd8da98c1e51b762270aa67c729f6fba2d585`; isolated branch `manus/kabkrabue-butterfly-wordmark`. Deliver on a review branch/PR; do not merge, promote, or change Production without separate authorization.
+- **Design read:** homepage Hero wordmark for village visitors; warm twilight editorial language; **Extension** of the existing interface. Dials: variance 1, motion 4, density 1, asset dependence 1, brand fidelity 10.
+- **Visual system:** retain the existing rice/ink/paddy/clay/gold palette, Fraunces display wordmark, Hero layout, contrast, and text. Add two small ivory/gold butterflies with slow, staggered curved flight around (not across/over) “KabKraBue”; keep glow restrained and subordinate to the wordmark.
+- **Implementation:** isolated SVG/CSS component, transform/opacity-only loops, no external image/font requests or new runtime dependency. Reuse the existing Hero `motionEnabled` decision; render a still decorative state when reduced motion or Data Saver disables movement. Keep the heading text selectable and screen-reader output unchanged; effect is decorative and `aria-hidden`.
+- **Protected contracts:** preserve the wordmark text, logo assets, Hero video/poster, layout, navigation, responsive behavior, static export, basePath, and Service Worker behavior. No production deployment/config changes.
